@@ -2,13 +2,25 @@
 
 import Link from 'next/link'
 import styles from '@/components/Navbar/Navbar.module.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FiMenu, FiShoppingCart } from "react-icons/fi";
 
 
 export default function Navbar() {
 
     const [open, setOpen] = useState(false)
+
+    useEffect(() => {
+        if (open) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
+
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [open]);
 
     return (
         // Navbar
@@ -22,7 +34,16 @@ export default function Navbar() {
             <Link href='/' className={styles.logo}>
                 <h2>Resin Kalaakari</h2>
             </Link>
-            {/* right: Links */}
+
+            {/* Desktop Links */}
+
+            <div className={styles.desktopLinks}>
+                <Link href="/products">Products</Link>
+                <Link href="/cart">Cart</Link>
+            </div>
+
+            {/* right: Cart */}
+
             <div className={`${styles.links} ${styles.cart}`}>
                 <Link href='/cart'>
                     <FiShoppingCart size={20} />
@@ -32,6 +53,7 @@ export default function Navbar() {
             {/* Mobile menu hamburger */}
             {open &&
                 (<div className={styles.menu}>
+                    <button onClick={() => setOpen(false)} className={styles.close}>✕</button>
                     <Link href="/products">Products</Link>
                     <Link href="/cart">Cart</Link>
                 </div>)
