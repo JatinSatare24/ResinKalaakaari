@@ -1,0 +1,12 @@
+
+
+.nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.links a{
+    text-decoration: none;
+    margin-left: 1rem;
+}
