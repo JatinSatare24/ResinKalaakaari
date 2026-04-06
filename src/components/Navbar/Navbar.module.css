@@ -44,16 +44,19 @@
   top: 50px;
   left: 0;
   width: 100%;
+  height: 100vh;
   background: white;
   display: flex;
   flex-direction: column;
   padding: 16px;
+  z-index: 200;
 }
 
 .menu a {
   margin-bottom: 10px;
   text-decoration: none;
   color: black;
+  border-bottom: 1px solid #eee;
 }
 
 .menuBtn,
