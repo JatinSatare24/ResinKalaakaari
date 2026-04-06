@@ -3,21 +3,9 @@
 import { useState } from "react"
 import Link from 'next/link'
 import styles from '@/components/Hero/Hero.module.css'
+import {slides} from '@/data/slides'
 
 export default function Hero() {
-
-    const slides = [
-        {
-            image: "/hero1.png",
-            title: "Handcrafted Resin Art",
-            subtitle: "Unique pieces made with creativity",
-        },
-        {
-            image: "/hero2.png",
-            title: "Elegant Home Decor",
-            subtitle: "Add beauty to your space",
-        },
-    ]
 
     const [index, setIndex] = useState(0)
 
