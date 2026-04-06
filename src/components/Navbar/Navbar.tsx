@@ -10,6 +10,8 @@ export default function Navbar() {
 
     const [open, setOpen] = useState(false)
 
+    // Lock scroll
+
     useEffect(() => {
         if (open) {
             document.body.style.overflow = "hidden";
