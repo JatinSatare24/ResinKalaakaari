@@ -11,3 +11,13 @@
 html, body {
   height: 100%;
 }
+
+:root {
+  --font-primary: var(--font-inter);
+  --font-accent: var(--font-playfair);
+}
+
+body {
+  font-family: var(--font-inter);
+  background: #f6f6f6; /* light grey */
+}
