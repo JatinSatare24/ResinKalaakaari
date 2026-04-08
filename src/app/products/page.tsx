@@ -5,6 +5,7 @@ import styles from '@/components/ProductCard/ProductCard.module.css'
 export default function ProductsPage() {
     return (
         <main>
+            
             <h1>Products</h1>
 
             <div className={styles.productGrid}>
