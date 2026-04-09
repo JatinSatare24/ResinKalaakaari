@@ -3,9 +3,11 @@ import Link from 'next/link'
 
 export default function ProductCard({ product }: any) {
     return (
-        <Link href={`/products/${product.id}`}>
+        <Link className={styles.link} href={`/products/${product.id}`}>
             <div className={styles.card}>
-                <img src={product.image} alt={product.name} className={styles.image} />
+  
+                    <img className = {styles.image} src={product.image} alt={product.name} />
+      
 
                 <div className={styles.content}>
                     <h2 className={styles.name}>{product.name}</h2>
