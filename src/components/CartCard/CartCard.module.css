@@ -1,0 +1,174 @@
+.card {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: #fff;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    position: relative;
+    margin: 5px 12px
+}
+
+
+/* IMAGE */
+.image {
+    width: 95px;
+    height: 95px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* CONTENT */
+.content {
+    flex: 1;
+}
+
+/* NAME */
+.name {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+/* PRICE */
+.price {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+/* QUANTITY CONTROLS */
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.controls button {
+    width: 32px;
+    height: 32px;
+
+    border-radius: 10px;
+    border: 1px solid #ddd;
+
+    background: #fff;
+    font-weight: 600;
+}
+
+/* TOTAL */
+.total {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* REMOVE BUTTON */
+.remove {
+    position: absolute;
+    top: 13px;
+    right: 13px;
+
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.summary {
+    margin: 16px 12px;
+    padding: 16px;
+
+    background: #fff;
+    border-radius: 16px;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* TOTAL ROW */
+.totalRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+}
+
+.totalRow span:last-child {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* CLEAR BUTTON */
+.clearBtn {
+    width: 100%;
+    padding: 12px;
+
+    border-radius: 12px;
+    border: 1px solid #ddd;
+
+    background: #fafafa;
+    color: #333;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+/* subtle interaction */
+.clearBtn:active {
+    transform: scale(0.98);
+}
+
+.empty {
+  height: calc(100vh - 80px); /* minus navbar */
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  padding: 16px;
+}
+
+/* TITLE (Playfair 👇) */
+.title {
+  font-family: var(--font-playfair);
+  font-size: 22px;
+  font-weight: 600;
+
+  margin-bottom: 8px;
+}
+
+/* SUBTEXT */
+.subtitle {
+  font-size: 14px;
+  color: #666;
+
+  margin-bottom: 20px;
+}
+
+/* BUTTON */
+.button {
+  padding: 14px 24px;
+
+  border-radius: 999px;
+
+  background: #111;
+  color: #fff;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.button:active {
+  transform: scale(0.97);
+}
