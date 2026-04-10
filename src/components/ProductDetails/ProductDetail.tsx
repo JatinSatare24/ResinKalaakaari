@@ -1,4 +1,4 @@
-import styles from '@/components/ProductDetails/ProeductDetail.module.css'
+import styles from '@/components/ProductDetails/ProductDetail.module.css'
 
 
 export default function ProductDetail({ product, addToCart }) {

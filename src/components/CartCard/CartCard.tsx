@@ -10,7 +10,7 @@ export default function CartCard({ item }: any) {
         <div className={styles.card}>
 
             <img 
-                src={item.image} 
+                src={item.image_url} 
                 alt={item.name} 
                 className={styles.image}
             />
