@@ -7,7 +7,7 @@ export default function ProductDetail({ product, addToCart }) {
 
             <div className={styles.imageWrapper}>
                 <img
-                    src={product.image}
+                    src={product.image_url}
                     alt={product.name}
                 />
             </div>
