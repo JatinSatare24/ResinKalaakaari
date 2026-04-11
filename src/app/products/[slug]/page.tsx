@@ -20,7 +20,6 @@ type product = {
 export default function productDetail() {
 
     const { slug } = useParams()
-    console.log(slug)
     const { addToCart } = useContext(CartContext)!
 
     const [product, setProduct] = useState(null)
@@ -31,9 +30,16 @@ export default function productDetail() {
         const fetchProduct = async () => {
             const { data, error } = await supabase
                 .from('products')
-                .select('*')
+                .select(`
+                     *,
+                      categories!inner (
+                       id,
+                     name,
+                      slug
+                         )
+                             `)
                 .eq('slug', slug)
-                .single()
+                .single();
 
             if (error) {
                 console.error('Error fetching product: ', error.message)
