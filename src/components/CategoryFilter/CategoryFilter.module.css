@@ -1,0 +1,39 @@
+.container {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding: 0.5rem 0;
+    margin: 5px 10px;
+}
+
+.link{
+    text-decoration: none;
+}
+
+.filterContainer::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari */
+}
+
+.name {
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid #6b46c1;
+    background-color: #ffffff;
+    color: #6b46c1;
+    font-size: 1rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all .2s ease-in-out;
+}
+
+.name:hover {
+  background-color: #6b46c1;
+  color: #ffffff;
+}
+
+.active {
+  background-color: #6b46c1;
+  color: #ffffff;
+  border-color: #6b46c1;
+}
