@@ -1,0 +1,29 @@
+ .breadcrumb {
+     font-size: .80rem;
+     margin: 0.5rem 0.5;
+     display: flex;
+     flex-wrap: wrap;
+     align-items: center;
+     gap: 0.25rem;
+     color: #6b7280;
+ }
+
+ .breadcrumb a {
+     color: #6b46c1;
+     text-decoration: none;
+ }
+
+ .breadcrumb a:hover {
+     text-decoration: underline;
+ }
+
+ .separator {
+     margin: 0 0.4rem;
+ }
+
+ .breadcrumb span:last-child {
+     color: #6b7280;
+     /* Muted gray */
+     font-weight: 500;
+     cursor: default;
+ }
