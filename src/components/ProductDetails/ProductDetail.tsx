@@ -1,9 +1,16 @@
 import styles from '@/components/ProductDetails/ProductDetail.module.css'
+import Breadcrumb from '../BreadCrumbNavigation/BreadCrumbNavigation'
 
 
 export default function ProductDetail({ product, addToCart }) {
     return (
         <div className={styles.container}>
+
+            <Breadcrumb
+                categoryName={product.categories.name}
+                categorySlug={product.categories.slug}
+                productName={product.name}
+            />
 
             <div className={styles.imageWrapper}>
                 <img
