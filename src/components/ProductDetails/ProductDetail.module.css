@@ -68,10 +68,22 @@
     font-weight: 600;
     cursor: pointer;
     margin-top: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border-radius: 999px;
 }
 
 .button:active {
     transform: scale(0.98);
+}
+
+.relatedProductsContainer {
+    padding: 12px;
+}
+
+.relatedProducts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+
 }
