@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from 'next/link'
 import styles from '@/components/Hero/Hero.module.css'
-import {slides} from '@/data/slides'
+import { slides } from '@/data/slides'
 
 export default function Hero() {
 
@@ -16,6 +16,15 @@ export default function Hero() {
     const prev = () => {
         setIndex(prev => prev === 0 ? slides.length - 1 : prev - 1)
     }
+
+    // Autoplay functionality
+    useEffect(() => {
+        const interval = setInterval(() => {
+            next();
+        }, 4000); // Change slide every 4 seconds
+
+        return () => clearInterval(interval); // Cleanup on unmount
+    }, []);
 
     return (
         <section className={styles.hero}>
