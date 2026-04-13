@@ -1,11 +1,11 @@
 export const slides = [
         {
-            image: "/hero1.png",
+            image: "/Hero/hero1.png",
             title: "Handcrafted Resin Art",
             subtitle: "Unique pieces made with creativity",
         },
         {
-            image: "/hero2.png",
+            image: "/Hero/hero2.png",
             title: "Elegant Home Decor",
             subtitle: "Add beauty to your space",
         },
