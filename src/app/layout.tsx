@@ -1,4 +1,5 @@
 import Navbar from '@/components/Navbar/Navbar'
+import Footer from '@/components/Footer/Footer'
 import './globals.css'
 import CartProvider from '@/context/CartContext'
 import { Inter, Playfair_Display } from 'next/font/google'
@@ -24,8 +25,8 @@ export default function RootLayout({
         <CartProvider>
           <Navbar />
           {children}
+          <Footer />
         </CartProvider>
-
       </body>
     </html>
   );
