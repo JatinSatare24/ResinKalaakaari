@@ -1,5 +1,9 @@
+/* ===============================
+   FEATURED PRODUCTS - MOBILE FIRST
+================================= */
 .featuredSection {
     padding: 2rem 1rem;
+    background-color: #ffffff;
 }
 
 .heading {
@@ -7,17 +11,18 @@
     font-weight: 600;
     text-align: center;
     margin-bottom: 1.5rem;
+    color: #1f2933;
 }
 
 .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    text-decoration: none;
 }
 
 .link {
     text-decoration: none;
+    display: block;
 }
 
 .message {
@@ -26,16 +31,18 @@
     padding: 1rem 0;
 }
 
+/* View All Button Container */
 .viewAllContainer {
-    display: grid;
     grid-column: 1 / -1;
     width: 60%;
-    margin: auto;
+    margin: 0 auto;
     text-align: center;
 }
 
+/* View All Button */
 .viewAllButton {
-    display: flex;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
     gap: 0.3rem;
     padding: 0.6rem 1.5rem;
@@ -62,10 +69,80 @@
 }
 
 .icon {
-    /* margin-left: 6px; */
     transition: transform 0.2s ease;
 }
 
 .viewAllButton:hover .icon {
     transform: translateX(4px);
+}
+
+/* ===============================
+   TABLET (≥ 768px)
+================================= */
+@media (min-width: 768px) {
+    .featuredSection {
+        padding: 3rem 2rem;
+    }
+
+    .heading {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
+
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+
+    .viewAllContainer {
+        width: 40%;
+        margin-top: 0.5rem;
+    }
+
+    .viewAllButton {
+        font-size: 0.95rem;
+        padding: 0.7rem 1.8rem;
+    }
+}
+
+/* ===============================
+   DESKTOP (≥ 1024px)
+================================= */
+@media (min-width: 1024px) {
+    .featuredSection {
+        padding: 4rem 3rem;
+        /* max-width: 1200px; */
+        margin: 0 auto;
+    }
+
+    .heading {
+        font-size: 2rem;
+    }
+
+    .grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+
+    .viewAllContainer {
+        width: 25%;
+    }
+
+    .viewAllButton {
+        font-size: 1rem;
+        padding: 0.8rem 2rem;
+    }
+}
+
+/* ===============================
+   LARGE SCREENS (≥ 1280px)
+================================= */
+@media (min-width: 1280px) {
+    .featuredSection {
+        margin: 0 auto;
+    }
+
+    .grid {
+        gap: 2.5rem;
+    }
 }
