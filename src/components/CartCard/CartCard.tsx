@@ -7,13 +7,16 @@ export default function CartCard({ item }: any) {
     const { removeFromCart, updateQuantity } = useContext(CartContext)!
 
     return (
-        <div className={styles.card}>
 
-            <img 
-                src={item.image_url} 
-                alt={item.name} 
-                className={styles.image}
-            />
+        <div className={styles.card}>
+            <div>
+                <img
+                    src={item.image_url}
+                    alt={item.name}
+                    className={styles.image}
+                />
+            </div>
+
 
             <div className={styles.content}>
                 <h2 className={styles.name}>{item.name}</h2>
@@ -30,7 +33,7 @@ export default function CartCard({ item }: any) {
                 </p>
             </div>
 
-            <button 
+            <button
                 className={styles.remove}
                 onClick={() => removeFromCart(item.id)}
             >
@@ -38,5 +41,6 @@ export default function CartCard({ item }: any) {
             </button>
 
         </div>
+
     )
 }
