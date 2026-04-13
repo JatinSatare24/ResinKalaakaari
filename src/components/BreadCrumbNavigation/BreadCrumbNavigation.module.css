@@ -1,6 +1,6 @@
  .breadcrumb {
      font-size: .80rem;
-     margin: 0.2rem 0.5 1rem;
+     margin: 0.2rem 1.1rem 1rem;
      display: flex;
      flex-wrap: wrap;
      align-items: center;
@@ -26,4 +26,20 @@
      /* Muted gray */
      font-weight: 500;
      cursor: default;
+ }
+
+ @media(min-width:768px) {
+
+     .breadcrumb {
+         font-size: 0.9rem;
+         margin: 0.2rem 2rem 1rem;
+     }
+ }
+
+ @media(min-width:1024px) {
+     .breadcrumb {
+         font-size: 1rem;
+         margin: 0.2rem 2rem 1rem;
+     }
+
  }
