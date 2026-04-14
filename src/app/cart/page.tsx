@@ -32,13 +32,14 @@ export default function CartsPage() {
     }, 0)
 
     return (
-        <section>
+        <section >
+
             <div className={styles.cartContainer}>
                 {cart.map((item) => (
                     <CartCard key={item.id} item={item} />
                 ))}
             </div>
-            
+
             <div className={styles.summary}>
                 <div className={styles.totalRow}>
                     <span>Grand Total</span>
