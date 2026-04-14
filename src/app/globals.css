@@ -8,8 +8,10 @@
   padding: 0;
 }
 
-html, body {
+html,
+body {
   height: 100%;
+  min-height: 100vh;
 }
 
 :root {
@@ -19,5 +21,6 @@ html, body {
 
 body {
   font-family: var(--font-inter);
-  background: #f6f6f6; /* light grey */
+  background: #f6f6f6;
+
 }
