@@ -89,7 +89,7 @@ export default function productDetail() {
 
 
     if (loading) {
-        return <p>Loading product...</p>
+        return <div className={styles.loadingProduct}><p >Loading product...</p></div>
     }
 
     if (!product) {
