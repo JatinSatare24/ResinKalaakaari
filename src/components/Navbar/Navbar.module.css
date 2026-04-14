@@ -1,37 +1,45 @@
+/* ===============================
+   NAVBAR BASE (MOBILE-FIRST)
+================================= */
 .nav {
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 999;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  background-color: white;
-  border-bottom: 2px solid #eee;
+  padding: 0 12px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eeeeee;
+  height: 75px;
 }
 
-.links a {
-  text-decoration: none;
-  margin-left: 1rem;
-}
-
-
-/* center logo */
+/* Center Logo (Mobile) */
 .logo {
   font-family: var(--font-playfair);
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   font-weight: 600;
-  font-size: 15px;
+  font-size: 18px;
   color: #333;
+  white-space: nowrap;
+  margin-bottom: 10px;
+  margin-left: 10px;
 }
 
-/* Desktop links */
 
+/* Navigation Links */
+.links a {
+  text-decoration: none;
+}
+
+/* Desktop Links (Hidden on Mobile) */
 .desktopLinks {
   display: none;
 }
 
-/* buttons */
+/* Menu Button */
 .menuBtn {
   background: none;
   border: none;
@@ -39,172 +47,200 @@
   display: block;
 }
 
+/* Cart */
 .cart {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .cartLink {
   position: relative;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 36px;
   height: 36px;
-
   text-decoration: none;
   color: inherit;
 }
 
-/* BADGE */
+/* Cart Badge */
 .badge {
   position: absolute;
   top: -4px;
   right: -6px;
-
   min-width: 16px;
   height: 16px;
-
   padding: 0 4px;
-
   border-radius: 999px;
-
   background: #111;
   color: #fff;
-
   font-size: 10px;
   font-weight: 600;
-
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .cartLink:active {
-  transform: scale(0.9);
+  transform: scale(0.95);
 }
 
-
-/* dropdown menu */
-/* .menu {
-  position: fixed;
-  inset: 1;
-  background: white;
-  z-index: 200;
-  display: flex;
-  flex-direction: column;
-  padding: 40px 20px;
-  transition: transform 0.25s ease, opacity 0.25s ease;
-
-}
-
-.menu a {
-  margin-bottom: 20px;
-  text-decoration: none;
-  color: black;
-  font-size: 20px;
-}
-
-.close {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 25px;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.menuBtn,
-.cart {
-  background: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.menuBtn:active,
-.cart:active {
-  opacity: 0.6;
-} */
-
+/* ===============================
+   MOBILE MENU
+================================= */
 .menu {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-  background: #fff;
+  background: #ffffff;
   z-index: 1000;
-  padding: 16px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
 }
 
-/* HEADER */
+/* Menu Header */
 .menuHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .menuTitle {
   font-family: var(--font-playfair);
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
 }
 
-/* CLOSE BUTTON */
+/* Close Button */
 .close {
-  font-size: 20px;
+  font-size: 22px;
   background: none;
   border: none;
   cursor: pointer;
 }
 
-/* LINKS */
+/* Menu Links */
 .menuLinks {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .menuLinks a {
   font-size: 16px;
   font-weight: 500;
-  padding: 8px;
+  padding: 10px 0;
   text-decoration: none;
   color: #222;
-  border-bottom: 0.3px solid #666;
+  border-bottom: 1px solid #eee;
 }
 
-/* interaction */
 .menuLinks a:active {
   background: #f5f5f5;
 }
 
-@media (min-width:768px) {
+/* ===============================
+   TABLET (≥ 768px)
+================================= */
+@media (min-width: 768px) {
+  .nav {
+    height: 120px;
+    padding: 0 1.5rem;
+  }
 
+  /* Logo aligns naturally */
   .logo {
     position: static;
     transform: none;
   }
 
-  .logo {
-    position: static;
-    transform: none;
+  .image {
+    height: 100px;
+    width: 160px;
   }
 
+  /* Hide Hamburger Menu */
   .menuBtn {
     display: none;
   }
 
+  /* Show Desktop Navigation */
   .desktopLinks {
     display: flex;
-    gap: 20px;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .desktopLinks a {
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+    transition: color 0.3s ease;
+  }
+
+  .desktopLinks a:hover {
+    color: #000;
+  }
+}
+
+/* ===============================
+   DESKTOP (≥ 1024px)
+================================= */
+@media (min-width: 1024px) {
+  .nav {
+    padding: 0 2rem;
+    height: 130px;
+  }
+
+  .logo {
+    font-size: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .image {
+    height: 110px;
+    width: 170px;
+  }
+
+  .desktopLinks {
+    gap: 32px;
+  }
+
+  .desktopLinks a {
+    font-size: 16px;
+  }
+
+  .cartLink {
+    width: 40px;
+    height: 40px;
+  }
+
+  .badge {
+    font-size: 11px;
+    min-width: 18px;
+    height: 18px;
+  }
+}
+
+/* ===============================
+   LARGE SCREENS (≥ 1280px)
+================================= */
+@media (min-width: 1280px) {
+  .nav {
+    margin: 0 auto;
+    height: 120px;
+    padding: 0 2rem;
+  }
+
+  .image {
+    height: 100px;
+    width: 170px;
   }
 }
