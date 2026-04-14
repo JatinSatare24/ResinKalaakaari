@@ -1,0 +1,122 @@
+/* ===============================
+   TESTIMONIALS SECTION - MOBILE FIRST
+================================= */
+.testimonials {
+    display: grid;
+    padding: 2.5rem 1.5rem 4rem;
+    background: #faf9fb;
+    text-align: center;
+}
+
+.heading {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: #2b2b2b;
+}
+
+/* ===============================
+   SLIDE WRAPPER
+================================= */
+.slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===============================
+   CARD STYLING
+================================= */
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 0.6rem;
+    max-width: 420px;
+    width: 100%;
+    height: 500px;
+    border: 1px solid #f1f1f1;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* ===============================
+   IMAGE STYLING
+================================= */
+.image {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    object-fit: contain;
+    display: block;
+}
+
+/* ===============================
+   TABLET (≥ 768px)
+================================= */
+@media (min-width: 768px) {
+    .testimonials {
+        padding: 3rem 2rem 4.5rem;
+    }
+
+    .heading {
+        font-size: 1.8rem;
+    }
+
+    .card {
+        max-width: 60%;
+        height: 500px;
+        padding: 0.7rem;
+        margin: auto;
+    }
+}
+
+/* ===============================
+   DESKTOP (≥ 1024px)
+================================= */
+@media (min-width: 1024px) {
+    .testimonials {
+        padding: 4rem 2rem 5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .heading {
+        font-size: 2rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .card {
+        max-width: 600px;
+        height: 540px;
+        padding: 0.8rem;
+        margin: auto;
+    }
+}
+
+/* ===============================
+   LARGE SCREENS (≥ 1280px)
+================================= */
+@media (min-width: 1280px) {
+    .testimonials {
+        width: 700px;
+        padding: 2rem 1rem 2rem;
+        margin: 2rem auto;
+    }
+
+    .heading {
+        font-size: 2rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .card {
+        max-width: 500px;
+        height: 700px;
+        padding: 0.8rem;
+        margin: auto;
+    }
+}
