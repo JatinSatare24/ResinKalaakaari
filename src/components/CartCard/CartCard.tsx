@@ -29,7 +29,7 @@ export default function CartCard({ item }: any) {
                 </div>
 
                 <p className={styles.total}>
-                    ₹{item.price * item.quantity}
+                    Total: ₹{item.price * item.quantity}
                 </p>
             </div>
 
