@@ -1,18 +1,20 @@
-/* SearchBar.module.css */
+/* ===============================
+   SEARCH BAR - MOBILE FIRST
+================================= */
 
 .wrapper {
   position: relative;
   width: 60%;
   max-width: 480px;
-  margin: 5px auto 25px;
+  margin: 12px auto;
 }
 
 .input {
   width: 100%;
-  padding: 10px 40px 10px 16px;
+  padding: 10px 42px 10px 16px;
   border: 1px solid #d1d5db;
   border-radius: 999px;
-  font-size: 16px;
+  font-size: 15px;
   color: #111827;
   background-color: #ffffff;
   outline: none;
@@ -30,15 +32,67 @@
 
 .inputPending {
   opacity: 0.5;
+  cursor: not-allowed;
 }
 
+/* Status Indicator (e.g., Loading...) */
 .status {
   position: absolute;
-  right: 12px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
   font-size: 12px;
   color: #9ca3af;
   pointer-events: none;
   white-space: nowrap;
+}
+
+/* ===============================
+   TABLET (≥ 768px)
+================================= */
+@media (min-width: 768px) {
+  .wrapper {
+    width: 50%;
+    margin: 15px auto 30px;
+  }
+
+  .input {
+    font-size: 16px;
+    padding: 12px 44px 12px 18px;
+  }
+
+  .status {
+    font-size: 13px;
+  }
+}
+
+/* ===============================
+   DESKTOP (≥ 1024px)
+================================= */
+@media (min-width: 1024px) {
+  .wrapper {
+    width: 40%;
+    max-width: 520px;
+    margin: 20px auto 20px;
+  }
+
+  .input {
+    font-size: 20px;
+    padding: 12px 46px 12px 20px;
+  }
+
+  .status {
+    right: 16px;
+    font-size: 13px;
+  }
+}
+
+/* ===============================
+   LARGE SCREENS (≥ 1280px)
+================================= */
+@media (min-width: 1280px) {
+  .wrapper {
+    width: 35%;
+    max-width: 560px;
+  }
 }
