@@ -14,6 +14,68 @@
   height: 75px;
 }
 
+/* Styling for the Right Side Container */
+.rightIcons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  /* spacing between user icon and cart */
+}
+
+/* User Avatar Styling */
+.avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid #fce4ec;
+  /* Subtle pastel border */
+  object-fit: cover;
+}
+
+/* The Logout Button wrapper */
+.iconBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* Small Logout tooltip (optional - shows on hover) */
+.logoutTooltip {
+  display: none;
+  position: absolute;
+  top: 30px;
+  background: #333;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.iconBtn:hover .logoutTooltip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mobileLogout {
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #d32f2f;
+  /* Red for logout */
+  cursor: pointer;
+}
+
 /* Center Logo (Mobile) */
 .logo {
   font-family: var(--font-playfair);
@@ -27,7 +89,6 @@
   margin-bottom: 10px;
   margin-left: 10px;
 }
-
 
 /* Navigation Links */
 .links a {
@@ -59,8 +120,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  gap: 0.5;
+  width: 24px;
+  height: 24px;
   text-decoration: none;
   color: inherit;
 }
@@ -160,6 +222,16 @@
     transform: none;
   }
 
+  .FiUser,
+  .FiShoppingCart {
+    font-size: 1.5rem;
+  }
+
+  .cartLink {
+    margin-left: 1rem;
+  }
+
+
   .image {
     height: 100px;
     width: 160px;
@@ -199,14 +271,18 @@
     height: 130px;
   }
 
-  .logo {
-    font-size: 20px;
-    letter-spacing: 0.5px;
+  .image {
+    width: 170px;
+    height: 110px;
   }
 
-  .image {
-    height: 110px;
-    width: 170px;
+  .FiUser,
+  .FiShoppingCart {
+    font-size: 2rem;
+  }
+
+  .cartLink {
+    margin-left: 1rem;
   }
 
   .desktopLinks {
@@ -237,6 +313,15 @@
     margin: 0 auto;
     height: 120px;
     padding: 0 2rem;
+  }
+
+  .FiUser,
+  .FiShoppingCart {
+    font-size: 1.5rem;
+  }
+
+  .cartLink {
+    font-size: 0.5rem;
   }
 
   .image {
