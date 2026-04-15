@@ -1,0 +1,144 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #fdfbfd; /* Very light pastel background */
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    border: 1px solid #f0f0f0;
+}
+
+.title {
+    font-size: 1.75rem;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.subtitle {
+    color: #888;
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+}
+
+.googleButton {
+    width: 100%;
+    padding: 12px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.googleButton:hover {
+    background: #f9f9f9;
+}
+
+.divider {
+    margin: 25px 0;
+    border-bottom: 1px solid #eee;
+    position: relative;
+}
+
+.divider span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 0 15px;
+    color: #bbb;
+    font-size: 0.85rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input {
+    width: 100%;
+    padding: 14px;
+    border: 1.5px solid #eee;
+    border-radius: 10px;
+    background: #fafafa;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #d1c4e9; /* Pastel Lavender */
+}
+
+.button {
+    width: 100%;
+    padding: 14px;
+    background-color: #fce4ec; /* Pastel Pink */
+    color: #880e4f;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.2s;
+    margin-top: 10px;
+}
+
+.button:hover:not(:disabled) {
+    background-color: #f8bbd0;
+    transform: translateY(-1px);
+}
+
+.button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.errorMessage {
+    color: #d32f2f;
+    font-size: 0.85rem;
+    margin-top: 15px;
+}
+
+.successMessage {
+    color: #2e7d32;
+    background: #e8f5e9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.footer {
+    margin-top: 25px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.link {
+    color: #880e4f;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
