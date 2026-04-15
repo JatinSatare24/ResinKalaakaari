@@ -2,7 +2,7 @@
 
 import styles from '@/components/ShopByCategory/ShopByCategory.module.css'
 import { useState, useEffect } from 'react'
-import { supabase } from '@/lib/supabase'
+import { client } from '@/lib/supabase'
 import { ArrowRight } from "lucide-react";
 import Link from 'next/link';
 
@@ -13,6 +13,8 @@ type Category = {
 }
 
 export default function ShopByCategory() {
+
+    const supabase = client()
 
     const [ShopByCategory, setShopByCategory] = useState<Category[]>([])
     const [loading, setLoading] = useState(true)
