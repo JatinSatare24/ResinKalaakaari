@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "@/components/Gallery/Gallery.module.css";
-import { supabase } from "@/lib/supabase";
+import { client } from "@/lib/supabase";
 
 type GalleryItem = {
     id: string;
@@ -12,6 +12,8 @@ type GalleryItem = {
 };
 
 export default async function Gallery() {
+
+    const supabase = client()
 
     const { data: products, error } = await supabase
         .from("products")

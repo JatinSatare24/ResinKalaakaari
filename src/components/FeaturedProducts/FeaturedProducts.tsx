@@ -2,7 +2,7 @@
 
 import styles from '@/components/FeaturedProducts/FeaturedProducts.module.css'
 import ProductCard from '../ProductCard/ProductCard';
-import { supabase } from '@/lib/supabase'
+import { client } from '@/lib/supabase'
 import { useEffect, useState } from 'react';
 import { ArrowRight } from "lucide-react";
 import Link from 'next/link';
@@ -17,7 +17,10 @@ type Product = {
 };
 
 
+
+
 export default function FeaturedProducts() {
+    const supabase = client()
 
     const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState(true)

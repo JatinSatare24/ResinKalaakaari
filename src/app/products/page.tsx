@@ -5,11 +5,13 @@ import CategoriesFilter from '@/components/CategoryFilter/CategoryFilter'
 import SearchBar from '@/components/SearchBar/SearchBar'
 import SortDropdown from '@/components/SortDropdown/SortDropdown'
 import Breadcrumb from '@/components/BreadCrumbNavigation/BreadCrumbNavigation'
-import { supabase } from '@/lib/supabase'
+import { client } from '@/lib/supabase'
 
 export default async function ProductsPage({ searchParams }: {
     searchParams: Promise<{ category?: string; search: string; sort: string }>;
 }) {
+
+    const supabase = client()
 
     const params = await searchParams
     const filteredCategory = params?.category

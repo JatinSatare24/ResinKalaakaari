@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation'
 import ProductDetail from '@/components/ProductDetails/ProductDetail'
 import styles from '@/components/ProductDetails/ProductDetail.module.css'
 import ProductCard from '@/components/ProductCard/ProductCard'
-import { supabase } from '@/lib/supabase'
+import { client } from '@/lib/supabase'
 
 
 type product = {
@@ -31,6 +31,8 @@ type Product = {
 
 
 export default function productDetail() {
+
+    const supabase = client()
 
     const { slug } = useParams()
     const { addToCart } = useContext(CartContext)!
