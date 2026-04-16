@@ -2,14 +2,26 @@
 
 import { useContext } from "react";
 import { CartContext } from '@/context/CartContext'
-import { products } from "@/data/products";
+import { useRouter } from "next/navigation";
 import CartCard from '@/components/CartCard/CartCard'
 import styles from '@/components/CartCard/CartCard.module.css'
 import Link from 'next/link'
 
 export default function CartsPage() {
 
-    const { cart, clearCart } = useContext(CartContext)!
+    const { cart, user, clearCart } = useContext(CartContext)!
+    const router = useRouter()
+
+    const handleCheckoutClick = () => {
+        if (!user) {
+            // If not logged in, send them to login
+            // Professional tip: You could add ?redirect=/checkout here later
+            router.push("/login");
+        } else {
+            // If logged in, send them to checkout
+            router.push("/checkout");
+        }
+    };
 
     if (cart.length === 0) {
         return <div className={styles.empty}>
@@ -45,6 +57,14 @@ export default function CartsPage() {
                     <span>Grand Total</span>
                     <span>₹{grandTotal}</span>
                 </div>
+
+                {/* THE NEW CHECKOUT BUTTON */}
+                <button
+                    onClick={handleCheckoutClick}
+                    className={styles.checkoutBtn}
+                >
+                    Proceed to Checkout
+                </button>
 
                 <button className={styles.clearBtn} onClick={() => clearCart()}>
                     Clear Cart
