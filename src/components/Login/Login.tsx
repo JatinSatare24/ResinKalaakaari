@@ -1,19 +1,21 @@
 'use client'
 
 import { useState } from 'react'
-import { client } from '@/lib/supabase' // Your unified client
+import { client } from '@/lib/supabase'
 import styles from '@/components/Login/Login.module.css'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
     const [email, setEmail] = useState('')
-    const [otp, setOtp] = useState('')
+    const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
-    const [showOtpInput, setShowOtpInput] = useState(false)
+    const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
     const supabase = client()
+    const router = useRouter()
 
-    // 1. Google OAuth Logic
+    // 1. Google OAuth (Stays the same - it's a great fast-path!)
     const handleGoogleLogin = async () => {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
@@ -21,50 +23,34 @@ export default function LoginPage() {
                 redirectTo: `${window.location.origin}/auth/callback`,
             },
         })
-        if (error) console.error("Google Login Error:", error.message)
+        if (error) setErrorMessage(error.message)
     }
 
-    // 2. Step One: Send 6-digit Code
-    const handleSendOtp = async (e: React.FormEvent) => {
+    // 2. The Traditional Password Login
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
-        const { error } = await supabase.auth.signInWithOtp({
-            email,
-            options: {
-                shouldCreateUser: true,
-                // We point this to our callback for users who click the link instead of typing the code
-                emailRedirectTo: `${window.location.origin}/auth/callback`,
-            },
-        })
-        setLoading(false)
-        if (!error) {
-            setShowOtpInput(true)
-        } else {
-            alert(error.message)
-        }
-    }
+        setErrorMessage(null)
 
-    // 3. Step Two: Verify the Code
-    const handleVerifyOtp = async (e: React.FormEvent) => {
-        e.preventDefault()
-        setLoading(true)
-        const { error } = await supabase.auth.verifyOtp({
+        const { error } = await supabase.auth.signInWithPassword({
             email,
-            token: otp,
-            type: 'email',
+            password,
         })
-        setLoading(false)
-        if (!error) {
-            window.location.href = '/' 
+
+        if (error) {
+            setErrorMessage(error.message)
+            setLoading(false)
         } else {
-            alert(error.message)
+            // Success! Send them to the home page or wherever they were going
+            router.push('/')
+            router.refresh() // Ensures the auth state updates across the app
         }
     }
 
     return (
         <div className={styles.authContainer}>
             <h1 className={styles.title}>Resin Kalaakaari</h1>
-            <p className={styles.subtitle}>Sign in to your artistic sanctuary</p>
+            <p className={styles.subtitle}>Welcome back to your sanctuary</p>
 
             <button onClick={handleGoogleLogin} className={styles.googleBtn}>
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="G" />
@@ -75,49 +61,41 @@ export default function LoginPage() {
                 <span>or</span>
             </div>
 
-            {!showOtpInput ? (
-                <>
-                    <form onSubmit={handleSendOtp}>
-                        <input
-                            className={styles.inputField}
-                            type="email"
-                            placeholder="Enter your email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <button type="submit" disabled={loading} className={styles.primaryBtn}>
-                            {loading ? 'Sending...' : 'Send Login Code'}
-                        </button>
-                    </form>
-                    <p className={styles.footerText}>
-                        Don't have an account? <Link href="/signup" className={styles.link}>Sign Up</Link>
-                    </p>
-                </>
-            ) : (
-                <form onSubmit={handleVerifyOtp}>
-                    <p className={styles.subtitle}>Check your email for the 6-digit code</p>
-                    <input
-                        className={styles.inputField}
-                        type="text"
-                        placeholder="000000"
-                        value={otp}
-                        onChange={(e) => setOtp(e.target.value)}
-                        maxLength={6}
-                        required
-                    />
-                    <button type="submit" disabled={loading} className={styles.primaryBtn}>
-                        {loading ? 'Verifying...' : 'Verify & Login'}
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => setShowOtpInput(false)}
-                        className={styles.secondaryBtn}
-                    >
-                        Change Email
-                    </button>
-                </form>
-            )}
+            <form onSubmit={handleLogin}>
+                <input
+                    className={styles.inputField}
+                    type="email"
+                    placeholder="Email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <input
+                    className={styles.inputField}
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+
+                {errorMessage && <p className={styles.errorText}>{errorMessage}</p>}
+
+                <button type="submit" disabled={loading} className={styles.primaryBtn}>
+                    {loading ? 'Signing in...' : 'Sign In'}
+                </button>
+            </form>
+
+            <p className={styles.footerText}>
+                Don't have an account? <Link href="/signup" className={styles.link}>Sign Up</Link>
+            </p>
+
+            {/* Optional: Add a "Forgot Password" link later if you want to be extra fancy */}
+            <p className={styles.footerText} style={{ marginTop: '10px' }}>
+                <Link href="#" className={styles.link} style={{ fontSize: '12px', opacity: 0.7 }}>
+                    Forgot your password?
+                </Link>
+            </p>
         </div>
     )
 }
