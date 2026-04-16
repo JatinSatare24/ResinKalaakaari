@@ -128,21 +128,42 @@
 }
 
 /* CLEAR BUTTON */
+/* Cart.module.css */
+
+.checkoutBtn {
+    width: 100%;
+    background-color: #000000;
+    /* Or a nice rose gold to match Sanika's brand */
+    color: white;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: transform 0.1s active;
+}
+
+.checkoutBtn:hover {
+    background-color: #333333;
+}
+
 .clearBtn {
     width: 100%;
+    background-color: transparent;
+    color: #666;
     padding: 12px;
+    border: 1px solid #e5e7eb;
     border-radius: 12px;
-    border: 1px solid #ddd;
-    background: #fafafa;
-    color: #333;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
 .clearBtn:hover {
-    background: #f0f0f0;
+    background-color: #f9fafb;
+    color: #cc0000;
+    /* Turns red only on hover to show it's a 'destructive' action */
 }
 
 .clearBtn:active {
