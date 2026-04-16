@@ -132,3 +132,10 @@
 .secondaryBtn:hover {
   color: #888;
 }
+
+.errorText {
+    color: #cc0000;
+    font-size: 14px;
+    margin-bottom: 12px;
+    text-align: center;
+}
