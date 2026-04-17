@@ -96,4 +96,71 @@ export default function Success() {
     // UPI Link for Mobile
     const upiLink = `upi://pay?pa=${SANIKA_UPI_ID}&pn=ResinKalaakaari&am=${orderData?.total_price}&cu=INR&tn=Order_${orderId?.slice(0,8)}`
 
-   
+    return (
+        <div className={styles.container}>
+            <div className={styles.card}>
+                {!paymentSubmitted ? (
+                    <>
+                        <div className={styles.icon}>🎨</div>
+                        <h1 className={styles.title}>Almost Done!</h1>
+                        <p className={styles.message}>
+                            To keep our art affordable, we accept direct UPI payments. Please complete your payment of <strong>₹{orderData?.total_price}</strong>.
+                        </p>
+
+                        <div className={styles.paymentBox}>
+                            {/* Mobile: Direct App Opener */}
+                            <a href={upiLink} className={styles.upiBtn}>
+                                <FiSmartphone /> Pay via GPay / PhonePe / Paytm
+                            </a>
+
+                            <div className={styles.divider}><span>OR SCAN / USE ID</span></div>
+                            
+                            <div className={styles.upiIdRow}>
+                                <code>{SANIKA_UPI_ID}</code>
+                                <button onClick={() => navigator.clipboard.writeText(SANIKA_UPI_ID)} title="Copy ID">
+                                    <FiCopy />
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className={styles.verificationSection}>
+                            <h3>Submit Payment Proof</h3>
+                            <input 
+                                type="text" 
+                                placeholder="Enter 12-digit UTR / Transaction ID" 
+                                value={utr}
+                                onChange={(e) => setUtr(e.target.value)}
+                                className={styles.utrInput}
+                                maxLength={12}
+                            />
+                            <button 
+                                onClick={handleConfirmPayment} 
+                                className={styles.confirmBtn}
+                                disabled={submitting}
+                            >
+                                {submitting ? "Submitting..." : "Confirm Payment"}
+                            </button>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <div className={styles.icon} style={{color: '#10b981'}}><FiCheckCircle size={50} /></div>
+                        <h1 className={styles.title}>Payment Received!</h1>
+                        <p className={styles.message}>
+                            Thank you! Sanika will verify your transaction (ID: {utr || orderData?.transaction_id}) and update your order status within 24 hours.
+                        </p>
+                    </>
+                )}
+
+                <div className={styles.actions}>
+                    <button onClick={handleWhatsAppRedirect} className={styles.whatsappBtn}>
+                        Share Screenshot on WhatsApp
+                    </button>
+                    <Link href="/my-orders" className={styles.homeBtn}>
+                        View My Orders
+                    </Link>
+                </div>
+            </div>
+        </div>
+    )
+}
