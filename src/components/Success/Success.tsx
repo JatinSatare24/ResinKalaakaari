@@ -26,4 +26,37 @@ export default function Success() {
     const SANIKA_UPI_ID = "sanika@upi" // Replace with actual UPI ID
     const PHONE_NUMBER = "919022223759"
 
-   
+    useEffect(() => {
+        const verifyOrder = async () => {
+            if (!orderId) {
+                router.push('/')
+                return
+            }
+            if (authLoading) return
+            if (!user) {
+                router.push('/login')
+                return
+            }
+
+            // Fetch order + total_price to show on this page
+            const { data, error } = await supabase
+                .from('orders')
+                .select('id, total_price, status, transaction_id')
+                .eq('id', orderId)
+                .eq('user_id', user.id)
+                .single()
+
+            if (error || !data) {
+                router.push('/')
+            } else {
+                setOrderData(data)
+                // If they already submitted a UTR, show the success state
+                if (data.transaction_id) setPaymentSubmitted(true)
+            }
+            setVerifying(false)
+        }
+
+        verifyOrder()
+    }, [orderId, user, authLoading, router, supabase])
+
+  
