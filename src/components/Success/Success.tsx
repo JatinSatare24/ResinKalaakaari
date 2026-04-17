@@ -59,4 +59,41 @@ export default function Success() {
         verifyOrder()
     }, [orderId, user, authLoading, router, supabase])
 
-  
+    const handleConfirmPayment = async () => {
+        if (utr.length < 12) {
+            alert("Please enter a valid 12-digit UTR/Transaction ID")
+            return
+        }
+        
+        setSubmitting(true)
+        const { error } = await supabase
+            .from('orders')
+            .update({ 
+                transaction_id: utr, 
+                status: 'verifying_payment' 
+            })
+            .eq('id', orderId)
+
+        if (!error) {
+            setPaymentSubmitted(true)
+        } else {
+            alert("Error submitting details. Please try again.")
+        }
+        setSubmitting(false)
+    }
+
+    const handleWhatsAppRedirect = () => {
+        const message = encodeURIComponent(
+            `Hi Sanika! I just placed order #${orderId?.slice(0,8)}. I've paid ₹${orderData?.total_price} via UPI. Here is my screenshot! ✨`
+        )
+        window.open(`https://wa.me/${PHONE_NUMBER}?text=${message}`, "_blank")
+    }
+
+    if (authLoading || verifying) {
+        return <div className={styles.center}>Verifying your order...</div>
+    }
+
+    // UPI Link for Mobile
+    const upiLink = `upi://pay?pa=${SANIKA_UPI_ID}&pn=ResinKalaakaari&am=${orderData?.total_price}&cu=INR&tn=Order_${orderId?.slice(0,8)}`
+
+   
