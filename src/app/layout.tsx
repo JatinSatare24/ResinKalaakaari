@@ -23,9 +23,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable}`}>
         <CartProvider>
-          <Navbar />
-          {children}
-          <Footer />
+          <div className="app-container">
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </div>
         </CartProvider>
       </body>
     </html>
