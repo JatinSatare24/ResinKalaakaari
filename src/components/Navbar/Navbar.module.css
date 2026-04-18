@@ -95,6 +95,105 @@
   text-decoration: none;
 }
 
+.userSection {
+  position: relative;
+  /* Essential for the dropdown to align to this box */
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #eee;
+}
+
+.dropdown {
+  position: absolute;
+  top: 50px;
+  /* Adjust based on your navbar height */
+  right: 0;
+  width: 220px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 10px 0;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.dropdownHeader {
+  padding: 10px 20px;
+}
+
+.userName {
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0;
+  color: #111;
+}
+
+.userEmail {
+  font-size: 12px;
+  color: #666;
+  margin: 2px 0 0 0;
+}
+
+.dropdown hr {
+  border: 0;
+  border-top: 1px solid #f0f0f0;
+  margin: 10px 0;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: #444;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.dropdownItem:hover {
+  background: #f9f9f9;
+  color: #111;
+}
+
+.logoutBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  color: #ff4d4d;
+  /* Red for logout */
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.logoutBtn:hover {
+  background: #fff5f5;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Desktop Links (Hidden on Mobile) */
 .desktopLinks {
   display: none;
@@ -207,6 +306,122 @@
   background: #f5f5f5;
 }
 
+/* Mobile Sidebar Hidden by default */
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  /* Hidden to the left */
+  width: 250px;
+  height: 100vh;
+  background: #fff;
+  transition: left 0.3s ease-in-out;
+  z-index: 1000;
+  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* When active class is added via JS */
+.mobileMenu.active {
+  left: 0;
+}
+
+/* Darken the background when menu is open */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+}
+
+.mobileLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mobileLinks a {
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 1. The Toggle Button (Hamburger) */
+.menuBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  display: flex;
+  align-items: center;
+  z-index: 1001;
+  /* Stay above the drawer */
+  padding: 8px;
+}
+
+/* 2. The Mobile Drawer (Sidebar) */
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  /* Start off-screen */
+  width: 280px;
+  /* Width of your sidebar */
+  height: 100vh;
+  background: #ffffff;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 100px 30px;
+  /* Space for the logo/top icons */
+  gap: 20px;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 10px 0 20px rgba(0, 0, 0, 0.05);
+}
+
+/* 3. The "Open" State */
+.mobileMenu.active {
+  left: 0;
+  /* Slide in to the edge */
+}
+
+/* 4. Drawer Links Styling */
+.mobileMenu a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1.15rem;
+  font-weight: 500;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: color 0.2s;
+}
+
+.mobileMenu a:hover {
+  color: #0070f3;
+  /* Adjust to your brand color */
+}
+
+/* 5. The Dark Backdrop Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  /* Dim the background */
+  backdrop-filter: blur(2px);
+  /* Optional: adds a modern feel */
+  z-index: 999;
+  /* Just below the drawer */
+}
+
 /* ===============================
    TABLET (≥ 768px)
 ================================= */
@@ -238,8 +453,11 @@
   }
 
   /* Hide Hamburger Menu */
-  .menuBtn {
-    display: none;
+  .menuBtn,
+  .mobileMenu,
+  .overlay {
+    display: none !important;
+    /* Hide hamburger UI on desktop */
   }
 
   /* Show Desktop Navigation */
@@ -310,6 +528,7 @@
 ================================= */
 @media (min-width: 1280px) {
   .nav {
+    width: 100%;
     margin: 0 auto;
     height: 120px;
     padding: 0 2rem;
