@@ -147,10 +147,6 @@
    LARGE SCREENS (≥ 1280px)
 ================================= */
 @media (min-width: 1280px) {
-  .gallerySection {
-    /* max-width: 1280px; */
-  }
-
   .masonry {
     column-gap: 1.8rem;
   }
