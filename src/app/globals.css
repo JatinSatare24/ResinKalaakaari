@@ -11,7 +11,7 @@
 html,
 body {
   height: 100%;
-  min-height: 100vh;
+  margin: 0;
 }
 
 :root {
@@ -23,4 +23,17 @@ body {
   font-family: var(--font-inter);
   background: #f6f6f6;
 
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* Takes full viewport height */
+}
+
+/* The main content area between Navbar and Footer */
+main {
+  flex: 1;
+  /* This tells the main area to 'grow' to fill available space */
 }
