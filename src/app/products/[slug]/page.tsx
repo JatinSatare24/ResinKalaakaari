@@ -8,6 +8,7 @@ import ProductDetail from '@/components/ProductDetails/ProductDetail'
 import styles from '@/components/ProductDetails/ProductDetail.module.css'
 import ProductCard from '@/components/ProductCard/ProductCard'
 import { client } from '@/lib/supabase'
+import Loader from '@/components/Spinner/Spinner'
 
 
 type product = {
@@ -91,7 +92,7 @@ export default function productDetail() {
 
 
     if (loading) {
-        return <div className={styles.loadingProduct}><p >Loading product...</p></div>
+        return <Loader message={'Loading product details'}/>
     }
 
     if (!product) {

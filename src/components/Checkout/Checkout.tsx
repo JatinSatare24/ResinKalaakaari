@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { client } from "@/lib/supabase"
 import Link from "next/link"
 import styles from "@/components/Checkout/Checkout.module.css"
+import Loader from '@/components/Spinner/Spinner'
 
 export default function Checkout() {
     const context = useContext(CartContext)
@@ -131,7 +132,7 @@ export default function Checkout() {
     }
 
     // Stop the whole page from "flickering" while we check for the user's profile
-    if (authLoading || profileLoading) return <div className={styles.pageWrapper}><p>Preparing your checkout...</p></div>
+    if (authLoading || profileLoading) return <div className={styles.pageWrapper}><Loader message={'Loading Checkout'}/></div>
 
     return (
         <div className={styles.pageWrapper}>

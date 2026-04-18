@@ -6,6 +6,7 @@ import { client } from '@/lib/supabase'
 import { useEffect, useState } from 'react';
 import { ArrowRight } from "lucide-react";
 import Link from 'next/link';
+import Loader from '@/components/Spinner/Spinner'
 
 type Product = {
     id: string;
@@ -15,9 +16,6 @@ type Product = {
     image_url: string;
     slug: string;
 };
-
-
-
 
 export default function FeaturedProducts() {
     const supabase = client()
@@ -50,7 +48,7 @@ export default function FeaturedProducts() {
     }, [])
 
     if (loading) {
-        return <p className={styles.message}>Loading featured products...</p>;
+        return <Loader message={'Loading Featured products'}/>;
     }
 
     if (error) {

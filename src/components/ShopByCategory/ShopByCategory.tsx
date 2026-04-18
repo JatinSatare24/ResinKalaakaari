@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { client } from '@/lib/supabase'
 import { ArrowRight } from "lucide-react";
 import Link from 'next/link';
+import Loader from '@/components/Spinner/Spinner'
 
 type Category = {
     id: number,
@@ -44,7 +45,7 @@ export default function ShopByCategory() {
 
     }, [])
 
-    if (loading) return <p className={styles.message}>Loading categories...</p>;
+    if (loading) return <Loader message={'Loading art categories'}/>
     if (error) return <p className={styles.message}>{error}</p>;
 
     return (
