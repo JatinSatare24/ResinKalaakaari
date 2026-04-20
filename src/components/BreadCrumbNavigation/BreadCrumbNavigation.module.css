@@ -43,3 +43,11 @@
      }
 
  }
+
+ @media(min-width:1280px){
+    .breadcrumb{
+        font-size: 1.7rem;
+         margin: 1rem 7rem;
+    }
+
+ }

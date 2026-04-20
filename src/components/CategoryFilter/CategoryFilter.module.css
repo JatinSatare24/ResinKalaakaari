@@ -67,12 +67,12 @@
 
 @media (min-width: 1280px) {
     .container {
-        gap: 1rem;
-        margin: 5px 30px;
+        gap: 1.5rem;
+        margin: 5px 7rem;
     }
 
     .name {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         font-weight: 600;
     }
 }
