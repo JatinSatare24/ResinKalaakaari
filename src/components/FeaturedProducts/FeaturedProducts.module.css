@@ -142,7 +142,21 @@
         margin: 0 auto;
     }
 
-    .grid { 
-        gap: 2.5rem;
+    .heading {
+        font-size: 2.5rem;
+    }
+
+    .grid {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 2rem;
+    }
+
+    .viewAllContainer {
+        width: 25%;
+    }
+
+    .viewAllButton {
+        font-size: 1.5rem;
+        padding: 0.8rem 2rem;
     }
 }

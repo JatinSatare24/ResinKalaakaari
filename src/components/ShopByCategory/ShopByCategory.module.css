@@ -7,12 +7,19 @@
   background: #ffffff;
 }
 
+/* ===============================
+   HEADING UPGRADE
+================================= */
 .heading {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  color: #1f2933;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1a202c;
+  letter-spacing: -0.5px;
+  position: relative;
+  display: inline-block;
 }
+
 
 /* ===============================
    GRID LAYOUT
@@ -31,28 +38,41 @@
   width: 70%;
 }
 
-/* ===============================
-   CATEGORY CARD
-================================= */
 .categoryCard {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1.2rem;
-  border-radius: 14px;
-  background: #ffffff;
-  color: #333;
-  font-weight: 500;
+  border-radius: 50px;
+  /* Fully rounded capsule */
+  background: linear-gradient(135deg, #ffffff 0%, #fdfbf7 100%);
+  /* Subtle gold tint */
+  color: #1a202c;
+  font-weight: 600;
   text-decoration: none;
-  border: 1px solid #f1f1f1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: all 0.25s ease;
+  border: 1px solid #e2e8f0;
+  /* "Soft Glow" shadow instead of flat black */
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
 }
 
 .categoryCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
-  color: #6b46c1;
+  transform: translateY(-5px);
+  /* Gold border glow on hover */
+  border-color: #D4AF37;
+  background: #ffffff;
+  color: #D4AF37;
+  box-shadow: 0 12px 24px rgba(212, 175, 55, 0.15);
+}
+
+/* Adding a subtle dot before the text on hover */
+.categoryCard:hover::before {
+  content: '•';
+  margin-right: 8px;
+  color: #D4AF37;
 }
 
 /* ===============================
@@ -132,7 +152,8 @@
   /* Reset mobile centering behavior */
   .grid a:last-child:nth-child(odd) {
     grid-column: auto;
-    width: auto;
+    width: 100%;
+    justify-self: stretch;
   }
 
   .categoryCard {
@@ -190,8 +211,17 @@
    LARGE SCREENS (≥ 1280px)
 ================================= */
 @media (min-width: 1280px) {
-  .viewAllContainer {
-    width: 08%;
+
+  .categoryCard{
+    font-size: 1.5rem;
   }
 
+  .viewAllContainer {
+    width: 06%;
+  }
+
+  .viewAllButton {
+    font-size: 1.6rem;
+    padding: 0.8rem 0.5rem;
+  }
 }

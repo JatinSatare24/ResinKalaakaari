@@ -226,7 +226,7 @@
         width: 95%;
         display: flex;
         flex-wrap: wrap;
-        margin: auto;
+        margin: 0 auto;
         border: 1px solid red;
         gap: 12px;
         align-items: flex-start;
@@ -235,23 +235,23 @@
         padding: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         position: relative;
-        margin: 5px 12px;
+        /* margin: 5px 12px; */
         border: 1px solid #f1f1f1;
     }
 
     .card {
         display: flex;
-        width: 45%;
+        width: 46%;
         height: 200px;
-        gap: 12px;
+        gap: 20px;
         align-items: center;
-        justify-content: space-around;
+        justify-content: space-between;
         background: #fff;
         border-radius: 16px;
         padding: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         position: relative;
-        margin: 5px 12px;
+        margin: 5px 8px;
         border: 1px solid #f1f1f1;
     }
 
@@ -261,6 +261,7 @@
     }
 
     .name {
+        width: 150px;
         font-size: 16px;
     }
 
@@ -367,17 +368,17 @@
 
     .card {
         display: flex;
-        width: 45%;
-        height: 350px;
+        width: 30%;
+        height: 400px;
         gap: 3rem;
         align-items: center;
         justify-content: space-between;
         background: #fff;
         border-radius: 16px;
-        padding: 12px;
+        padding: 1rem 3rem;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         position: relative;
-        margin: 5px 12px;
+        margin: 2rem 1rem;
 
     }
 
@@ -409,6 +410,13 @@
     }
 
     .summary {
-        width: 20%;
+        width: 15%;
     }
+
+    .totalRow,
+    .checkoutBtn,
+    .clearBtn {
+        font-size: 1.3rem;
+    }
+
 }

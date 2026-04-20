@@ -60,7 +60,7 @@ export default function FeaturedProducts() {
     }
 
     return (
-        <section className={styles.featuredSection}>
+        <section className={styles.featuredSection} id='featuredProducts'>
             <h2 className={styles.heading}>Featured Products</h2>
 
             <div className={styles.grid}>

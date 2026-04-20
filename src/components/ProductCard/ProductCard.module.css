@@ -258,7 +258,8 @@
     }
 
     .card {
-        height: 550px;
+        height: 800px;
+        width: 450px;
     }
 
     .content {
@@ -270,8 +271,21 @@
         flex-grow: 1;
     }
 
+    .name {
+        font-size: 24px;
+    }
+
+    .price {
+        font-size: 24px;
+    }
+
     .SortContainer {
-        width: 95%;
+        width: 93%;
         margin: 16px auto;
+    }
+
+    .productCount{
+        font-size: 1.2rem;
+        margin: 0 1rem;
     }
 }

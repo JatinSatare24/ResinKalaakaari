@@ -23,15 +23,15 @@ export default function CartCard({ item }: any) {
                 <p className={styles.price}>₹{item.price}</p>
 
                 <div className={styles.controls}>
-                    <button onClick={() => updateQuantity(item.id, -1)}>-</button>
+                    <button onClick={() => updateQuantity(item.id, -1)} className={styles.controlButton}>-</button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, +1)}>+</button>
+                    <button onClick={() => updateQuantity(item.id, +1)} className={styles.controlButton}>+</button>
                 </div>
 
                 <p className={styles.total}>
                     Total: ₹{item.price * item.quantity}
                 </p>
-            </div>
+            </div >
 
             <button
                 className={styles.remove}
@@ -40,7 +40,7 @@ export default function CartCard({ item }: any) {
                 ✕
             </button>
 
-        </div>
+        </div >
 
     )
 }
