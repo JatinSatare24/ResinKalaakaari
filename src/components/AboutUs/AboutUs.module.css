@@ -1,0 +1,93 @@
+.aboutContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.heroSection {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.mainTitle {
+  font-family: var(--font-playfair);
+  font-size: 3rem;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+.intro {
+  font-size: 1.2rem;
+  color: #666;
+  font-style: italic;
+}
+
+.contentSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  align-items: center;
+}
+
+.imageWrapper {
+  width: 100%;
+  max-width: 500px;
+}
+
+.profileImg {
+  border-radius: 20px;
+  width: 100%;
+  height: auto;
+  box-shadow: 20px 20px 0px #fce4ec; /* Subtle brand-pink offset shadow */
+}
+
+.textWrapper {
+  flex: 1;
+}
+
+.artistName {
+  font-family: var(--font-playfair);
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tagline {
+  font-weight: 600;
+  color: #880e4f;
+  margin-bottom: 2rem;
+}
+
+.storyText p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 1.5rem;
+}
+
+.quote {
+  font-family: var(--font-playfair);
+  font-size: 1.4rem;
+  border-left: 4px solid #fce4ec;
+  padding-left: 20px;
+  margin: 2rem 0;
+  color: #1a1a1a;
+  font-style: italic;
+}
+
+/* DESKTOP LAYOUT */
+@media (min-width: 1024px) {
+  .contentSection {
+    flex-direction: row; /* Split screen */
+    text-align: left;
+  }
+
+  .imageWrapper {
+    flex: 1;
+  }
+
+  .textWrapper {
+    flex: 1.2;
+    padding-left: 4rem;
+  }
+}
