@@ -1,0 +1,115 @@
+/* =========================================
+   CONTACT US COMPONENT STYLES
+========================================= */
+
+/* --- BASE LAYOUT --- */
+.contactContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(2rem, 8vh, 6rem) 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+.contentGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* Stacked on mobile */
+    gap: 40px;
+}
+
+/* --- TYPOGRAPHY & HEADERS --- */
+.header {
+    text-align: center;
+    margin-bottom: clamp(3rem, 10vh, 5rem);
+}
+
+.title {
+    font-family: var(--font-playfair);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+/* --- CONTACT CARDS --- */
+.contactCard {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.iconBox {
+    width: 50px;
+    height: 50px;
+    background: #fce4ec;
+    /* Brand Pink */
+    color: #880e4f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 1.5rem;
+}
+
+.contactCard h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.contactCard p {
+    color: #555;
+}
+
+/* --- CALL TO ACTION (WHATSAPP) --- */
+.whatsappBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 18px;
+    background-color: #25D366;
+    /* Official WhatsApp Green */
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 700;
+    margin-top: 20px;
+    transition: transform 0.2s;
+}
+
+.whatsappBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
+}
+
+/* --- MAP EMBED --- */
+.mapSide {
+    min-height: 400px;
+    height: 100%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* ===============================
+   DESKTOP LAYOUT (≥ 1024px)
+================================= */
+@media (min-width: 1024px) {
+    .contentGrid {
+        grid-template-columns: 1fr 1.2fr;
+        /* Info on left, Map on right */
+        gap: 80px;
+        align-items: stretch;
+    }
+
+    .whatsappBtn {
+        width: auto;
+        padding: 18px 40px;
+    }
+}
