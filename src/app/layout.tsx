@@ -3,6 +3,39 @@ import Footer from '@/components/Footer/Footer'
 import './globals.css'
 import CartProvider from '@/context/CartContext'
 import { Inter, Playfair_Display } from 'next/font/google'
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  metadataBase: new URL('http://localhost:3000'), // Use your local URL for now
+  title: "Resin Kalaakaari | Handcrafted Resin Art",
+  description: "Preserve your most precious memories in beautiful, handcrafted resin art. Specializing in varmala preservation, custom nameplates, and unique jewelry.",
+  icons: {
+    icon: [
+      { url: '/icons/favicon.ico' },
+      { url: '/icons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/icons/apple-touch-icon.png' },
+    ],
+  },
+  // If you have a manifest file, link it here for Android/Chrome
+  manifest: '/icons/site.webmanifest',
+  openGraph: {
+    title: "Resin Kalaakaari",
+    description: "Customized Resin Art & Flower Preservation",
+    url: "https://resinkalaakaari.in",
+    siteName: "Resin Kalaakaari",
+    images: [
+      {
+        url: "/Hero/Hero1.webp",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "en_IN",
+    type: "website",
+  },
+};
 
 const inter = Inter({
   subsets: ['latin'],
