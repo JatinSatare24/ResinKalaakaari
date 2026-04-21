@@ -1,0 +1,113 @@
+/* =========================================
+   SHARED POLICY STYLES (Fluid)
+========================================= */
+
+/* --- BASE LAYOUT --- */
+.container {
+  /* Scales width from 90% on mobile to a comfortable reading max on desktop */
+  width: 90%;
+  max-width: 900px;
+  /* Capped at 900px so lines of text aren't too long */
+  margin: clamp(2rem, 8vh, 6rem) auto;
+  padding: 0 1rem;
+  line-height: 1.8;
+  color: #333;
+}
+
+.section {
+  margin-bottom: clamp(2rem, 4vh, 3rem);
+}
+
+/* --- TYPOGRAPHY & HEADERS --- */
+.title {
+  font-family: var(--font-playfair);
+  /* Scales from 1.8rem on mobile to 3.5rem on large desktop */
+  font-size: clamp(1.8rem, 5vw, 3.5rem);
+  margin-bottom: clamp(1.5rem, 5vh, 3rem);
+  text-align: center;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+
+.introText {
+  text-align: center;
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  color: #666;
+  margin-bottom: clamp(2rem, 6vh, 4rem);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section h2 {
+  /* Scales from 1.2rem to 1.8rem */
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  color: #000;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+
+.section p,
+.section li {
+  /* Fluid body text: 0.95rem to 1.15rem */
+  font-size: clamp(0.95rem, 1.1vw, 1.15rem);
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+/* --- LISTS --- */
+/* List Styling */
+.section ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.section li {
+  margin-bottom: 0.8rem;
+  position: relative;
+}
+
+/* --- HIGHLIGHTS & ALERTS --- */
+/* Brand Highlights */
+.highlight {
+  color: #880e4f;
+  /* Your brand pink */
+  font-weight: 600;
+}
+
+/* The Damage Policy Alert Box */
+.alertBox {
+  background-color: #fff5f5;
+  border-left: 5px solid #880e4f;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  margin: 2rem 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(136, 14, 79, 0.05);
+}
+
+.alertBox p {
+  margin-bottom: 0;
+  color: #880e4f;
+  font-weight: 500;
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+}
+
+.note {
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #888;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+/* ===============================
+   RESPONSIVE: DESKTOP (≥ 1024px)
+================================= */
+@media (min-width: 1024px) {
+  .container {
+    padding: 0;
+    /* Centered container doesn't need internal padding */
+  }
+}
