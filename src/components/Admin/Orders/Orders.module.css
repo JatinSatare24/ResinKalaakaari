@@ -1,0 +1,235 @@
+/* ==========================================================================
+   1. LAYOUT & CONTAINERS
+   ========================================================================== */
+.adminWrapper {
+    width: 100%;
+    margin: 20px auto;
+    padding: 15px;
+    min-height: 70vh;
+    /* Keeps footer at bottom even with 0 or 1 order */
+}
+
+.adminTitle {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #1a1a1a;
+}
+
+.loader {
+    text-align: center;
+    padding: 100px 20px;
+    font-size: 18px;
+    color: #666;
+}
+
+/* ==========================================================================
+   2. MOBILE FIRST: CARD VIEW TABLE
+   ========================================================================== */
+.orderTable {
+    display: block;
+    /* Turns table into a stack of elements */
+    width: 100%;
+}
+
+.orderTable thead {
+    display: none;
+    /* Hide the actual header row on mobile */
+}
+
+.orderTable tbody {
+    display: block;
+    width: 100%;
+}
+
+/* Each row becomes a standalone card */
+.orderTable tr {
+    display: block;
+    background: white;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+}
+
+/* Label on left, Value on right */
+.orderTable td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 14px;
+    word-break: break-all;
+}
+
+.orderTable td:last-child {
+    border-bottom: none;
+    padding-bottom: 5px;
+}
+
+/* Injects the label text using the data-label attribute from TSX */
+.orderTable td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #9ca3af;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   3. STATUS BADGES & CONTROLS
+   ========================================================================== */
+.badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* Status Colors (Lowercased to match TSX logic) */
+.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.verifying_payment {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.confirmed {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.shipped {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.delivered {
+    background: #d4edda;
+    color: #155724;
+}
+
+.statusSelect {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 13px;
+    background-color: white;
+    max-width: 160px;
+}
+
+/* ==========================================================================
+   4. DESKTOP LAYOUT: THE NUCLEAR RESET
+   ========================================================================== */
+@media (min-width: 1024px) {
+    .adminWrapper {
+        margin: 40px auto;
+        /* Increased for more breathing room */
+        padding: 0 20px;
+    }
+
+    .orderTable {
+        display: table !important;
+        /* Force it to be a real table */
+        width: 100% !important;
+        table-layout: fixed !important;
+        /* This is the alignment anchor */
+        border-collapse: separate;
+        border-spacing: 0;
+        background: white;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .orderTable thead {
+        display: table-header-group !important;
+        /* Bring back the header */
+    }
+
+    .orderTable tbody {
+        display: table-row-group !important;
+        /* Reset from block */
+    }
+
+    .orderTable tr {
+        display: table-row !important;
+        /* Reset from block/card */
+        height: 70px;
+        /* Uniform row height */
+    }
+
+    .orderTable th,
+    .orderTable td {
+        display: table-cell !important;
+        /* Reset from flex/block */
+        padding: 15px 20px;
+        text-align: left;
+        vertical-align: middle;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    /* SPECIFIC COLUMN WIDTHS - Total = 100% */
+    .orderTable th:nth-child(1) {
+        width: 10%;
+    }
+
+    /* Date */
+    .orderTable th:nth-child(2) {
+        width: 14%;
+    }
+
+    /* Order ID */
+    .orderTable th:nth-child(3) {
+        width: 14%;
+    }
+
+    /* Transaction ID */
+    .orderTable th:nth-child(4) {
+        width: 12%;
+    }
+
+    /* Customer */
+    .orderTable th:nth-child(5) {
+        width: 8%;
+    }
+
+    /* Total */
+    .orderTable th:nth-child(6) {
+        width: 10%;
+    }
+
+    /* Status Badge */
+    .orderTable th:nth-child(7) {
+        width: 15%;
+    }
+
+    /* Action Dropdown */
+
+    /* Hide the mobile "data-label" text entirely */
+    .orderTable td::before {
+        display: none !important;
+    }
+
+    .statusSelect {
+        width: 100%;
+        max-width: 170px;
+        padding: 8px 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        background-color: #fff;
+    }
+
+    .badge {
+        display: inline-block;
+        white-space: nowrap;
+        /* Prevents "Verifying Payment" from breaking into two lines */
+    }
+}
