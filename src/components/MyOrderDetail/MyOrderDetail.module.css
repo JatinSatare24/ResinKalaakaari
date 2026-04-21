@@ -1,0 +1,216 @@
+/* =========================================
+   MY ORDER DETAIL COMPONENT STYLES
+========================================= */
+
+/* --- BASE STYLES (Mobile Default) --- */
+.container {
+    width: 100%;
+    margin: 20px auto;
+    padding: 0 16px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+/* --- HEADER & BADGES --- */
+.header {
+    display: flex;
+    flex-direction: column;
+    /* Stacked for mobile */
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.header h1 {
+    font-size: 20px;
+    /* Scaled down for mobile */
+    font-weight: 800;
+    margin: 0;
+    color: #111;
+}
+
+.statusBadge {
+    padding: 6px 14px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Status Colors */
+.statusBadge[data-status="pending"] {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.statusBadge[data-status="confirmed"] {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.statusBadge[data-status="shipped"] {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+/* --- GRID LAYOUT --- */
+/* Mobile Grid: Single Column */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+}
+
+/* --- ORDER ITEMS SECTION --- */
+.itemsSection h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.itemCard {
+    display: flex;
+    gap: 16px;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.itemCard img {
+    width: 70px;
+    /* Slightly smaller for mobile */
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+.itemInfo h4 {
+    margin: 0 0 4px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #111;
+}
+
+.itemInfo p {
+    margin: 0;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.price {
+    margin-top: 4px !important;
+    font-weight: 700;
+    color: #111 !important;
+}
+
+/* --- SUMMARY CARDS --- */
+/* Summary Cards stack naturally on mobile */
+.summarySection {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #111;
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.card p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #4b5563;
+    margin: 4px 0;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.total {
+    margin-top: 12px;
+    padding-top: 16px;
+    border-top: 2px solid #f9fafb;
+    font-weight: 800;
+    font-size: 18px;
+    color: #111;
+}
+
+/* ===============================
+   DESKTOP UPGRADES (min-width: 850px)
+================================= */
+@media (min-width: 850px) {
+    .container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 24px;
+    }
+
+    .header {
+        flex-direction: row;
+        /* Switch to side-by-side */
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header h1 {
+        font-size: 28px;
+    }
+
+    .grid {
+        grid-template-columns: 1.6fr 1fr;
+        /* Optimized ratio for desktop */
+        gap: 48px;
+    }
+
+    .itemCard {
+        padding: 16px;
+        gap: 24px;
+    }
+
+    .itemCard img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .card {
+        padding: 24px;
+    }
+}
+
+/* --- ANIMATIONS --- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
