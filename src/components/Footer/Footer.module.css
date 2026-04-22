@@ -1,144 +1,217 @@
-/* ===============================
-   FOOTER - MOBILE FIRST
-================================= */
+/* =========================================
+   FOOTER COMPONENT STYLES
+========================================= */
+
+/* --- MOBILE FIRST: BASE LAYOUT --- */
 .footer {
-  background-color: #111111;
-  color: #f5f5f5;
-  padding-top: 3rem;
+    background-color: #111111;
+    color: #f5f5f5;
+    padding-top: 3rem;
 }
 
 .container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 1.5rem;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
+    /* max-width: 1200px; */
+    margin: auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
 }
 
-/* Sections */
+/* --- SECTIONS & LISTS --- */
 .section ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .section ul li {
-  margin-bottom: 0.6rem;
+    margin-bottom: 0.6rem;
 }
 
 .section a {
-  color: #cccccc;
-  text-decoration: none;
-  transition: color 0.3s ease;
+    color: #cccccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 .section a:hover {
-  color: #ffffff;
+    color: #ffffff;
 }
 
-/* Branding */
+/* --- BRANDING & TYPOGRAPHY --- */
 .logo {
-  font-family: var(--font-playfair);
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 0.8rem;
+    font-family: var(--font-playfair);
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
 }
 
 .description {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: #bbbbbb;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #bbbbbb;
 }
 
-/* Headings */
 .heading {
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
-  font-weight: 500;
-  color: #ffffff;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    color: #ffffff;
 }
 
-/* Social Links */
+/* --- SOCIAL LINKS --- */
+.social {
+    list-style: none;
+    padding: 0;
+}
+
 .social li {
-  margin-bottom: 0.6rem;
+    margin-bottom: 12px;
 }
 
-/* Bottom Bar */
+.socialLink {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Space between icon and text */
+    text-decoration: none;
+    color: #a0a0a0;
+    /* Subtle grey to start */
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.icon {
+    font-size: 1.2rem;
+    /* Slightly larger icon */
+    transition: transform 0.3s ease;
+}
+
+/* Hover Effect: The "Premium" touch */
+.socialLink:hover {
+    color: #ffffff;
+    /* Brighter on hover */
+}
+
+.socialLink:hover .icon {
+    transform: translateY(-2px);
+    /* Icon pops up slightly */
+    color: #fce4ec;
+    /* Optional: brand pink tint on hover */
+}
+
+/* --- BOTTOM BAR --- */
 .bottom {
-  text-align: center;
-  padding: 1.2rem 0;
-  border-top: 1px solid #222;
-  margin-top: 2rem;
-  font-size: 0.85rem;
-  color: #aaaaaa;
+    text-align: center;
+    padding: 1.2rem 0;
+    border-top: 1px solid #222;
+    margin-top: 2rem;
+    font-size: 0.85rem;
+    color: #aaaaaa;
 }
 
 /* ===============================
-   TABLET (≥ 768px)
+   RESPONSIVE: TABLET (≥ 768px)
 ================================= */
 @media (min-width: 768px) {
-  .footer {
-    padding-top: 3.5rem;
-  }
+    .footer {
+        padding-top: 3.5rem;
+    }
 
-  .container {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2.5rem;
-    padding: 0 2rem;
-  }
+    .container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem;
+        padding: 0 2rem;
+    }
 
-  .logo {
-    font-size: 1.5rem;
-  }
+    .logo {
+        font-size: 1.5rem;
+    }
 
-  .heading {
-    font-size: 1.15rem;
-  }
+    .heading {
+        font-size: 1.15rem;
+    }
 
-  .description {
-    font-size: 0.95rem;
-  }
+    .description {
+        font-size: 0.95rem;
+    }
 }
 
 /* ===============================
-   DESKTOP (≥ 1024px)
+   RESPONSIVE: DESKTOP (≥ 1024px)
 ================================= */
 @media (min-width: 1024px) {
-  .footer {
-    padding-top: 4rem;
-  }
+    .footer {
+        padding-top: 4rem;
+    }
 
-  .container {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 3rem;
-    padding: 0 3rem;
-  }
+    .container {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3rem;
+        padding: 0 3rem;
+    }
 
-  .logo {
-    font-size: 1.6rem;
-  }
+    .logo {
+        font-size: 1.6rem;
+    }
 
-  .heading {
-    font-size: 1.2rem;
-  }
+    .heading {
+        font-size: 1.2rem;
+    }
 
-  .description {
-    font-size: 0.95rem;
-  }
+    .description {
+        font-size: 0.95rem;
+    }
 
-  .section a {
-    font-size: 0.95rem;
-  }
+    .section a {
+        font-size: 0.95rem;
+    }
 }
 
 /* ===============================
-   LARGE SCREENS (≥ 1280px)
+   RESPONSIVE: LARGE SCREENS (≥ 1280px)
 ================================= */
 @media (min-width: 1280px) {
-  .container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0;
-  }
+    .footer {
+        padding-top: 4rem;
+    }
+
+    .container {
+        /* grid-template-columns: repeat(4, 1fr); */
+        display: flex;
+        justify-content: space-around;
+        gap: 2rem;
+        padding: 0 3rem;
+        width: 90%;
+    }
+
+    .logo {
+        font-size: 2rem;
+    }
+
+    .heading {
+        font-size: 1.5rem;
+    }
+
+    .description {
+        font-size: 1.5rem;
+        width: 450px;
+    }
+
+    .section {
+        height: 90%;
+    }
+
+    .section a {
+        font-size: 1.5rem;
+    }
+
+    .socialLink {
+        padding-left: 30px;
+    }
+
+    .bottom {
+        font-size: 1.5rem;
+    }
 }
