@@ -1,3 +1,6 @@
+/* ==========================================================================
+   1. CONTAINER LAYOUT
+   ========================================================================== */
 .container {
     display: flex;
     gap: 0.3rem;
@@ -5,13 +8,17 @@
     margin: 5px 15px;
 }
 
-.link {
-    text-decoration: none;
-}
-
+/* Kept per protocol: Targets a scrollbar for a specific container */
 .filterContainer::-webkit-scrollbar {
     display: none;
     /* Chrome, Safari */
+}
+
+/* ==========================================================================
+   2. LINKS & TYPOGRAPHY
+   ========================================================================== */
+.link {
+    text-decoration: none;
 }
 
 .name {
@@ -26,22 +33,28 @@
     transition: all .2s ease-in-out;
 }
 
+/* ==========================================================================
+   3. INTERACTIVE STATES
+   ========================================================================== */
 .name:hover {
     background-color: #6b46c1;
     color: #ffffff;
 }
 
+/* Kept per protocol: Used for active category state if implemented later */
 .active {
     background-color: #6b46c1;
     color: #ffffff;
     border-color: #6b46c1;
 }
 
-/* ===============================
-   TABLET (≥ 768px)
-================================= */
+/* ==========================================================================
+   4. RESPONSIVE DESIGN (Media Queries)
+   ========================================================================== */
+
+/* Tablet (≥ 768px) */
 @media (min-width: 768px) {
-     .container {
+    .container {
         gap: 1rem;
         margin: 5px 30px;
         height: 50px;
@@ -53,8 +66,10 @@
     }
 }
 
+/* Small Desktop (≥ 1024px) */
 @media (min-width: 1024px) {
     .container {
+        height: 80px;
         gap: 1rem;
         margin: 5px 30px;
     }
@@ -65,6 +80,7 @@
     }
 }
 
+/* Large Desktop (≥ 1280px) */
 @media (min-width: 1280px) {
     .container {
         gap: 1.5rem;
