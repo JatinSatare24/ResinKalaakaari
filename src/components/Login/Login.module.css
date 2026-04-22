@@ -1,4 +1,8 @@
-/* login.module.css */
+/* =========================================
+   LOGIN COMPONENT STYLES
+========================================= */
+
+/* --- MOBILE FIRST: BASE LAYOUT --- */
 .authContainer {
   max-width: 420px;
   margin: 80px auto;
@@ -11,6 +15,7 @@
   border: 1px solid #f0f0f0;
 }
 
+/* --- TYPOGRAPHY --- */
 .title {
   color: #444;
   font-size: 1.8rem;
@@ -24,6 +29,7 @@
   margin-bottom: 32px;
 }
 
+/* --- BUTTONS & INPUTS --- */
 .googleBtn {
   width: 100%;
   display: flex;
@@ -41,24 +47,6 @@
 
 .googleBtn:hover {
   background: #f9f9f9;
-}
-
-.divider {
-  margin: 24px 0;
-  position: relative;
-  border-bottom: 1px solid #eee;
-}
-
-.divider span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 0 12px;
-  color: #bbb;
-  font-size: 0.8rem;
-  text-transform: uppercase;
 }
 
 .inputField {
@@ -103,6 +91,39 @@
   transform: translateY(0);
 }
 
+/* Retained per protocol rules */
+.secondaryBtn {
+  background: none;
+  border: none;
+  color: #aaa;
+  margin-top: 15px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.secondaryBtn:hover {
+  color: #888;
+}
+
+/* --- UTILITIES & DIVIDERS --- */
+.divider {
+  margin: 24px 0;
+  position: relative;
+  border-bottom: 1px solid #eee;
+}
+
+.divider span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 0 12px;
+  color: #bbb;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
 .footerText {
   margin-top: 20px;
   font-size: 0.9rem;
@@ -120,22 +141,58 @@
   text-decoration: underline;
 }
 
-.secondaryBtn {
-  background: none;
-  border: none;
-  color: #aaa;
-  margin-top: 15px;
-  cursor: pointer;
-  font-size: 0.85rem;
-}
-
-.secondaryBtn:hover {
-  color: #888;
-}
-
 .errorText {
-    color: #cc0000;
-    font-size: 14px;
-    margin-bottom: 12px;
-    text-align: center;
+  color: #cc0000;
+  font-size: 14px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+/* ===============================
+   RESPONSIVE: DESKTOP (≥ 1024px) 
+================================= */
+@media (min-width: 1024px) {
+  .authContainer {
+    max-width: 550px;
+    /* Increased from 420px */
+    padding: 60px;
+    /* Increased from 40px */
+    margin: 100px auto;
+  }
+
+  .title {
+    font-size: 2.2rem;
+    /* Scaled up for the larger container */
+  }
+
+  .inputField,
+  .primaryBtn,
+  .googleBtn {
+    padding: 16px;
+    /* Slightly larger targets */
+    font-size: 1.1rem;
+  }
+}
+
+/* ===============================
+   RESPONSIVE: LARGE DESKTOP (≥ 1280px) 
+================================= */
+@media (min-width: 1280px) {
+  .authContainer {
+    max-width: 650px;
+    /* Further increased for ultra-wide screens */
+    padding: 80px;
+    /* More breathing room on the sides */
+    margin: 120px auto;
+  }
+
+  .title {
+    font-size: 2.5rem;
+    /* Bold, clear title */
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    margin-bottom: 40px;
+  }
 }
