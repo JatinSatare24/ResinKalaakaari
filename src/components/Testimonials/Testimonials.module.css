@@ -1,6 +1,8 @@
-/* ===============================
-   TESTIMONIALS SECTION - MOBILE FIRST
-================================= */
+/* =========================================
+   TESTIMONIALS COMPONENT STYLES
+========================================= */
+
+/* --- MOBILE FIRST LAYOUT --- */
 .testimonials {
     display: grid;
     padding: 2.5rem 1.5rem 4rem;
@@ -15,18 +17,30 @@
     color: #2b2b2b;
 }
 
-/* ===============================
-   SLIDE WRAPPER
-================================= */
+.contentWrapper {
+    display: flex;
+    flex-direction: column;
+    /* Stack on mobile */
+    align-items: center;
+    gap: 2rem;
+}
+
+.textContent {
+    text-align: center;
+}
+
+.description {
+    display: none;
+    /* Hide on mobile to keep it short */
+}
+
+/* --- CAROUSEL & CARDS --- */
 .slide {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* ===============================
-   CARD STYLING
-================================= */
 .card {
     background: #ffffff;
     border-radius: 16px;
@@ -44,9 +58,7 @@
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
 }
 
-/* ===============================
-   IMAGE STYLING
-================================= */
+/* --- IMAGE --- */
 .image {
     width: 100%;
     height: 100%;
@@ -56,7 +68,7 @@
 }
 
 /* ===============================
-   TABLET (≥ 768px)
+   RESPONSIVE: TABLET (≥ 768px)
 ================================= */
 @media (min-width: 768px) {
     .testimonials {
@@ -76,47 +88,96 @@
 }
 
 /* ===============================
-   DESKTOP (≥ 1024px)
+   RESPONSIVE: DESKTOP (≥ 1024px)
 ================================= */
 @media (min-width: 1024px) {
     .testimonials {
-        padding: 4rem 2rem 5rem;
-        max-width: 1200px;
+        width: 100%;
+        max-width: 100%;
+        /* Background spans full width */
+        padding: 6rem 10%;
+        margin: 0;
+    }
+
+    .contentWrapper {
+        flex-direction: row;
+        /* Side-by-side on desktop */
+        justify-content: space-between;
+        /* max-width: 1200px; */
         margin: 0 auto;
+        text-align: left;
+    }
+
+    .textContent {
+        flex: 1;
+        text-align: left;
+        padding-right: 4rem;
     }
 
     .heading {
-        font-size: 2rem;
-        margin-bottom: 2.5rem;
+        font-size: 3rem;
+        /* Make it big to fill space */
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+    }
+
+    .description {
+        display: block;
+        font-size: 1.1rem;
+        color: #666;
+        max-width: 400px;
+    }
+
+    .cardContainer {
+        flex: 1;
+        max-width: 500px;
+        /* Limits the carousel width */
     }
 
     .card {
-        max-width: 600px;
-        height: 540px;
-        padding: 0.8rem;
-        margin: auto;
+        max-width: 100%;
+        height: 600px;
+        /* Adjust to fit your screenshots */
     }
 }
 
 /* ===============================
-   LARGE SCREENS (≥ 1280px)
+   RESPONSIVE: LARGE SCREENS (≥ 1280px)
 ================================= */
 @media (min-width: 1280px) {
     .testimonials {
-        width: 700px;
-        padding: 2rem 1rem 2rem;
+        /* Expand the container so it doesn't look like a small island */
+        width: 40%;
+        padding: 4rem 1rem;
         margin: 2rem auto;
     }
 
     .heading {
+        font-size: 3rem;
+        margin-bottom: 3rem;
+    }
+
+    .description {
+        display: block;
         font-size: 2rem;
-        margin-bottom: 2.5rem;
+        color: #666;
+        max-width: 400px;
     }
 
     .card {
-        max-width: 500px;
-        height: 700px;
-        padding: 0.8rem;
+        /* BIGGER CARD SIZE */
+        width: 1200px;
+        /* Increased from 500px */
+        height: 900px;
+        /* Increased from 700px to fit long Google reviews */
+        padding: 1rem;
         margin: auto;
+        /* Optional: Stronger shadow for the bigger card */
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .image {
+        /* Ensure the image fills the bigger card perfectly */
+        object-fit: contain;
     }
 }

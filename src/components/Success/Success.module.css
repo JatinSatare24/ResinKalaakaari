@@ -1,9 +1,14 @@
+/* =========================================
+   SUCCESS / PAYMENT PAGE STYLES
+========================================= */
+
+/* --- BASE LAYOUT --- */
 .container {
-    min-height: 80vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 16px;
     background-color: #f9fafb;
 }
 
@@ -13,45 +18,48 @@
     align-items: center;
     justify-content: center;
     font-size: 1.1rem;
-    color: #666;
+    color: #6b7280;
 }
 
 .card {
     background: white;
-    max-width: 500px;
     width: 100%;
-    padding: 40px;
+    /* Full width on mobile */
+    padding: 30px 20px;
     border-radius: 24px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     text-align: center;
     animation: slideUp 0.5s ease-out;
 }
 
+/* --- TYPOGRAPHY & ICONS --- */
 .icon {
-    font-size: 50px;
-    margin-bottom: 20px;
+    font-size: 48px;
+    margin-bottom: 16px;
 }
 
 .title {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 800;
     color: #111;
     margin-bottom: 12px;
 }
 
 .message {
-    font-size: 15px;
-    color: #666;
+    font-size: 14px;
+    color: #4b5563;
     line-height: 1.6;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
 }
 
-/* Payment Section Styling */
+/* --- PAYMENT AREA --- */
 .paymentBox {
-    background: #f3f4f6;
-    padding: 24px;
+    background: #fffbeb;
+    /* Very light gold tint */
+    padding: 20px;
     border-radius: 16px;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
+    border: 1px solid #fef3c7;
 }
 
 .upiBtn {
@@ -59,18 +67,19 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    background: #4f46e5; /* Indigo */
+    background: #d4af37;
+    /* Brand Gold */
     color: white;
     text-decoration: none;
-    padding: 14px;
+    padding: 16px;
     border-radius: 12px;
-    font-weight: 600;
-    transition: transform 0.2s, background 0.2s;
+    font-weight: 700;
+    transition: all 0.2s ease;
 }
 
 .upiBtn:hover {
-    background: #4338ca;
-    transform: translateY(-2px);
+    background: #b8962d;
+    transform: translateY(-1px);
 }
 
 .divider {
@@ -84,9 +93,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #f3f4f6;
+    background: #fffbeb;
     padding: 0 10px;
-    font-size: 12px;
+    font-size: 11px;
     color: #9ca3af;
     font-weight: 700;
 }
@@ -101,33 +110,35 @@
 
 .upiIdRow code {
     background: #fff;
-    padding: 6px 12px;
+    padding: 8px 12px;
     border-radius: 8px;
     border: 1px solid #e5e7eb;
-    font-weight: 600;
-    color: #374151;
+    font-weight: 700;
+    color: #111;
+    font-family: monospace;
 }
 
 .upiIdRow button {
     background: none;
     border: none;
-    color: #6366f1;
+    color: #d4af37;
     cursor: pointer;
     display: flex;
-    padding: 5px;
+    padding: 8px;
 }
 
-/* Verification Form */
+/* --- VERIFICATION SECTION --- */
 .verificationSection {
     text-align: left;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
 }
 
 .verificationSection h3 {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     margin-bottom: 10px;
     color: #374151;
+    text-transform: uppercase;
 }
 
 .utrInput {
@@ -137,31 +148,34 @@
     border: 2px solid #e5e7eb;
     margin-bottom: 12px;
     font-size: 16px;
+    /* Prevents iOS auto-zoom */
     transition: border-color 0.2s;
+    outline: none;
 }
 
 .utrInput:focus {
-    outline: none;
-    border-color: #6366f1;
+    border-color: #d4af37;
 }
 
 .confirmBtn {
     width: 100%;
-    padding: 14px;
+    padding: 16px;
     border-radius: 12px;
     border: none;
-    background: #111;
+    background: #1a1a1a;
+    /* Charcoal */
     color: white;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
+    transition: all 0.2s;
 }
 
 .confirmBtn:disabled {
-    background: #9ca3af;
+    background: #d1d5db;
     cursor: not-allowed;
 }
 
-/* Footer Actions */
+/* --- ACTION BUTTONS --- */
 .actions {
     display: flex;
     flex-direction: column;
@@ -171,11 +185,12 @@
 .whatsappBtn {
     width: 100%;
     padding: 14px;
-    background: #25d366; /* WhatsApp Green */
+    background: #25d366;
+    /* Official WhatsApp Green */
     color: white;
     border: none;
     border-radius: 12px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -184,24 +199,42 @@
 }
 
 .homeBtn {
-    color: #666;
+    color: #6b7280;
     text-decoration: none;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     padding: 10px;
+    margin-top: 10px;
+    text-align: center;
 }
 
-.homeBtn:hover {
-    color: #111;
-}
-
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 480px) {
+/* ===============================
+   RESPONSIVE: DESKTOP (≥ 640px)
+================================= */
+@media (min-width: 640px) {
     .card {
-        padding: 30px 20px;
+        max-width: 500px;
+        padding: 40px;
+    }
+
+    .title {
+        font-size: 28px;
+    }
+
+    .message {
+        font-size: 15px;
+    }
+}
+
+/* --- ANIMATIONS --- */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
