@@ -1,3 +1,6 @@
+/* ==========================================================================
+   1. MAIN CONTAINER & LAYOUT
+   ========================================================================== */
 .aboutContainer {
   max-width: 1200px;
   margin: 0 auto;
@@ -10,6 +13,16 @@
   margin-bottom: 4rem;
 }
 
+.contentSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  align-items: center;
+}
+
+/* ==========================================================================
+   2. TYPOGRAPHY
+   ========================================================================== */
 .mainTitle {
   font-family: var(--font-playfair);
   font-size: 3rem;
@@ -21,29 +34,6 @@
   font-size: 1.2rem;
   color: #666;
   font-style: italic;
-}
-
-.contentSection {
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-  align-items: center;
-}
-
-.imageWrapper {
-  width: 100%;
-  max-width: 500px;
-}
-
-.profileImg {
-  border-radius: 20px;
-  width: 100%;
-  height: auto;
-  box-shadow: 20px 20px 0px #fce4ec; /* Subtle brand-pink offset shadow */
-}
-
-.textWrapper {
-  flex: 1;
 }
 
 .artistName {
@@ -65,6 +55,21 @@
   margin-bottom: 1.5rem;
 }
 
+/* ==========================================================================
+   3. COMPONENTS (Image, Quote)
+   ========================================================================== */
+.imageWrapper {
+  width: 100%;
+  max-width: 500px;
+}
+
+.profileImg {
+  border-radius: 20px;
+  width: 100%;
+  height: auto;
+  box-shadow: 20px 20px 0px #fce4ec; /* Subtle brand-pink offset shadow */
+}
+
 .quote {
   font-family: var(--font-playfair);
   font-size: 1.4rem;
@@ -75,10 +80,12 @@
   font-style: italic;
 }
 
-/* DESKTOP LAYOUT */
+/* ==========================================================================
+   4. RESPONSIVE ADJUSTMENTS (Desktop)
+   ========================================================================== */
 @media (min-width: 1024px) {
   .contentSection {
-    flex-direction: row; /* Split screen */
+    flex-direction: row; /* Split screen layout */
     text-align: left;
   }
 
