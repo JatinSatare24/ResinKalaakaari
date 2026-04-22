@@ -1,6 +1,8 @@
-/* ===============================
-   NAVBAR BASE (MOBILE-FIRST)
-================================= */
+/* =========================================
+   NAVBAR COMPONENT STYLES
+========================================= */
+
+/* --- NAVBAR BASE (MOBILE-FIRST) --- */
 .nav {
   position: sticky;
   top: 0;
@@ -14,7 +16,7 @@
   height: 75px;
 }
 
-/* Styling for the Right Side Container */
+/* --- RIGHT SIDE ICONS CONTAINER --- */
 .rightIcons {
   display: flex;
   align-items: center;
@@ -22,7 +24,7 @@
   /* spacing between user icon and cart */
 }
 
-/* User Avatar Styling */
+/* --- USER AVATAR --- */
 .avatar {
   width: 26px;
   height: 26px;
@@ -32,7 +34,7 @@
   object-fit: cover;
 }
 
-/* The Logout Button wrapper */
+/* --- ACTION BUTTONS & TOOLTIPS --- */
 .iconBtn {
   background: none;
   border: none;
@@ -76,21 +78,37 @@
   cursor: pointer;
 }
 
+/* --- BRAND LOGO --- */
 /* Center Logo (Mobile) */
 .logo {
   font-family: var(--font-playfair);
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Mobile Centering Logic */
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-weight: 600;
-  font-size: 18px;
-  color: #333;
-  white-space: nowrap;
-  margin-bottom: 10px;
-  margin-left: 10px;
+  z-index: 10;
+  margin: auto 0.5rem 0.8rem;
+  /* border: 1px solid red; */
 }
 
-/* Navigation Links */
+/* Update the actual Logo Image */
+.image {
+  /* Fluid scaling: starts at 110px, grows with screen, stops at 200px */
+  width: clamp(110px, 19vw, 220px);
+  height: auto !important;
+  /* Forces aspect ratio maintenance */
+  transition: width 0.3s ease;
+  display: block;
+}
+
+/* --- LINKS & DROPDOWNS --- */
 .links a {
   text-decoration: none;
 }
@@ -98,14 +116,6 @@
 .userSection {
   position: relative;
   /* Essential for the dropdown to align to this box */
-}
-
-.avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #eee;
 }
 
 .dropdown {
@@ -194,6 +204,7 @@
   }
 }
 
+/* --- DESKTOP NAVIGATION --- */
 /* Desktop Links (Hidden on Mobile) */
 .desktopLinks {
   display: none;
@@ -207,7 +218,7 @@
   display: block;
 }
 
-/* Cart */
+/* --- SHOPPING CART --- */
 .cart {
   display: flex;
   align-items: center;
@@ -249,7 +260,7 @@
 }
 
 /* ===============================
-   MOBILE MENU
+   MOBILE MENU (DRAWER)
 ================================= */
 .menu {
   position: fixed;
@@ -423,7 +434,7 @@
 }
 
 /* ===============================
-   TABLET (≥ 768px)
+   RESPONSIVE: TABLET (≥ 768px)
 ================================= */
 @media (min-width: 768px) {
   .nav {
@@ -435,6 +446,7 @@
   .logo {
     position: static;
     transform: none;
+    margin: auto 0.5rem 1.5rem;
   }
 
   .FiUser,
@@ -444,12 +456,6 @@
 
   .cartLink {
     margin-left: 1rem;
-  }
-
-
-  .image {
-    height: 100px;
-    width: 160px;
   }
 
   /* Hide Hamburger Menu */
@@ -481,7 +487,7 @@
 }
 
 /* ===============================
-   DESKTOP (≥ 1024px)
+   RESPONSIVE: DESKTOP (≥ 1024px)
 ================================= */
 @media (min-width: 1024px) {
   .nav {
@@ -489,14 +495,33 @@
     height: 130px;
   }
 
-  .image {
-    width: 170px;
-    height: 110px;
+  .logo {
+    margin: auto 0.5rem 1rem;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid #fce4ec;
+    /* Subtle pastel border */
+    object-fit: cover;
   }
 
   .FiUser,
   .FiShoppingCart {
     font-size: 2rem;
+  }
+
+  .dropdown {
+    width: 300px;
+  }
+
+  .dropdownItem,
+  .userName,
+  .userEmail,
+  .logoutBtn {
+    font-size: 1.2rem;
   }
 
   .cartLink {
@@ -524,27 +549,27 @@
 }
 
 /* ===============================
-   LARGE SCREENS (≥ 1280px)
+   RESPONSIVE: LARGE SCREENS (≥ 1280px)
 ================================= */
 @media (min-width: 1280px) {
   .nav {
     width: 100%;
     margin: 0 auto;
-    height: 120px;
-    padding: 0 2rem;
+    height: 150px;
+    padding: 0 3rem;
+  }
+
+  .logo {
+    margin: auto 0.5rem 1.5rem;
   }
 
   .FiUser,
   .FiShoppingCart {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 
   .cartLink {
     font-size: 0.5rem;
   }
 
-  .image {
-    height: 100px;
-    width: 170px;
-  }
 }
