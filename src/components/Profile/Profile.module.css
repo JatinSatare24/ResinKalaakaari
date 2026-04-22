@@ -1,0 +1,190 @@
+/* =========================================
+   PROFILE COMPONENT STYLES
+========================================= */
+
+/* --- BASE LAYOUT --- */
+.container {
+    width: 100%;
+    margin: 20px auto;
+    padding: 0 16px;
+    animation: slideUp 0.4s ease-out;
+}
+
+/* --- HEADER & SHORTCUTS --- */
+.header {
+    display: flex;
+    flex-direction: column;
+    /* Stacked for mobile */
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 24px;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.ordersShortcut {
+    width: 100%;
+    /* Full width for easy thumb-tapping */
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.ordersShortcut:hover {
+    background-color: #e5e7eb;
+    transform: translateY(-1px);
+}
+
+/* --- FORM & SECTIONS --- */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.section h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #6b7280;
+    margin-bottom: 5px;
+    border-bottom: 2px solid #f9fafb;
+    padding-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* --- INPUTS & TEXTAREAS --- */
+.section input,
+.section textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 16px;
+    /* 16px prevents iOS zoom-on-focus */
+    transition: all 0.2s;
+    outline: none;
+    background-color: #fff;
+}
+
+/* Resin Kalaakaari Gold Focus */
+.section input:focus,
+.section textarea:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
+}
+
+.disabledInput {
+    background-color: #f9fafb !important;
+    color: #9ca3af;
+    cursor: not-allowed;
+    border-color: #e5e7eb !important;
+}
+
+/* --- GRID LAYOUT --- */
+.row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+/* --- SUBMIT BUTTON --- */
+.saveBtn {
+    background-color: #1a1a1a;
+    /* Charcoal */
+    color: white;
+    padding: 16px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+}
+
+.saveBtn:hover:not(:disabled) {
+    background-color: #000;
+}
+
+.saveBtn:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+}
+
+/* Retained per protocol rules */
+.loader {
+    text-align: center;
+    padding: 80px 20px;
+    color: #6b7280;
+    font-style: italic;
+}
+
+/* ===============================
+   RESPONSIVE: DESKTOP (≥ 600px)
+================================= */
+@media (min-width: 600px) {
+    .container {
+        max-width: 600px;
+        margin: 40px auto;
+    }
+
+    .header {
+        flex-direction: row;
+        /* Side-by-side */
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header h1 {
+        font-size: 28px;
+    }
+
+    .ordersShortcut {
+        width: auto;
+    }
+
+    .section {
+        padding: 24px;
+    }
+
+    .row {
+        grid-template-columns: 1fr 1fr;
+        /* Two columns for desktop */
+    }
+}
+
+/* --- ANIMATIONS --- */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
