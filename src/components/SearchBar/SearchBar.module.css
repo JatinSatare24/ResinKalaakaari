@@ -1,7 +1,8 @@
-/* ===============================
-   SEARCH BAR - MOBILE FIRST
-================================= */
+/* =========================================
+   SEARCH BAR COMPONENT STYLES
+========================================= */
 
+/* --- BASE WRAPPER --- */
 .wrapper {
   position: relative;
   width: 60%;
@@ -9,6 +10,7 @@
   margin: 12px auto;
 }
 
+/* --- INPUT FIELD --- */
 .input {
   width: 100%;
   padding: 10px 42px 10px 16px;
@@ -30,6 +32,7 @@
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
+/* --- PENDING / LOADING STATES --- */
 .inputPending {
   opacity: 0.5;
   cursor: not-allowed;
@@ -48,7 +51,7 @@
 }
 
 /* ===============================
-   TABLET (≥ 768px)
+   RESPONSIVE: TABLET (≥ 768px)
 ================================= */
 @media (min-width: 768px) {
   .wrapper {
@@ -67,7 +70,7 @@
 }
 
 /* ===============================
-   DESKTOP (≥ 1024px)
+   RESPONSIVE: DESKTOP (≥ 1024px)
 ================================= */
 @media (min-width: 1024px) {
   .wrapper {
@@ -88,7 +91,7 @@
 }
 
 /* ===============================
-   LARGE SCREENS (≥ 1280px)
+   RESPONSIVE: LARGE SCREENS (≥ 1280px)
 ================================= */
 @media (min-width: 1280px) {
   .wrapper {
@@ -96,7 +99,7 @@
     width: 25%;
   }
 
-  .input{
+  .input {
     font-size: 1.7rem;
   }
 }
