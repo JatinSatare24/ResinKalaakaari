@@ -1,9 +1,12 @@
-/* ===============================
-   GALLERY SECTION - MOBILE FIRST
-================================= */
+/* =========================================
+   GALLERY COMPONENT STYLES
+========================================= */
+
+/* --- MOBILE FIRST LAYOUT --- */
 .gallerySection {
   padding: 2rem 1rem 3rem;
-  background-color: #fafafa; /* Subtle contrast from white sections */
+  background-color: #fafafa;
+  /* Subtle contrast from white sections */
 }
 
 .heading {
@@ -14,9 +17,7 @@
   color: #1f2933;
 }
 
-/* ===============================
-   MASONRY LAYOUT
-================================= */
+/* --- MASONRY LAYOUT --- */
 .masonry {
   column-count: 2;
   column-gap: 1rem;
@@ -29,9 +30,7 @@
   text-decoration: none;
 }
 
-/* ===============================
-   IMAGE WRAPPER
-================================= */
+/* --- IMAGE WRAPPER --- */
 .imageWrapper {
   position: relative;
   overflow: hidden;
@@ -48,7 +47,7 @@
   transition: transform 0.4s ease;
 }
 
-/* Hover Effects */
+/* --- HOVER EFFECTS --- */
 .imageWrapper:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
@@ -58,9 +57,7 @@
   transform: scale(1.05);
 }
 
-/* ===============================
-   OVERLAY
-================================= */
+/* --- OVERLAY --- */
 .overlay {
   position: absolute;
   inset: 0;
@@ -68,11 +65,9 @@
   align-items: flex-end;
   justify-content: center;
   padding: 0.6rem;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.55),
-    rgba(0, 0, 0, 0)
-  );
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.55),
+      rgba(0, 0, 0, 0));
   opacity: 0.75;
   transition: opacity 0.3s ease;
 }
@@ -89,7 +84,7 @@
 }
 
 /* ===============================
-   TABLET (≥ 640px)
+   RESPONSIVE: TABLET (≥ 640px)
 ================================= */
 @media (min-width: 640px) {
   .gallerySection {
@@ -115,7 +110,7 @@
 }
 
 /* ===============================
-   DESKTOP (≥ 1024px)
+   RESPONSIVE: DESKTOP (≥ 1024px)
 ================================= */
 @media (min-width: 1024px) {
   .gallerySection {
@@ -144,7 +139,7 @@
 }
 
 /* ===============================
-   LARGE SCREENS (≥ 1280px)
+   RESPONSIVE: LARGE SCREENS (≥ 1280px)
 ================================= */
 @media (min-width: 1280px) {
   .masonry {

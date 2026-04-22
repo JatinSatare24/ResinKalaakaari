@@ -1,59 +1,94 @@
+/**
+ * GALLERY COMPONENT
+ * Renders a high-end masonry grid of featured resin art products.
+ * Server-side fetched for optimal SEO and performance.
+ */
+
+// --- IMPORTS ---
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import styles from "@/components/Gallery/Gallery.module.css";
 import { client } from "@/lib/supabase";
+import styles from "@/components/Gallery/Gallery.module.css";
 
-type GalleryItem = {
+// --- INTERFACES ---
+export interface GalleryItem {
     id: string;
     name: string;
     slug: string;
     image_url: string;
     gallery_order: number;
-};
+}
 
+// --- COMPONENT ---
 export default async function Gallery() {
+    // --- UTILS & CLIENTS ---
+    const supabase = client();
 
-    const supabase = client()
+    // --- DATA FETCHING ---
+    // Wrapped in a try/catch for server-side reliability
+    let products: GalleryItem[] = [];
 
-    const { data: products, error } = await supabase
-        .from("products")
-        .select("id, name, slug, image_url, gallery_order")
-        .eq("is_gallery", true)
-        .order("gallery_order", { ascending: true });
+    try {
+        const { data, error } = await supabase
+            .from("products")
+            .select("id, name, slug, image_url, gallery_order")
+            .eq("is_gallery", true)
+            .order("gallery_order", { ascending: true });
 
-    if (error) {
-        console.error("Error fetching gallery images:", error.message);
+        if (error) throw error;
+        products = data as GalleryItem[] || [];
+    } catch (err: unknown) {
+        console.error("Gallery Fetch Exception:", err);
+        // Fail silently to avoid breaking the landing page
         return null;
     }
 
-    if (!products || products.length === 0) {
+    // --- RENDER GUARDS ---
+    if (products.length === 0) {
         return null;
     }
 
+    // --- MAIN RENDER ---
     return (
-        <section className={styles.gallerySection}>
+        <section
+            className={styles.gallerySection}
+            id='gallery'
+            aria-labelledby="gallery-heading"
+        >
+            {/* Note: 'container' is retained as a global class per protocol */}
             <div className="container">
-                <h2 className={styles.heading}>Artistry in Resin</h2>
 
-                <div className={styles.masonry}>
-                    {products.map((product: GalleryItem) => (
+                {/* --- HEADER --- */}
+                <h2 id="gallery-heading" className={styles.heading}>
+                    Artistry in Resin
+                </h2>
+
+                {/* --- MASONRY GRID --- */}
+                <div className={styles.masonry} role="list">
+                    {products.map((product) => (
                         <Link
                             key={product.id}
                             href={`/products/${product.slug}`}
                             className={styles.item}
+                            aria-label={`View details for ${product.name}`}
+                            role="listitem"
                         >
-                            <div className={styles.imageWrapper}>
+                            <figure className={styles.imageWrapper} style={{ margin: 0 }}>
                                 <Image
                                     src={product.image_url}
-                                    alt={product.name}
+                                    alt={`Handcrafted resin piece: ${product.name}`}
                                     width={600}
                                     height={800}
                                     className={styles.image}
+                                    loading="lazy"
                                 />
-                                <div className={styles.overlay}>
+
+                                {/* --- IMAGE OVERLAY / CAPTION --- */}
+                                <figcaption className={styles.overlay}>
                                     <span className={styles.title}>{product.name}</span>
-                                </div>
-                            </div>
+                                </figcaption>
+                            </figure>
                         </Link>
                     ))}
                 </div>
