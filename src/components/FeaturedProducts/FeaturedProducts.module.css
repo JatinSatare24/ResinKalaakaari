@@ -1,6 +1,8 @@
-/* ===============================
-   FEATURED PRODUCTS - MOBILE FIRST
-================================= */
+/* =========================================
+   FEATURED PRODUCTS COMPONENT STYLES
+========================================= */
+
+/* --- MOBILE FIRST LAYOUT --- */
 .featuredSection {
     padding: 2rem 1rem;
     background-color: #ffffff;
@@ -20,6 +22,8 @@
     gap: 1rem;
 }
 
+/* --- UTILITY CLASSES --- */
+/* Kept per protocol: Styling hub preservation */
 .link {
     text-decoration: none;
     display: block;
@@ -31,7 +35,7 @@
     padding: 1rem 0;
 }
 
-/* View All Button Container */
+/* --- VIEW ALL BUTTON --- */
 .viewAllContainer {
     grid-column: 1 / -1;
     width: 60%;
@@ -39,7 +43,6 @@
     text-align: center;
 }
 
-/* View All Button */
 .viewAllButton {
     display: inline-flex;
     align-items: center;
@@ -77,7 +80,7 @@
 }
 
 /* ===============================
-   TABLET (≥ 768px)
+   RESPONSIVE: TABLET (≥ 768px)
 ================================= */
 @media (min-width: 768px) {
     .featuredSection {
@@ -106,7 +109,7 @@
 }
 
 /* ===============================
-   DESKTOP (≥ 1024px)
+   RESPONSIVE: DESKTOP (≥ 1024px)
 ================================= */
 @media (min-width: 1024px) {
     .featuredSection {
@@ -135,7 +138,7 @@
 }
 
 /* ===============================
-   LARGE SCREENS (≥ 1280px)
+   RESPONSIVE: LARGE SCREENS (≥ 1280px)
 ================================= */
 @media (min-width: 1280px) {
     .featuredSection {
