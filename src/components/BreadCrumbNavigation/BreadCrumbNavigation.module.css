@@ -1,53 +1,64 @@
- .breadcrumb {
-     font-size: .80rem;
-     margin: 0.2rem 1.1rem 1rem;
-     display: flex;
-     flex-wrap: wrap;
-     align-items: center;
-     gap: 0.25rem;
-     color: #6b7280;
- }
+/* ==========================================================================
+   1. BASE LAYOUT & CONTAINER
+   ========================================================================== */
+.breadcrumb {
+    font-size: 0.80rem;
+    margin: 0.2rem 1.1rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem;
+    color: #6b7280;
+}
 
- .breadcrumb a {
-     color: #6b46c1;
-     text-decoration: none;
- }
+/* ==========================================================================
+   2. TYPOGRAPHY & INTERACTIVE ELEMENTS
+   ========================================================================== */
+.breadcrumb a {
+    color: #6b46c1;
+    text-decoration: none;
+}
 
- .breadcrumb a:hover {
-     text-decoration: underline;
- }
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
 
- .separator {
-     margin: 0 0.4rem;
- }
+/* Note: This class is defined but currently unused in the JSX */
+.separator {
+    margin: 0 0.4rem;
+}
 
- .breadcrumb span:last-child {
-     color: #6b7280;
-     /* Muted gray */
-     font-weight: 500;
-     cursor: default;
- }
+/* Targets the active page (Product Name) at the end of the trail */
+.breadcrumb span:last-child {
+    color: #6b7280; /* Muted gray */
+    font-weight: 500;
+    cursor: default;
+}
 
- @media(min-width:768px) {
+/* ==========================================================================
+   3. RESPONSIVE DESIGN (Media Queries)
+   ========================================================================== */
 
-     .breadcrumb {
-         font-size: 0.9rem;
-         margin: 0.2rem 2rem 1rem;
-     }
- }
-
- @media(min-width:1024px) {
-     .breadcrumb {
-         font-size: 1rem;
-         margin: 0.2rem 2rem 1rem;
-     }
-
- }
-
- @media(min-width:1280px){
-    .breadcrumb{
-        font-size: 1.7rem;
-         margin: 1rem 7rem;
+/* Tablet View */
+@media(min-width: 768px) {
+    .breadcrumb {
+        font-size: 0.9rem;
+        margin: 0.2rem 2rem 1rem;
     }
+}
 
- }
+/* Small Desktop View */
+@media(min-width: 1024px) {
+    .breadcrumb {
+        font-size: 1rem;
+        margin: 0.2rem 2rem 1rem;
+    }
+}
+
+/* Large Desktop View */
+@media(min-width: 1280px) {
+    .breadcrumb {
+        font-size: 1.7rem;
+        margin: 1rem 7rem;
+    }
+}
