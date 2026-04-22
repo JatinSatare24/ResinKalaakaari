@@ -1,10 +1,12 @@
+/* ==========================================================================
+   1. PAGE WRAPPER & HEADER
+   ========================================================================== */
 .pageWrapper {
   min-height: 100vh;
   background-color: #f9fafb;
   padding-bottom: 80px;
 }
 
-/* --- BRANDED HEADER --- */
 .header {
   background-color: #ffffff;
   border-bottom: 1px solid #e5e7eb;
@@ -20,24 +22,19 @@
   align-items: center;
 }
 
+/* ==========================================================================
+   2. MAIN LAYOUT & GRID
+   ========================================================================== */
 .mainContainer {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 16px;
 }
 
-/* --- THE RESPONSIVE GRID --- */
 .checkoutGrid {
   display: grid;
   grid-template-columns: 1fr; /* Mobile first */
   gap: 24px;
-}
-
-@media (min-width: 1024px) {
-  .checkoutGrid {
-    grid-template-columns: 1.6fr 1fr; /* Slightly wider main area for readability */
-    gap: 40px;
-  }
 }
 
 .sectionCard {
@@ -57,7 +54,9 @@
   letter-spacing: 0.02em;
 }
 
-/* --- FORM STYLES --- */
+/* ==========================================================================
+   3. FORM ELEMENTS
+   ========================================================================== */
 .inputGroup {
   display: flex;
   flex-direction: column;
@@ -74,35 +73,23 @@
   transition: all 0.2s ease;
 }
 
-/* Using the Resin Kalaakaari Gold for Focus */
+/* Resin Kalaakaari Gold Focus State */
 .inputField:focus {
   border-color: #d4af37; 
   box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
 }
 
-/* Stack inputs on tiny phones, grid them on regular phones */
 .rowInputs {
   display: grid;
   grid-template-columns: 1fr; 
   gap: 16px;
 }
 
-@media (min-width: 480px) {
-  .rowInputs {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-/* --- STICKY SUMMARY --- */
+/* ==========================================================================
+   4. SUMMARY SECTION & TOTALS
+   ========================================================================== */
 .stickySummary {
   position: relative; /* Default for mobile */
-}
-
-@media (min-width: 1024px) {
-  .stickySummary {
-    position: sticky;
-    top: 100px; /* Adjust based on your Navbar height */
-  }
 }
 
 .summaryRow {
@@ -124,7 +111,9 @@
   margin-top: 16px;
 }
 
-/* --- BUTTON LOGIC --- */
+/* ==========================================================================
+   5. BUTTONS & ACTIONS
+   ========================================================================== */
 .placeOrderBtn {
   width: 100%;
   background-color: #1a1a1a; /* Charcoal */
@@ -148,4 +137,25 @@
   background-color: #9ca3af;
   cursor: not-allowed;
   transform: none;
+}
+
+/* ==========================================================================
+   6. RESPONSIVE DESIGN
+   ========================================================================== */
+@media (min-width: 480px) {
+  .rowInputs {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .checkoutGrid {
+    grid-template-columns: 1.6fr 1fr; /* Slightly wider main area for readability */
+    gap: 40px;
+  }
+
+  .stickySummary {
+    position: sticky;
+    top: 100px; /* Adjust based on your Navbar height */
+  }
 }
