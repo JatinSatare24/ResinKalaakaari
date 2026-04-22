@@ -1,46 +1,97 @@
-import styles from '@/components/CartCard/CartCard.module.css'
-import { CartContext } from "@/context/CartContext"
-import { useContext } from "react"
+/**
+ * CART CARD COMPONENT
+ * Displays an individual product inside the shopping cart.
+ * Note: CSS module acts as the styling hub for the entire Cart Page route.
+ */
 
-export default function CartCard({ item }: any) {
+// --- IMPORTS ---
+import React, { useContext } from "react";
+import { CartContext } from "@/context/CartContext";
+import styles from '@/components/CartCard/CartCard.module.css';
 
-    const { removeFromCart, updateQuantity } = useContext(CartContext)!
+// --- INTERFACES ---
+export interface CartItem {
+    id: string;
+    name: string;
+    price: number;
+    image_url: string;
+    quantity: number;
+}
 
+export interface CartCardProps {
+    item: CartItem;
+}
+
+// --- COMPONENT ---
+export default function CartCard({ item }: CartCardProps) {
+    // --- CONTEXT ---
+    const { removeFromCart, updateQuantity } = useContext(CartContext)!;
+
+    // --- RENDER ---
     return (
+        <article className={styles.card} aria-labelledby={`item-name-${item.id}`}>
 
-        <div className={styles.card}>
-            <div>
+            {/* --- PRODUCT IMAGE --- */}
+            <div className={styles.imageContainer}>
                 <img
                     src={item.image_url}
-                    alt={item.name}
+                    alt={`Thumbnail for ${item.name}`}
                     className={styles.image}
+                    loading="lazy"
                 />
             </div>
 
+            {/* --- PRODUCT DETAILS & CONTROLS --- */}
+            <section className={styles.content}>
+                <h2 id={`item-name-${item.id}`} className={styles.name}>{item.name}</h2>
+                <p className={styles.price} aria-label={`Unit price: ₹${item.price}`}>
+                    ₹{item.price}
+                </p>
 
-            <div className={styles.content}>
-                <h2 className={styles.name}>{item.name}</h2>
-                <p className={styles.price}>₹{item.price}</p>
+                {/* Quantity Controls */}
+                <div className={styles.controls} role="group" aria-label="Adjust quantity">
+                    <button
+                        type="button"
+                        onClick={() => updateQuantity(item.id, -1)}
+                        className={styles.controlButton}
+                        aria-label={`Decrease quantity of ${item.name}`}
+                    >
+                        -
+                    </button>
 
-                <div className={styles.controls}>
-                    <button onClick={() => updateQuantity(item.id, -1)} className={styles.controlButton}>-</button>
-                    <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, +1)} className={styles.controlButton}>+</button>
+                    {/* aria-live ensures screen readers announce the number update immediately */}
+                    <span
+                        aria-live="polite"
+                        aria-atomic="true"
+                        className={styles.quantityDisplay}
+                    >
+                        {item.quantity}
+                    </span>
+
+                    <button
+                        type="button"
+                        onClick={() => updateQuantity(item.id, +1)}
+                        className={styles.controlButton}
+                        aria-label={`Increase quantity of ${item.name}`}
+                    >
+                        +
+                    </button>
                 </div>
 
-                <p className={styles.total}>
+                <p className={styles.total} aria-label={`Subtotal for this item: ₹${item.price * item.quantity}`}>
                     Total: ₹{item.price * item.quantity}
                 </p>
-            </div >
+            </section>
 
+            {/* --- REMOVE ACTION --- */}
             <button
+                type="button"
                 className={styles.remove}
                 onClick={() => removeFromCart(item.id)}
+                aria-label={`Remove ${item.name} from cart`}
             >
                 ✕
             </button>
-
-        </div >
-
-    )
+        </article>
+    );
 }
