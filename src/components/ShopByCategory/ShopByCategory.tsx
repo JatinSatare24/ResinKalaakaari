@@ -1,74 +1,88 @@
 'use client'
 
-import styles from '@/components/ShopByCategory/ShopByCategory.module.css'
-import { useState, useEffect } from 'react'
-import { client } from '@/lib/supabase'
-import { ArrowRight } from "lucide-react";
+// --- IMPORTS ---
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Loader from '@/components/Spinner/Spinner'
+import { ArrowRight } from "lucide-react";
+import { client } from '@/lib/supabase';
+import Loader from '@/components/Spinner/Spinner';
+import styles from '@/components/ShopByCategory/ShopByCategory.module.css';
 
-type Category = {
-    id: number,
-    name: string,
-    slug: string
+// --- INTERFACES ---
+export interface Category {
+    id: number;
+    name: string;
+    slug: string;
 }
 
+// --- COMPONENT ---
 export default function ShopByCategory() {
+    // --- STATE ---
+    const supabase = client();
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
-    const supabase = client()
-
-    const [ShopByCategory, setShopByCategory] = useState<Category[]>([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
-
+    // --- DATA FETCHING & LIFECYCLE ---
     useEffect(() => {
-
         const fetchShopByCategory = async () => {
-            const { data, error } = await supabase
-                .from('categories')
-                .select('id, name, slug')
-                .limit(7)
+            try {
+                const { data, error } = await supabase
+                    .from('categories')
+                    .select('id, name, slug')
+                    .limit(7);
 
-            if (error) {
-                console.error('Error fetching shopping Categories: ', error.message)
-                setError('Failed to load Shop by categories')
-            } else {
-                setShopByCategory(data || [])
+                if (error) {
+                    throw error;
+                } else {
+                    setCategories(data || []);
+                }
+            } catch (err: any) {
+                console.error('Error fetching shopping Categories: ', err.message);
+                setError('Failed to load Shop by categories');
+            } finally {
+                setLoading(false);
             }
+        };
 
-            setLoading(false)
-        }
+        fetchShopByCategory();
+    }, [supabase]);
 
+    // --- RENDER GUARDS ---
+    if (loading) return <Loader message={'Loading art categories'} />;
+    if (error) return <p className={styles.message} role="alert">{error}</p>;
 
-
-        fetchShopByCategory()
-
-    }, [])
-
-    if (loading) return <Loader message={'Loading art categories'}/>
-    if (error) return <p className={styles.message}>{error}</p>;
-
+    // --- MAIN RENDER ---
     return (
-        <section className={styles.shopByCategoryContainer}>
-            <h2 className={styles.heading}>Shop by Category</h2>
+        <section className={styles.shopByCategoryContainer} aria-labelledby="category-heading">
+            {/* --- SECTION HEADER --- */}
+            <h2 id="category-heading" className={styles.heading}>Shop by Category</h2>
 
-            <div className={styles.grid}>
-                {ShopByCategory.map((category) => (
+            {/* --- CATEGORY GRID --- */}
+            <div className={styles.grid} role="list">
+                {categories.map((category) => (
                     <Link
                         key={category.id}
                         href={`/products?category=${category.slug}`}
                         className={styles.categoryCard}
+                        aria-label={`Shop products in ${category.name}`}
+                        role="listitem"
                     >
                         {category.name}
                     </Link>
                 ))}
             </div>
 
+            {/* --- CALL TO ACTION --- */}
             <div className={styles.viewAllContainer}>
-                <Link href="/products" className={styles.viewAllButton}>
-                    View All <ArrowRight size={18} className={styles.icon} />
+                <Link
+                    href="/products"
+                    className={styles.viewAllButton}
+                    aria-label="View all product categories"
+                >
+                    View All <ArrowRight size={18} className={styles.icon} aria-hidden="true" />
                 </Link>
             </div>
         </section>
-    )
+    );
 }

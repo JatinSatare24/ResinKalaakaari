@@ -1,15 +1,15 @@
-/* ===============================
-   SHOP BY CATEGORY - MOBILE FIRST
-================================= */
+/* =========================================
+   SHOP BY CATEGORY COMPONENT STYLES
+========================================= */
+
+/* --- BASE LAYOUT (MOBILE FIRST) --- */
 .shopByCategoryContainer {
   padding: 2rem 1rem 3rem;
   text-align: center;
   background: #ffffff;
 }
 
-/* ===============================
-   HEADING UPGRADE
-================================= */
+/* --- HEADING UPGRADE --- */
 .heading {
   font-size: 1.6rem;
   font-weight: 700;
@@ -20,10 +20,7 @@
   display: inline-block;
 }
 
-
-/* ===============================
-   GRID LAYOUT
-================================= */
+/* --- GRID LAYOUT --- */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -31,13 +28,14 @@
   margin: 1rem 0;
 }
 
-/* Center the last card if odd number of categories */
+/* Center the last card if odd number of categories (Mobile) */
 .grid a:last-child:nth-child(odd) {
   grid-column: span 2;
   justify-self: center;
   width: 70%;
 }
 
+/* --- CATEGORY CARDS --- */
 .categoryCard {
   display: flex;
   align-items: center;
@@ -51,7 +49,7 @@
   font-weight: 600;
   text-decoration: none;
   border: 1px solid #e2e8f0;
-  /* "Soft Glow" shadow instead of flat black */
+  /* "Soft Glow" shadow */
   box-shadow: 0 4px 15px rgba(212, 175, 55, 0.08);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-transform: uppercase;
@@ -59,6 +57,7 @@
   letter-spacing: 1px;
 }
 
+/* --- HOVER EFFECTS --- */
 .categoryCard:hover {
   transform: translateY(-5px);
   /* Gold border glow on hover */
@@ -68,25 +67,20 @@
   box-shadow: 0 12px 24px rgba(212, 175, 55, 0.15);
 }
 
-/* Adding a subtle dot before the text on hover */
 .categoryCard:hover::before {
   content: '•';
   margin-right: 8px;
   color: #D4AF37;
 }
 
-/* ===============================
-   MESSAGE
-================================= */
+/* --- MESSAGES --- */
 .message {
   text-align: center;
   color: #6b7280;
   padding: 1rem 0;
 }
 
-/* ===============================
-   VIEW ALL BUTTON
-================================= */
+/* --- VIEW ALL BUTTON --- */
 .viewAllContainer {
   display: grid;
   grid-column: 1 / -1;
@@ -132,7 +126,7 @@
 }
 
 /* ===============================
-   TABLET (≥ 768px)
+   RESPONSIVE: TABLET (≥ 768px)
 ================================= */
 @media (min-width: 768px) {
   .shopByCategoryContainer {
@@ -173,7 +167,7 @@
 }
 
 /* ===============================
-   DESKTOP (≥ 1024px)
+   RESPONSIVE: DESKTOP (≥ 1024px)
 ================================= */
 @media (min-width: 1024px) {
   .shopByCategoryContainer {
@@ -208,16 +202,16 @@
 }
 
 /* ===============================
-   LARGE SCREENS (≥ 1280px)
+   RESPONSIVE: LARGE SCREENS (≥ 1280px)
 ================================= */
 @media (min-width: 1280px) {
-
-  .categoryCard{
+  .categoryCard {
     font-size: 1.5rem;
   }
 
   .viewAllContainer {
-    width: 06%;
+    width: 6%;
+    /* Note: Fixed leading zero syntax */
   }
 
   .viewAllButton {
