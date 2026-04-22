@@ -1,16 +1,25 @@
 "use client";
 
-import { useState, useEffect, ReactNode } from "react";
+/**
+ * CAROUSEL COMPONENT
+ * A flexible, auto-playing image/content slider.
+ * Supports manual navigation and customizable intervals.
+ */
+
+// --- IMPORTS ---
+import React, { useState, useEffect, ReactNode } from "react";
 import styles from "./Carousel.module.css";
 
-interface CarouselProps {
-  children: ReactNode[];
+// --- INTERFACES ---
+export interface CarouselProps {
+  children: ReactNode | ReactNode[];
   autoplay?: boolean;
   interval?: number;
   showArrows?: boolean;
   className?: string;
 }
 
+// --- COMPONENT ---
 export default function Carousel({
   children,
   autoplay = false,
@@ -18,9 +27,12 @@ export default function Carousel({
   showArrows = true,
   className = "",
 }: CarouselProps) {
-  const slides = Array.isArray(children) ? children : [children];
-  const [index, setIndex] = useState(0);
 
+  // --- STATE & VARIABLES ---
+  const slides = React.Children.toArray(children);
+  const [index, setIndex] = useState<number>(0);
+
+  // --- HANDLERS ---
   const next = () => {
     setIndex((prev) => (prev + 1) % slides.length);
   };
@@ -31,36 +43,64 @@ export default function Carousel({
     );
   };
 
+  // --- LIFECYCLE: AUTOPLAY ---
   useEffect(() => {
-    if (!autoplay) return;
+    if (!autoplay || slides.length <= 1) return;
 
     const timer = setInterval(next, interval);
     return () => clearInterval(timer);
   }, [autoplay, interval, slides.length]);
 
+  // --- RENDER ---
   return (
-    <div className={`${styles.carousel} ${className}`}>
+    <section
+      className={`${styles.carousel} ${className}`}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Image Carousel"
+    >
+      {/* Sliding Track */}
       <div
         className={styles.track}
         style={{ transform: `translateX(-${index * 100}%)` }}
+        aria-live={autoplay ? "off" : "polite"}
       >
         {slides.map((slide, i) => (
-          <div className={styles.slide} key={i}>
+          <div
+            className={styles.slide}
+            key={i}
+            aria-hidden={i !== index}
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`${i + 1} of ${slides.length}`}
+          >
             {slide}
           </div>
         ))}
       </div>
 
+      {/* Navigation Controls */}
       {showArrows && slides.length > 1 && (
-        <>
-          <button className={styles.prev} onClick={prev}>
+        <div className={styles.controls}>
+          <button
+            className={styles.prev}
+            onClick={prev}
+            aria-label="Previous Slide"
+            type="button"
+          >
             &lt;
           </button>
-          <button className={styles.next} onClick={next}>
+          <button
+            className={styles.next}
+            onClick={next}
+            aria-label="Next Slide"
+            type="button"
+          >
             &gt;
           </button>
-        </>
+        </div>
       )}
-    </div>
+
+    </section>
   );
 }

@@ -1,9 +1,15 @@
+/* ==========================================================================
+   1. BASE LAYOUT & OVERFLOW CONTROLS
+   ========================================================================== */
 .carousel {
   position: relative;
   width: 100%;
   overflow: hidden;
 }
 
+/* ==========================================================================
+   2. TRACK & SLIDES
+   ========================================================================== */
 .track {
   display: flex;
   transition: transform 0.5s ease-in-out;
@@ -14,7 +20,9 @@
   position: relative;
 }
 
-/* Navigation Arrows */
+/* ==========================================================================
+   3. NAVIGATION ARROWS
+   ========================================================================== */
 .prev,
 .next {
   position: absolute;
@@ -28,6 +36,7 @@
   border-radius: 50%;
   font-size: 1.2rem;
   z-index: 10;
+  transition: background 0.2s ease; /* Added smooth transition for the hover state */
 }
 
 .prev {
