@@ -11,15 +11,15 @@ export const metadata: Metadata = {
   description: "Preserve your most precious memories in beautiful, handcrafted resin art. Specializing in varmala preservation, custom nameplates, and unique jewelry.",
   icons: {
     icon: [
-      { url: '/icons/favicon.ico' },
-      { url: '/icons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/Icons/favicon.ico' },
+      { url: '/Icons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
     ],
     apple: [
-      { url: '/icons/apple-touch-icon.png' },
+      { url: '/Icons/apple-touch-icon.png' },
     ],
   },
   // If you have a manifest file, link it here for Android/Chrome
-  manifest: '/icons/site.webmanifest',
+  manifest: '/Icons/site.webmanifest',
   openGraph: {
     title: "Resin Kalaakaari",
     description: "Customized Resin Art & Flower Preservation",
