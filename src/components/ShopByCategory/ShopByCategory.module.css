@@ -4,20 +4,21 @@
 
 /* --- BASE LAYOUT (MOBILE FIRST) --- */
 .shopByCategoryContainer {
-  padding: 2rem 1rem 3rem;
+  padding: 1rem 1rem;
   text-align: center;
   background: #ffffff;
 }
 
 /* --- HEADING UPGRADE --- */
 .heading {
-  font-size: 1.6rem;
+  font-family: var(--font-playfair);
+  font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 1rem;
   color: #1a202c;
   letter-spacing: -0.5px;
   position: relative;
   display: inline-block;
+
 }
 
 /* --- GRID LAYOUT --- */
@@ -94,14 +95,14 @@
   justify-content: center;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.7rem 1.5rem;
+  padding: 0.7rem;
   border-radius: 999px;
   background-color: #6b46c1;
   color: #ffffff;
   font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
   transition: all 0.25s ease;
   box-shadow: 0 4px 12px rgba(107, 70, 193, 0.2);
 }
