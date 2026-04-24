@@ -4,15 +4,16 @@
 
 /* --- MOBILE FIRST LAYOUT --- */
 .featuredSection {
-    padding: 2rem 1rem;
+    padding: 3rem 1rem 2rem;
     background-color: #ffffff;
 }
 
 .heading {
+    font-family: var(--font-playfair);
     font-size: 1.5rem;
     font-weight: 600;
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     color: #1f2933;
 }
 
