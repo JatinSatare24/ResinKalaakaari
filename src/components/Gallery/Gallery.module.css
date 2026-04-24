@@ -4,16 +4,17 @@
 
 /* --- MOBILE FIRST LAYOUT --- */
 .gallerySection {
-  padding: 2rem 1rem 3rem;
+  padding: 2rem 1rem 1rem;
   background-color: #fafafa;
   /* Subtle contrast from white sections */
 }
 
 .heading {
+  font-family: var(--font-playfair);
   text-align: center;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   color: #1f2933;
 }
 
