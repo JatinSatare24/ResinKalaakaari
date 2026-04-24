@@ -42,7 +42,7 @@ export default function Testimonials() {
                     aria-roledescription="carousel"
                     aria-label="Customer testimonials"
                 >
-                    <Carousel autoplay interval={4000} showArrows={false}>
+                    <Carousel autoplay interval={4000} showArrows>
                         {(testimonials as Testimonial[]).map((testimonial) => (
                             <div key={testimonial.id} className={styles.card}>
                                 <figure style={{ margin: 0, height: '100%' }}>
