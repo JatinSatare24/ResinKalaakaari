@@ -95,7 +95,7 @@ const ContactUs: React.FC<ContactUsProps> = () => {
                 <section className={styles.mapSide} aria-label="Interactive map showing Pune region">
                     <iframe
                         title="Resin Kalaakaari Studio Location"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3781.6837383929296!2d73.8129471!3d18.5882917!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b9602032e8a1%3A0x7bf5bd72b14bbdae!2sResin%20Kalaakaari!5e0!3m2!1sen!2sin!4v1777040914200!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3781.6837383929296!2d73.8129471!3d18.5882917!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b9602032e8a1%3A0x7bf5bd72b14bbdae!2sResin%20Kalaakaari!5e0!3m2!1sen!2sin!4v1777040914200!5m2!1sen!2sin"
                         width="100%"
                         height="100%"
                         style={{ border: 0, borderRadius: '20px' }}
