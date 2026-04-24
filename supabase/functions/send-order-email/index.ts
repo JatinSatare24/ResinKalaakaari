@@ -15,7 +15,9 @@ serve(async (req: Request) => {
   const BRANDED_SENDER = "Resin Kalaakaari <orders@resinkalaakaari.in>";
 
   try {
-    const { record, old_record } = await req.json();
+    const payload = await req.json();
+    const record = payload.record;
+    const old_record = payload.old_record;
 
     // Trigger only when user submits the UTR (verifying_payment status)
     if (record.status !== 'verifying_payment' || old_record?.status === 'verifying_payment') {
@@ -161,7 +163,7 @@ serve(async (req: Request) => {
           <p><strong>Customer:</strong> ${user.user_metadata?.full_name || 'N/A'}</p>
           <p><strong>Amount:</strong> INR ${record.total_price}</p>
           <p><strong>UTR/Transaction ID:</strong> ${record.transaction_id}</p>
-          <p><strong>Phone:</strong> ${profile?.phone || 'N/A'}</p>
+          <p><strong>Phone:</strong> ${record.phone || profile?.phone || 'N/A'}</p>
           <hr/>
           <p>Check the admin dashboard to verify and mark as paid.</p>
         </div>
