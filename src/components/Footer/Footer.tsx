@@ -1,7 +1,8 @@
 // --- IMPORTS ---
 import React from 'react';
 import Link from "next/link";
-import { FiInstagram, FiMail } from 'react-icons/fi';
+import { FiInstagram, FiMail, FiLinkedin } from 'react-icons/fi';
+import { CiLinkedin } from "react-icons/ci";
 import { FaWhatsapp } from 'react-icons/fa';
 import styles from "@/components/Footer/Footer.module.css";
 
@@ -88,6 +89,17 @@ const Footer: React.FC<FooterProps> = () => {
                                 aria-label="Send us an email"
                             >
                                 <FiMail className={styles.icon} aria-hidden="true" /> Email Us
+                            </a>
+                        </li>
+                        <li className={styles.socialLinks}>
+                            <a
+                                href="https://www.linkedin.com/in/resin-kalaakaari-b6a634372/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.socialLink}
+                                aria-label="Visit our LinkedIn profile"
+                            >
+                                <FiLinkedin className={styles.icon} aria-hidden="true" /> LinkedIn
                             </a>
                         </li>
                     </ul>
