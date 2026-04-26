@@ -35,7 +35,7 @@ export default function AdminOrders() {
     const supabase = client()
 
     // --- CONSTANTS ---
-    const ADMIN_UID = "8352faa2-37c6-4bfe-b5b5-eea516f7550c".trim()
+    const ADMIN_UID = "4779edb2-e2ef-4a1e-8a66-e9bde3344a35".trim()
 
     // --- LIFECYCLE: SECURITY CHECK ---
     useEffect(() => {
