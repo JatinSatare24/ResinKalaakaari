@@ -156,6 +156,7 @@ export default function AdminOrders() {
                                     >
                                         <option value="pending">Pending</option>
                                         <option value="verifying_payment">Verifying Payment</option>
+                                        <option value="in-process">In Process</option>
                                         <option value="confirmed">Confirmed</option>
                                         <option value="shipped">Shipped</option>
                                         <option value="delivered">Delivered</option>
