@@ -89,9 +89,19 @@
     background: #000;
 }
 
-.button:active {
-    transform: scale(0.98);
+
+/* Replace the previous .button:active with this */
+.button:active:not(:disabled) {
+    transform: scale(0.97);
+    background: #D4AF37;
+    /* The exact Resin Kalaakaari Gold */
+    color: #111;
+    /* Sharp dark text for high contrast */
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Deep physical press effect */
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 
 /* ===============================
    RELATED PRODUCTS HUB
