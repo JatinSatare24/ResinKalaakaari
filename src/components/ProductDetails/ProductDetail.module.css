@@ -89,8 +89,7 @@
     background: #000;
 }
 
-
-/* Replace the previous .button:active with this */
+/* visual feedback for add to cart button */
 .button:active:not(:disabled) {
     transform: scale(0.97);
     background: #D4AF37;
