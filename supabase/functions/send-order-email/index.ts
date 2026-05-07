@@ -47,7 +47,7 @@ serve(async (req: Request) => {
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(200, 200, 200);
-    doc.text("Dombivli, Maharashtra | resinkalaakaari@gmail.com", 14, 30);
+    doc.text("Pimple gurav pune 411061, Maharashtra | resinkalaakaari@gmail.com", 14, 30);
     doc.text("Where art meets the soul.", 14, 36);
 
     // 2. INVOICE META BOX
@@ -72,8 +72,17 @@ serve(async (req: Request) => {
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.text(`${user.user_metadata?.full_name || 'Customer'}`, 14, 70);
-    const splitAddress = doc.splitTextToSize(profile?.address_line || 'No address provided', 85);
-    doc.text(splitAddress, 14, 77);
+   // THE NEW CODE:
+// Combine the order's address fields, filtering out any empty ones
+const fullShippingAddress = [
+  record.shipping_address,
+  record.city,
+  record.state,
+  record.pincode
+].filter(Boolean).join(', ');
+
+const splitAddress = doc.splitTextToSize(fullShippingAddress || 'No address provided', 85);
+doc.text(splitAddress, 14, 77);
 
     // 4. ITEMS TABLE
     const tableBody = items?.map((item: any, index: number) => [
