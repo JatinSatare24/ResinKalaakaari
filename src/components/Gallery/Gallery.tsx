@@ -8,7 +8,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { client } from "@/lib/supabase";
+import { createServerSupabaseClient } from "@/lib/server";
 import styles from "@/components/Gallery/Gallery.module.css";
 
 // --- INTERFACES ---
@@ -23,7 +23,7 @@ export interface GalleryItem {
 // --- COMPONENT ---
 export default async function Gallery() {
     // --- UTILS & CLIENTS ---
-    const supabase = client();
+const supabase = await createServerSupabaseClient()
 
     // --- DATA FETCHING ---
     // Wrapped in a try/catch for server-side reliability
