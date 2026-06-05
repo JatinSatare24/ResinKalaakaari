@@ -6,7 +6,7 @@ import { Inter, Playfair_Display } from 'next/font/google'
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('http://localhost:3000'), // Use your local URL for now
+  metadataBase: new URL('https://resinkalaakaari.in'), 
   title: "Resin Kalaakaari | Handcrafted Resin Art",
   description: "Preserve your most precious memories in beautiful, handcrafted resin art. Specializing in varmala preservation, custom nameplates, and unique jewelry.",
   icons: {
