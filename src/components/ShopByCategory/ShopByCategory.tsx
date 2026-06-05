@@ -51,6 +51,7 @@ export default function ShopByCategory() {
     // --- RENDER GUARDS ---
     if (loading) return <Loader message={'Loading art categories'} />;
     if (error) return <p className={styles.message} role="alert">{error}</p>;
+    if (categories.length === 0) return null
 
     // --- MAIN RENDER ---
     return (
