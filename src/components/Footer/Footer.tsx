@@ -13,7 +13,7 @@ export interface FooterProps {
 }
 
 // --- COMPONENT ---
-const Footer: React.FC<FooterProps> = () => {
+export default function Footer() {
     // --- STATE & UTILS ---
     const currentYear = new Date().getFullYear();
 
@@ -116,5 +116,3 @@ const Footer: React.FC<FooterProps> = () => {
         </footer>
     );
 }
-
-export default Footer;
