@@ -77,7 +77,7 @@ export default function MyOrders() {
                 <h2>No orders yet!</h2>
                 <p>Your artistic sanctuary is waiting for its first piece.</p>
                 <button
-                    onClick={() => window.location.href = '/'}
+                    onClick={() => router.push('/')}
                     aria-label="Start shopping for resin art"
                 >
                     Start Shopping
