@@ -115,7 +115,7 @@ export default function Checkout() {
 
     const handlePlaceOrder = async () => {
         // Validation Guard
-        if (!formData.fullName || !formData.address_line || !formData.phone || !formData.state || !formData.pincode) {
+        if (!formData.fullName || !formData.address_line || !formData.phone || !formData.city || !formData.state || !formData.pincode) {
             alert("Please fill in all shipping details")
             return
         }
