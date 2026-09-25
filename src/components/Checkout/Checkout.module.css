@@ -75,13 +75,13 @@
 
 /* Resin Kalaakaari Gold Focus State */
 .inputField:focus {
-  border-color: #d4af37; 
+  border-color: #d4af37;
   box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
 }
 
 .rowInputs {
   display: grid;
-  grid-template-columns: 1fr; 
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 

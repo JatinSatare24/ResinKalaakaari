@@ -1,7 +1,5 @@
-import ShippingPolicy from '@/components/ShippingPolicy/ShippingPolicy'
+import ShippingPolicy from "@/components/ShippingPolicy/ShippingPolicy";
 
 export default function shippingPolicyPage() {
-    return (
-        <ShippingPolicy />
-    )
+  return <ShippingPolicy />;
 }

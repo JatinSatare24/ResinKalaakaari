@@ -8,7 +8,6 @@
   padding: 0;
 }
 
-
 html,
 body {
   height: 100%;
@@ -23,7 +22,6 @@ body {
 body {
   font-family: var(--font-inter);
   background: #f6f6f6;
-
 }
 
 .app-container {

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * SEARCH BAR COMPONENT
@@ -7,10 +7,10 @@
  */
 
 // --- IMPORTS ---
-import React, { useState, useTransition, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useDebouncedCallback } from 'use-debounce';
-import styles from './SearchBar.module.css';
+import React, { useState, useTransition, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
+import styles from "./SearchBar.module.css";
 
 // --- INTERFACES ---
 export interface SearchBarProps {
@@ -25,16 +25,18 @@ function SearchBarContent(props: SearchBarProps) {
   const [isPending, startTransition] = useTransition();
 
   // Local state initialized from URL params to ensure persistence on reload
-  const [search, setSearch] = useState<string>(searchParams.get('search') || '');
+  const [search, setSearch] = useState<string>(
+    searchParams.get("search") || "",
+  );
 
   // --- SEARCH LOGIC (DEBOUNCED) ---
   const debouncedSearch = useDebouncedCallback((value: string) => {
     const params = new URLSearchParams(searchParams.toString());
 
     if (value.trim()) {
-      params.set('search', value.trim());
+      params.set("search", value.trim());
     } else {
-      params.delete('search');
+      params.delete("search");
     }
 
     // Using startTransition to keep the UI responsive while navigation occurs
@@ -53,7 +55,6 @@ function SearchBarContent(props: SearchBarProps) {
   // --- RENDER ---
   return (
     <div className={styles.wrapper} role="search">
-
       {/* --- SEARCH INPUT --- */}
       <input
         id="product-search"
@@ -61,7 +62,7 @@ function SearchBarContent(props: SearchBarProps) {
         value={search}
         onChange={handleChange}
         placeholder="Search products..."
-        className={`${styles.input} ${isPending ? styles.inputPending : ''}`}
+        className={`${styles.input} ${isPending ? styles.inputPending : ""}`}
         aria-label="Search for resin art products"
         aria-busy={isPending}
         autoComplete="off"
@@ -69,12 +70,13 @@ function SearchBarContent(props: SearchBarProps) {
 
       {/* --- STATUS INDICATOR --- */}
       {/* a11y: aria-live ensures screen readers announce the search status */}
-      <div aria-live="polite" aria-atomic="true" className={styles.statusContainer}>
-        {isPending && (
-          <span className={styles.status}>Searching...</span>
-        )}
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        className={styles.statusContainer}
+      >
+        {isPending && <span className={styles.status}>Searching...</span>}
       </div>
-
     </div>
   );
 }
