@@ -34,7 +34,7 @@ jobs:
         run: npm run type-check # tsc --noEmit — catches type errors without emitting build output
 
       - name: Build
-        run: npm run build # most expensive, so it runs last
+        run: npm run build # most expensive, so it runs last in the CI pipeline
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
