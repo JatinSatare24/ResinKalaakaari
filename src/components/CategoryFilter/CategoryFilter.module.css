@@ -2,50 +2,50 @@
    1. CONTAINER LAYOUT
    ========================================================================== */
 .container {
-    display: flex;
-    gap: 0.3rem;
-    overflow-x: auto;
-    margin: 5px 15px;
+  display: flex;
+  gap: 0.3rem;
+  overflow-x: auto;
+  margin: 5px 15px;
 }
 
 /* Kept per protocol: Targets a scrollbar for a specific container */
 .filterContainer::-webkit-scrollbar {
-    display: none;
-    /* Chrome, Safari */
+  display: none;
+  /* Chrome, Safari */
 }
 
 /* ==========================================================================
    2. LINKS & TYPOGRAPHY
    ========================================================================== */
 .link {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .name {
-    padding: 0.4rem 0.8rem;
-    border-radius: 999px;
-    border: 1px solid #6b46c1;
-    background-color: #ffffff;
-    color: #6b46c1;
-    font-size: 1rem;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: all .2s ease-in-out;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid #6b46c1;
+  background-color: #ffffff;
+  color: #6b46c1;
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.2s ease-in-out;
 }
 
 /* ==========================================================================
    3. INTERACTIVE STATES
    ========================================================================== */
 .name:hover {
-    background-color: #6b46c1;
-    color: #ffffff;
+  background-color: #6b46c1;
+  color: #ffffff;
 }
 
 /* Kept per protocol: Used for active category state if implemented later */
 .active {
-    background-color: #6b46c1;
-    color: #ffffff;
-    border-color: #6b46c1;
+  background-color: #6b46c1;
+  color: #ffffff;
+  border-color: #6b46c1;
 }
 
 /* ==========================================================================
@@ -54,41 +54,41 @@
 
 /* Tablet (≥ 768px) */
 @media (min-width: 768px) {
-    .container {
-        gap: 1rem;
-        margin: 5px 30px;
-        height: 50px;
-    }
+  .container {
+    gap: 1rem;
+    margin: 5px 30px;
+    height: 50px;
+  }
 
-    .name {
-        font-size: 1.2rem;
-        font-weight: 600;
-    }
+  .name {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
 }
 
 /* Small Desktop (≥ 1024px) */
 @media (min-width: 1024px) {
-    .container {
-        height: 80px;
-        gap: 1rem;
-        margin: 5px 30px;
-    }
+  .container {
+    height: 80px;
+    gap: 1rem;
+    margin: 5px 30px;
+  }
 
-    .name {
-        font-size: 1.5rem;
-        font-weight: 600;
-    }
+  .name {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
 }
 
 /* Large Desktop (≥ 1280px) */
 @media (min-width: 1280px) {
-    .container {
-        gap: 1.5rem;
-        margin: 5px 7rem;
-    }
+  .container {
+    gap: 1.5rem;
+    margin: 5px 7rem;
+  }
 
-    .name {
-        font-size: 1.5rem;
-        font-weight: 600;
-    }
+  .name {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
 }

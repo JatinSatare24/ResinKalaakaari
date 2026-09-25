@@ -18,7 +18,6 @@
   letter-spacing: -0.5px;
   position: relative;
   display: inline-block;
-
 }
 
 /* --- GRID LAYOUT --- */
@@ -62,16 +61,16 @@
 .categoryCard:hover {
   transform: translateY(-5px);
   /* Gold border glow on hover */
-  border-color: #D4AF37;
+  border-color: #d4af37;
   background: #ffffff;
-  color: #D4AF37;
+  color: #d4af37;
   box-shadow: 0 12px 24px rgba(212, 175, 55, 0.15);
 }
 
 .categoryCard:hover::before {
-  content: '•';
+  content: "•";
   margin-right: 8px;
-  color: #D4AF37;
+  color: #d4af37;
 }
 
 /* --- MESSAGES --- */

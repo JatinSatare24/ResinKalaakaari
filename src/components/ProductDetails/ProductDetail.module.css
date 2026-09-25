@@ -4,221 +4,219 @@
 
 /* --- BASE LAYOUT --- */
 .container {
-    margin: 2rem auto;
-    padding: 0 1.5rem;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
 }
 
 .productLayout {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    background: #ffffff;
-    padding: 1.5rem;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 /* Retained per protocol rules */
 .loadingProduct {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: auto;
-    color: #666;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: auto;
+  color: #666;
 }
 
 /* --- IMAGE GALLERY --- */
 .imageWrapper {
-    width: 100%;
-    /* height: 320px; */
-    overflow: hidden;
-    border-radius: 16px;
+  width: 100%;
+  /* height: 320px; */
+  overflow: hidden;
+  border-radius: 16px;
 }
 
 .imageWrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* --- PRODUCT CONTENT --- */
 .content {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .name {
-    font-family: var(--font-playfair);
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 8px;
+  font-family: var(--font-playfair);
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
 .price {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 12px;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
 }
 
 .description {
-    font-size: 15px;
-    color: #666;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    white-space: pre-line;
+  font-size: 15px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  white-space: pre-line;
 }
 
 /* --- ADD TO CART BUTTON --- */
 .button {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 999px;
-    background: #111;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: all 0.2s ease;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
 }
 
 .button:hover {
-    background: #000;
+  background: #000;
 }
 
 /* visual feedback for add to cart button */
 .button:active:not(:disabled) {
-    transform: scale(0.97);
-    background: #D4AF37;
-    /* The exact Resin Kalaakaari Gold */
-    color: #111;
-    /* Sharp dark text for high contrast */
-    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Deep physical press effect */
-    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(0.97);
+  background: #d4af37;
+  /* The exact Resin Kalaakaari Gold */
+  color: #111;
+  /* Sharp dark text for high contrast */
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* Deep physical press effect */
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 
 /* ===============================
    RELATED PRODUCTS HUB
 ================================= */
 .relatedProductsContainer {
-    margin: 2rem auto;
-    padding: 0 1.5rem;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
 }
 
 .relatedProducts {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 1rem;
 }
 
 /* ===============================
    RESPONSIVE: TABLET (≥ 768px)
 ================================= */
 @media (min-width: 768px) {
-    .productLayout {
-        padding: 2rem;
-    }
+  .productLayout {
+    padding: 2rem;
+  }
 
-    .name {
-        font-size: 24px;
-    }
+  .name {
+    font-size: 24px;
+  }
 
-    .price {
-        font-size: 22px;
-    }
+  .price {
+    font-size: 22px;
+  }
 
-    .relatedProducts {
-        grid-template-columns: repeat(3, 1fr);
-    }
+  .relatedProducts {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 /* ===============================
    RESPONSIVE: DESKTOP (≥ 1024px)
 ================================= */
 @media (min-width: 1024px) {
-    .productLayout {
-        flex-direction: row;
-        align-items: flex-start;
-        gap: 3rem;
-    }
+  .productLayout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 3rem;
+  }
 
-    .imageWrapper {
-        flex: 1;
-        height: 420px;
-    }
+  .imageWrapper {
+    flex: 1;
+    height: 420px;
+  }
 
-    .content {
-        flex: 1;
-    }
+  .content {
+    flex: 1;
+  }
 
-    .button {
-        margin: auto;
-        width: 60%;
-    }
+  .button {
+    margin: auto;
+    width: 60%;
+  }
 
-    .relatedProducts {
-        grid-template-columns: repeat(4, 1fr);
-    }
+  .relatedProducts {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 /* ===============================
    RESPONSIVE: LARGE SCREENS (≥ 1280px)
 ================================= */
 @media (min-width: 1280px) {
+  .productLayout {
+    width: 95%;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 3rem;
+    margin: auto;
+  }
 
-    .productLayout {
-        width: 95%;
-        flex-direction: row;
-        align-items: flex-start;
-        gap: 3rem;
-        margin: auto;
-    }
+  .imageWrapper {
+    flex: 1;
+    height: 900px;
+    width: 900px;
+  }
 
-    .imageWrapper {
-        flex: 1;
-        height: 900px;
-        width: 900px;
-    }
+  .content {
+    flex: 2;
+  }
 
-    .content {
-        flex: 2;
-    }
+  .name {
+    font-size: 3rem;
+  }
 
-    .name {
-        font-size: 3rem;
-    }
+  .price {
+    font-size: 2rem;
+  }
 
-    .price {
-        font-size: 2rem;
-    }
+  .description {
+    font-size: 1.3rem;
+  }
 
-    .description {
-        font-size: 1.3rem;
-    }
+  .button {
+    font-size: 1.5rem;
+    margin: auto;
+    width: 20%;
+  }
 
-    .button {
-        font-size: 1.5rem;
-        margin: auto;
-        width: 20%;
-    }
+  .relatedProductsContainer {
+    width: 95%;
+  }
 
-    .relatedProductsContainer {
-        width: 95%;
-    }
+  .relatedProductsTitle {
+    font-size: 2rem;
+    margin: 0.5rem;
+  }
 
-    .relatedProductsTitle {
-        font-size: 2rem;
-        margin: 0.5rem;
-    }
-
-    .relatedProducts {
-        grid-template-columns: repeat(4, 1fr);
-        width: 500px;
-    }
+  .relatedProducts {
+    grid-template-columns: repeat(4, 1fr);
+    width: 500px;
+  }
 }

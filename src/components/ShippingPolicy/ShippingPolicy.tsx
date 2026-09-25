@@ -5,8 +5,8 @@
  */
 
 // --- IMPORTS ---
-import React from 'react';
-import styles from '@/components/Policies/Policies.module.css';
+import React from "react";
+import styles from "@/components/Policies/Policies.module.css";
 
 // --- INTERFACES ---
 export interface ShippingPolicyProps {
@@ -19,26 +19,34 @@ export default function ShippingPolicy(props: ShippingPolicyProps) {
   return (
     <main className={styles.container} aria-labelledby="shipping-policy-title">
       {/* --- HEADER SECTION --- */}
-      <h1 id="shipping-policy-title" className={styles.title}>Order Process & Guidelines</h1>
+      <h1 id="shipping-policy-title" className={styles.title}>
+        Order Process & Guidelines
+      </h1>
 
       <p className={styles.introText}>
-        We strive to provide a smooth and reliable delivery experience for all our customers.
-        Kindly review the following points before placing your order.
+        We strive to provide a smooth and reliable delivery experience for all
+        our customers. Kindly review the following points before placing your
+        order.
       </p>
 
       {/* --- 1. PROCESSING & DISPATCH --- */}
       <section className={styles.section} aria-labelledby="processing-heading">
         <h2 id="processing-heading">Order Processing & Dispatch</h2>
-        <p>Orders are processed within standard timelines after confirmation.</p>
+        <p>
+          Orders are processed within standard timelines after confirmation.
+        </p>
         <ul>
           <li>
-            <strong className={styles.highlight}>Handcrafted Curing:</strong> Standard items take 10–15 business days.
+            <strong className={styles.highlight}>Handcrafted Curing:</strong>{" "}
+            Standard items take 10–15 business days.
           </li>
           <li>
-            <strong className={styles.highlight}>Flower Preservation:</strong> Up to 1 month due to drying and multi-layer pouring.
+            <strong className={styles.highlight}>Flower Preservation:</strong>{" "}
+            Up to 1 month due to drying and multi-layer pouring.
           </li>
           <li>
-            <strong className={styles.highlight}>Finality:</strong> Once an order has been shipped, it is considered final.
+            <strong className={styles.highlight}>Finality:</strong> Once an
+            order has been shipped, it is considered final.
           </li>
         </ul>
       </section>
@@ -48,8 +56,12 @@ export default function ShippingPolicy(props: ShippingPolicyProps) {
         <h2 id="changes-heading">Changes After Shipping</h2>
         <div className={styles.alertBox} role="note">
           <p>
-            We sincerely request you to <strong className={styles.highlight}>double-check your details</strong> before placing the order,
-            as we will not be able to make any changes once the order is dispatched.
+            We sincerely request you to{" "}
+            <strong className={styles.highlight}>
+              double-check your details
+            </strong>{" "}
+            before placing the order, as we will not be able to make any changes
+            once the order is dispatched.
           </p>
         </div>
         <p>This includes:</p>
@@ -63,34 +75,51 @@ export default function ShippingPolicy(props: ShippingPolicyProps) {
       {/* --- 3. DELIVERY TIMELINES --- */}
       <section className={styles.section} aria-labelledby="timelines-heading">
         <h2 id="timelines-heading">Delivery Timelines</h2>
-        <p>Deliveries typically take <strong className={styles.highlight}>3–4 business days</strong> under normal conditions.</p>
+        <p>
+          Deliveries typically take{" "}
+          <strong className={styles.highlight}>3–4 business days</strong> under
+          normal conditions.
+        </p>
         <p>
           Depending on the location, deliveries may take longer and can extend
           beyond a week for certain areas.
         </p>
 
         {/* Possible Delays Subsection */}
-        <h3 style={{ marginTop: '15px', fontSize: '1.1rem' }}>Possible Delays</h3>
+        <h3 style={{ marginTop: "15px", fontSize: "1.1rem" }}>
+          Possible Delays
+        </h3>
         <p>
-          While we do our best to ensure timely delivery, there may be occasional delays due to
-          factors beyond our control such as holidays, high demand, or logistical constraints.
+          While we do our best to ensure timely delivery, there may be
+          occasional delays due to factors beyond our control such as holidays,
+          high demand, or logistical constraints.
         </p>
       </section>
 
       {/* --- 4. RESPONSIBILITY & TRACKING --- */}
-      <section className={styles.section} aria-labelledby="responsibility-heading">
+      <section
+        className={styles.section}
+        aria-labelledby="responsibility-heading"
+      >
         <h2 id="responsibility-heading">Customer Responsibility & Tracking</h2>
         <p>
-          We kindly request customers to provide <strong className={styles.highlight}>complete and accurate</strong> shipping details
-          to avoid any delays or delivery issues.
+          We kindly request customers to provide{" "}
+          <strong className={styles.highlight}>complete and accurate</strong>{" "}
+          shipping details to avoid any delays or delivery issues.
         </p>
         <div
           className={styles.noteBox}
-          style={{ marginTop: '10px', padding: '10px', background: '#f9f9f9', borderRadius: '5px' }}
+          style={{
+            marginTop: "10px",
+            padding: "10px",
+            background: "#f9f9f9",
+            borderRadius: "5px",
+          }}
         >
           <p>
-            <strong className={styles.highlight}>Tracking:</strong> Tracking details will be shared once your order has been shipped
-            so you can stay updated on your delivery.
+            <strong className={styles.highlight}>Tracking:</strong> Tracking
+            details will be shared once your order has been shipped so you can
+            stay updated on your delivery.
           </p>
         </div>
       </section>
@@ -99,17 +128,20 @@ export default function ShippingPolicy(props: ShippingPolicyProps) {
       <section className={styles.section} aria-labelledby="claims-heading">
         <h2 id="claims-heading">Payment & Claims</h2>
         <p>
-          As each item is custom-made, orders are confirmed only after
-          an <span className={styles.highlight}>advance payment</span> is received.
+          As each item is custom-made, orders are confirmed only after an{" "}
+          <span className={styles.highlight}>advance payment</span> is received.
         </p>
         <div
           className={styles.alertBox}
-          style={{ borderLeft: '4px solid #e74c3c', marginTop: '15px' }}
+          style={{ borderLeft: "4px solid #e74c3c", marginTop: "15px" }}
           role="alert"
         >
           <p>
-            <strong className={styles.highlight}>Mandatory for Damage Claims:</strong> An unboxing video is required.
-            The video must be continuous, unedited, and show the package being opened for the first time.
+            <strong className={styles.highlight}>
+              Mandatory for Damage Claims:
+            </strong>{" "}
+            An unboxing video is required. The video must be continuous,
+            unedited, and show the package being opened for the first time.
           </p>
         </div>
       </section>

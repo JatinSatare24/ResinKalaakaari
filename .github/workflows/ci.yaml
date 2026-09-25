@@ -1,0 +1,40 @@
+# .github/workflows/ci.yml
+name: CI
+
+on:
+  pull_request:
+    branches: [main] # runs on every PR targeting main
+  push:
+    branches: [main] # safety net: also runs if something lands on main directly
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24" # matches your Vercel project's Node version
+          cache: "npm" # caches ~/.npm based on package-lock.json hash
+
+      - name: Install dependencies
+        run: npm ci # strict install from package-lock.json — see earlier discussion
+
+      - name: Lint
+        run: npm run lint # cheapest check, fails fast
+        continue-on-error: true
+
+      - name: Format check
+        run: npm run format:check # prettier --check . — fails if any file isn't formatted
+
+      - name: Type check
+        run: npm run type-check # tsc --noEmit — catches type errors without emitting build output
+
+      - name: Build
+        run: npm run build # most expensive, so it runs last in the CI pipeline
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}

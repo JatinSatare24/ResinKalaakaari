@@ -34,7 +34,8 @@
   object-fit: cover;
 }
 
-.FiUser, .FiShoppingCart{
+.FiUser,
+.FiShoppingCart {
   font-size: 1.1rem;
 }
 
@@ -575,5 +576,4 @@
   .cartLink {
     font-size: 0.5rem;
   }
-
 }

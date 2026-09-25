@@ -27,7 +27,6 @@ export default function Carousel({
   showArrows = true,
   className = "",
 }: CarouselProps) {
-
   // --- STATE & VARIABLES ---
   const slides = React.Children.toArray(children);
   const [index, setIndex] = useState<number>(0);
@@ -38,9 +37,7 @@ export default function Carousel({
   };
 
   const prev = () => {
-    setIndex((prev) =>
-      prev === 0 ? slides.length - 1 : prev - 1
-    );
+    setIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
   };
 
   // --- LIFECYCLE: AUTOPLAY ---
@@ -100,7 +97,6 @@ export default function Carousel({
           </button>
         </div>
       )}
-
     </section>
   );
 }

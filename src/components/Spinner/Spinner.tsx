@@ -1,5 +1,5 @@
 // --- IMPORTS ---
-import React from 'react';
+import React from "react";
 
 // --- INTERFACES ---
 export interface LoaderProps {
@@ -10,7 +10,7 @@ export interface LoaderProps {
 // --- COMPONENT ---
 /**
  * Loader: A centralized spinner component for Resin Kalaakaari.
- * Handles layout jumps with a defined min-height and provides 
+ * Handles layout jumps with a defined min-height and provides
  * visual feedback during data fetching.
  */
 const Loader: React.FC<LoaderProps> = ({ message }) => {
@@ -18,15 +18,15 @@ const Loader: React.FC<LoaderProps> = ({ message }) => {
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '60vh', // This handles the layout jump
-        width: '100%'
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "60vh", // This handles the layout jump
+        width: "100%",
       }}
       aria-live="polite" // a11y: Notifies assistive tech when the loader appears/disappears
-      aria-busy="true"   // a11y: Indicates the container is currently busy loading
+      aria-busy="true" // a11y: Indicates the container is currently busy loading
     >
       {/* --- INTERNAL STYLES --- */}
       <style>
@@ -55,29 +55,25 @@ const Loader: React.FC<LoaderProps> = ({ message }) => {
       </style>
 
       {/* --- VISUAL ELEMENTS --- */}
-      <div
-        className="custom-spinner"
-        role="status"
-        aria-label="Loading"
-      >
+      <div className="custom-spinner" role="status" aria-label="Loading">
         {/* a11y: Screen reader text within the spinner */}
-        <span style={{
-          position: 'absolute',
-          width: '1px',
-          height: '1px',
-          padding: '0',
-          margin: '-1px',
-          overflow: 'hidden',
-          clip: 'rect(0,0,0,0)',
-          border: '0'
-        }}>
+        <span
+          style={{
+            position: "absolute",
+            width: "1px",
+            height: "1px",
+            padding: "0",
+            margin: "-1px",
+            overflow: "hidden",
+            clip: "rect(0,0,0,0)",
+            border: "0",
+          }}
+        >
           Loading...
         </span>
       </div>
 
-      <p className="loader-text">
-        {message}...
-      </p>
+      <p className="loader-text">{message}...</p>
     </div>
   );
 };
