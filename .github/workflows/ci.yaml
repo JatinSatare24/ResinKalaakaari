@@ -25,7 +25,7 @@ jobs:
 
       - name: Lint
         run: npm run lint # cheapest check, fails fast
-        continue-on-error: true 
+        continue-on-error: true
 
       - name: Format check
         run: npm run format:check # prettier --check . — fails if any file isn't formatted
