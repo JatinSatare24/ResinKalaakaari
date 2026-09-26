@@ -22,7 +22,7 @@ export default function LoginPage(props: LoginPageProps) {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // --- UTILS ---
-  const supabase = client();
+  const [supabase] = useState(() => client());
   const router = useRouter();
 
   // --- HANDLERS ---
