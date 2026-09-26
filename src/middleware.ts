@@ -25,13 +25,17 @@ export async function middleware(request: NextRequest) {
     },
   );
 
-  // Check if we have a user
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Protect the /checkout route
-  if (!user && request.nextUrl.pathname.startsWith("/checkout")) {
+  const pathname = request.nextUrl.pathname;
+  const isCheckout = pathname.startsWith("/checkout");
+  const isMyOrders = pathname.startsWith("/my-orders");
+  const isAdmin = pathname.startsWith("/admin");
+
+  // Auth gate — covers all three protected areas
+  if (!user && (isCheckout || isMyOrders || isAdmin)) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
