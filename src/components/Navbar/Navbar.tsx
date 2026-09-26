@@ -41,7 +41,7 @@ export default function Navbar() {
 
   // --- CONTEXT & UTILS ---
   const { cart } = useContext(CartContext)!;
-
+  const [supabase] = useState(() => client());
   const router = useRouter();
 
   // Derived state
@@ -50,8 +50,6 @@ export default function Navbar() {
   // --- LIFECYCLE & DATA FETCHING ---
   // 1. Fetch user and listen for changes
   useEffect(() => {
-
-    const supabase = client();
 
     const checkUser = async () => {
       try {
