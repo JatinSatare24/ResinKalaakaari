@@ -50,7 +50,6 @@ export default function Navbar() {
   // --- LIFECYCLE & DATA FETCHING ---
   // 1. Fetch user and listen for changes
   useEffect(() => {
-
     const checkUser = async () => {
       try {
         const {
