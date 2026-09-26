@@ -1,4 +1,4 @@
-import NotFoundUI from "@/components/NotFound/NotFound";
+import NotFoundUI from "@/components/NotFoundUI/NotFoundUI";
 
 export default function NotFoundPage() {
     return (
