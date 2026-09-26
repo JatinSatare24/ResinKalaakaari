@@ -41,7 +41,7 @@ export default function Navbar() {
 
   // --- CONTEXT & UTILS ---
   const { cart } = useContext(CartContext)!;
-  const supabase = client();
+  const [supabase] = useState(() => client());
   const router = useRouter();
 
   // Derived state
@@ -72,7 +72,7 @@ export default function Navbar() {
     });
 
     return () => subscription.unsubscribe();
-  }, [supabase]);
+  }, []);
 
   // 2. Close dropdown when clicking outside
   useEffect(() => {
