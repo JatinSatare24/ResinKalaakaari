@@ -3,6 +3,7 @@
 // --- IMPORTS ---
 import React, { useState } from "react";
 import type { FormEvent } from "react";
+import Link from "next/link";
 import { client } from "@/lib/supabase";
 import styles from "./SignUp.module.css";
 
@@ -14,7 +15,7 @@ export interface SignUpPayload {
 // --- COMPONENT ---
 export default function SignUpPage() {
   // --- STATE & UTILS ---
-  const supabase = client();
+  const [supabase] = useState(() => client());
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -84,9 +85,9 @@ export default function SignUpPage() {
         <div className={styles.card} role="alert" aria-live="polite">
           <h1 className={styles.title}>Welcome to the Tribe!</h1>
           <p className={styles.successMessage}>{message}</p>
-          <a href="/login" className={styles.link}>
+          <Link href="/login" className={styles.link}>
             Back to Login
-          </a>
+          </Link>
         </div>
       </main>
     );
@@ -170,9 +171,9 @@ export default function SignUpPage() {
 
         <p className={styles.footer}>
           Already have an account?{" "}
-          <a href="/login" className={styles.link}>
+          <Link href="/login" className={styles.link}>
             Login
-          </a>
+          </Link>
         </p>
       </div>
     </main>
