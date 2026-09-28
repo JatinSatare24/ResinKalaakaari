@@ -38,7 +38,9 @@ export async function GET(request: Request) {
   // Catches "//evil.com" and "/\evil.com", which startsWith("/") lets through.
   const target = new URL(next, requestUrl.origin);
   const safeTarget =
-    target.origin === requestUrl.origin ? target : new URL("/", requestUrl.origin);
+    target.origin === requestUrl.origin
+      ? target
+      : new URL("/", requestUrl.origin);
   return NextResponse.redirect(safeTarget);
 }
 
