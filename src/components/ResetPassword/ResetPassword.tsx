@@ -1,7 +1,7 @@
 "use client";
 
 // --- IMPORTS ---
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { client } from "@/lib/supabase";
 import styles from "@/components/Login/Login.module.css";
@@ -21,8 +21,21 @@ export default function ResetPassword(props: ResetPasswordProps) {
   const [success, setSuccess] = useState<boolean>(false);
 
   // --- UTILS ---
-  const supabase = client();
+  // Lazy initializer: client() runs once on first render, then the same instance is reused
+  const [supabase] = useState(() => client());
   const router = useRouter();
+
+  // --- EFFECTS ---
+  // After a successful update, wait 2s so the user can read the message, then leave.
+  // Living in useEffect (not inside the handler) lets us cancel the timer.
+  useEffect(() => {
+    if (!success) return;
+    const timer = setTimeout(() => {
+      router.push("/");
+      router.refresh(); // re-run Server Components with the current session
+    }, 2000);
+    return () => clearTimeout(timer); // cleanup: cancel if the user leaves before 2s
+  }, [success, router]);
 
   // --- HANDLERS ---
   const handleUpdatePassword = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,12 +60,7 @@ export default function ResetPassword(props: ResetPasswordProps) {
         setErrorMessage(error.message);
         setLoading(false);
       } else {
-        setSuccess(true);
-
-        // Wait 2 seconds so they can see the success message, then redirect
-        setTimeout(() => {
-          router.push("/login");
-        }, 2000);
+        setSuccess(true); // the useEffect above handles the delayed redirect
       }
     } catch (err: unknown) {
       console.error("Password update unexpected error:", err);
@@ -75,7 +83,7 @@ export default function ResetPassword(props: ResetPasswordProps) {
       {success ? (
         <div style={{ textAlign: "center" }} role="alert" aria-live="assertive">
           <p style={{ color: "#2ecc71", marginBottom: "20px" }}>
-            Password updated successfully! Redirecting you to login...
+            Password updated successfully! Taking you to the home page...
           </p>
         </div>
       ) : (
