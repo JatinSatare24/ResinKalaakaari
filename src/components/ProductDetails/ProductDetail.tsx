@@ -1,57 +1,46 @@
 // --- IMPORTS ---
-import React from "react";
+import Image from "next/image";
+import AddToCartButton from "@/components/AddToCartButton/AddToCartButton";
+import Breadcrumb from "@/components/BreadCrumbNavigation/BreadCrumbNavigation";
+import type { ProductWithCategory } from "@/lib/types";
 import styles from "@/components/ProductDetails/ProductDetail.module.css";
-import Breadcrumb from "../BreadCrumbNavigation/BreadCrumbNavigation";
 
 // --- INTERFACES ---
-export interface ProductCategory {
-  name: string;
-  slug: string;
-}
-
-export interface Product {
-  name: string;
-  description: string;
-  price: number;
-  image_url: string;
-  categories: ProductCategory;
-}
-
 export interface ProductDetailProps {
-  product: Product;
-  addToCart: (product: Product) => void;
+  product: ProductWithCategory;
 }
 
 // --- COMPONENT ---
-export default function ProductDetail({
-  product,
-  addToCart,
-}: ProductDetailProps) {
-  // --- RENDER ---
+// A Server Component now: it only displays data. The one interactive part
+// (the button) is its own client component.
+export default function ProductDetail({ product }: ProductDetailProps) {
   return (
-    <main
+    // The root layout already wraps every page in <main>, so this is a div.
+    <div
       className={styles.container}
       aria-label={`Product details for ${product.name}`}
     >
-      {/* --- BREADCRUMB NAVIGATION --- */}
       <Breadcrumb
-        categoryName={product.categories.name}
-        categorySlug={product.categories.slug}
+        categoryName={product.categories?.name}
+        categorySlug={product.categories?.slug}
         productName={product.name}
       />
 
-      {/* --- PRODUCT LAYOUT --- */}
       <article className={styles.productLayout} aria-labelledby="product-title">
-        {/* --- PRODUCT IMAGE --- */}
         <figure className={styles.imageWrapper} style={{ margin: 0 }}>
-          <img
+          {/* This image is at the top of the page, so load it right away
+              instead of lazily. */}
+          <Image
             src={product.image_url}
-            alt={`High-quality view of ${product.name}`}
-            loading="lazy"
+            alt={product.name}
+            width={900}
+            height={900}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            loading="eager"
+            fetchPriority="high"
           />
         </figure>
 
-        {/* --- PRODUCT CONTENT --- */}
         <section className={styles.content}>
           <h1 id="product-title" className={styles.name}>
             {product.name}
@@ -63,16 +52,17 @@ export default function ProductDetail({
 
           <p className={styles.description}>{product.description}</p>
 
-          {/* --- ACTIONS --- */}
-          <button
-            className={styles.button}
-            onClick={() => addToCart(product)}
-            aria-label={`Add ${product.name} to your cart`}
-          >
-            Add to Cart
-          </button>
+          <AddToCartButton
+            product={{
+              id: product.id,
+              name: product.name,
+              slug: product.slug,
+              price: product.price,
+              image_url: product.image_url,
+            }}
+          />
         </section>
       </article>
-    </main>
+    </div>
   );
 }

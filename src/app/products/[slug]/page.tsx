@@ -1,99 +1,46 @@
-"use client";
-
-// import { products } from '@/data/products'
-import { useState, useEffect, useContext } from "react";
-import { CartContext } from "@/context/CartContext";
-import { useParams } from "next/navigation";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import ProductDetail from "@/components/ProductDetails/ProductDetail";
-import styles from "@/components/ProductDetails/ProductDetail.module.css";
 import ProductCard from "@/components/ProductCard/ProductCard";
-import { client } from "@/lib/supabase";
-import Loader from "@/components/Spinner/Spinner";
+import styles from "@/components/ProductDetails/ProductDetail.module.css";
+import { getProductBySlug, getRelatedProducts } from "@/lib/data/products";
 
-type product = {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image_url: string;
-  slug: string;
-};
+// Next 16: params is a Promise. `slug` comes from the folder name [slug].
+type Props = { params: Promise<{ slug: string }> };
 
-type Product = {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image_url: string;
-  slug: string;
-  category_id: string;
-};
+// Sets the browser tab title + link preview for this product.
+// getProductBySlug is wrapped in cache(), so calling it here AND in the page
+// below still runs only one database query per request.
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
 
-export default function productDetail() {
-  const supabase = client();
+  if (!product) return { title: "Product not found | Resin Kalaakari" };
 
-  const { slug } = useParams();
-  const { addToCart } = useContext(CartContext)!;
+  return {
+    title: `${product.name} | Resin Kalaakari`,
+    description: product.description?.slice(0, 160) ?? undefined,
+    openGraph: { images: [product.image_url] },
+  };
+}
 
-  const [product, setProduct] = useState(null);
-  const [relatedProducts, setRelatedProducts] = useState<product[]>([]);
-  const [loading, setLoading] = useState(true);
+export default async function ProductPage({ params }: Props) {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const { data, error } = await supabase
-        .from("products")
-        .select(
-          `
-                     *,
-                      categories!inner (
-                       id,
-                     name,
-                      slug
-                         )
-                             `,
-        )
-        .eq("slug", slug)
-        .single();
+  // No product with this slug -> renders not-found.tsx from this folder.
+  // (notFound() never returns, so `product` is non-null below.)
+  if (!product) notFound();
 
-      if (error) {
-        console.error("Error fetching product: ", error.message);
-        setProduct(null);
-      } else {
-        setProduct(data);
-      }
+  // Needs product.category_id, so it has to wait for the query above.
+  const relatedProducts = product.category_id
+    ? await getRelatedProducts(product.category_id, product.id)
+    : [];
 
-      const { data: relatedData, error: relatedError } = await supabase
-        .from("products")
-        .select("*")
-        .eq("category_id", data.category_id)
-        .neq("id", data.id)
-        .limit(4);
-
-      if (relatedError) {
-        console.error("Error fetching related products:", relatedError.message);
-      } else {
-        setRelatedProducts(relatedData || []);
-      }
-
-      setLoading(false);
-    };
-
-    if (slug) {
-      fetchProduct();
-    }
-  }, [slug]);
-
-  if (loading) {
-    return <Loader message={"Loading product details"} />;
-  }
-
-  if (!product) {
-    return <p>product not found!</p>;
-  }
   return (
-    <main>
-      <ProductDetail addToCart={addToCart} product={product} />
+    <>
+      <ProductDetail product={product} />
+
       {relatedProducts.length > 0 && (
         <section className={styles.relatedProductsContainer}>
           <h2 className={styles.relatedProductsTitle}>Related Products</h2>
@@ -104,6 +51,6 @@ export default function productDetail() {
           </div>
         </section>
       )}
-    </main>
+    </>
   );
 }

@@ -1,88 +1,70 @@
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import ProductCard from "@/components/ProductCard/ProductCard";
 import styles from "@/components/ProductCard/ProductCard.module.css";
 import CategoriesFilter from "@/components/CategoryFilter/CategoryFilter";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import SortDropdown from "@/components/SortDropdown/SortDropdown";
+import PaginationControls from "@/components/PaginationControls/PaginationControls";
 import Breadcrumb from "@/components/BreadCrumbNavigation/BreadCrumbNavigation";
-// 1. CHANGE THIS IMPORT to your server-side client creator
-import { createServerSupabaseClient } from "@/lib/server";
+import { getCategories } from "@/lib/data/categories";
+import { getProducts } from "@/lib/data/products";
+import { PRODUCTS_PER_PAGE } from "@/lib/constants";
+import {
+  buildProductsHref,
+  parseProductsQuery,
+  type RawSearchParams,
+} from "@/lib/search-params";
+
+export const metadata: Metadata = {
+  title: "Shop Handcrafted Resin Art | Resin Kalaakaari",
+  description:
+    "Browse handcrafted resin art: varmala preservation, custom nameplates, jewelry and more.",
+};
 
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; search?: string; sort?: string }>;
+  // Next 16: a Promise, so it must be awaited. Reading it makes this page
+  // dynamic (rendered per request), which is right for a filterable list.
+  searchParams: Promise<RawSearchParams>;
 }) {
-  // 2. Initialize the server-side client
-  const supabase = await createServerSupabaseClient();
+  // Clean the URL once, here. Everything below gets safe, typed values.
+  const query = parseProductsQuery(await searchParams);
 
-  const params = await searchParams;
-  const filteredCategory = params?.category;
-  const searchQuery = params?.search?.trim();
-  const sortQuery = params?.sort;
-
-  // 3. Build the query
-  let productsQuery = supabase.from("products").select(`
-            *,
-            categories!inner (
-                id,
-                name,
-                slug
-            )
-        `);
-
-  // Handle filtering
-  if (filteredCategory) {
-    // Use the relationship name 'categories' followed by the column 'slug'
-    productsQuery = productsQuery.eq("categories.slug", filteredCategory);
-  }
-
-  if (searchQuery) {
-    productsQuery = productsQuery.ilike("name", `%${searchQuery}%`);
-  }
-
-  // Handle Sorting
-  if (sortQuery === "price_asc") {
-    productsQuery = productsQuery.order("price", { ascending: true });
-  } else if (sortQuery === "price_desc") {
-    productsQuery = productsQuery.order("price", { ascending: false });
-  } else if (sortQuery === "newest") {
-    productsQuery = productsQuery.order("created_at", { ascending: false });
-  }
-
-  // 4. Fetch everything in parallel
-  const [productRes, categoriesRes] = await Promise.all([
-    productsQuery,
-    supabase
-      .from("categories")
-      .select("id, name, slug, displayOrder")
-      .order("displayOrder"),
+  // Both throw on failure -> app/error.tsx catches it.
+  // Promise.all runs the two requests at the same time.
+  const [{ products, totalCount }, categories] = await Promise.all([
+    getProducts(query),
+    getCategories(),
   ]);
 
-  const { data: fetchedProducts, error: productsError } = productRes;
-  const { data: categories, error: categoriesError } = categoriesRes;
+  const totalPages = Math.max(1, Math.ceil(totalCount / PRODUCTS_PER_PAGE));
 
-  // Error handling...
-  if (productsError || categoriesError) {
-    console.error("Error:", productsError?.message || categoriesError?.message);
-    return <p>Failed to load data!</p>;
+  // ?page=999 (old bookmark, hand-typed URL): go to the last real page.
+  // redirect() throws on purpose, so it must not sit inside a try/catch.
+  if (query.page > totalPages) {
+    redirect(buildProductsHref({ ...query, page: totalPages }));
   }
 
-  const selectedCategory = categories?.find((c) => c.slug === filteredCategory);
-  const products = fetchedProducts ?? [];
+  const selectedCategory = categories.find((c) => c.slug === query.category);
 
   return (
-    <main className={styles.productContainer}>
+    // The root layout already wraps every page in <main>, so this is a div.
+    <div className={styles.productContainer}>
       <Breadcrumb
         categoryName={selectedCategory?.name}
         categorySlug={selectedCategory?.slug}
       />
 
-      <CategoriesFilter categories={categories ?? []} />
-      <SearchBar />
+      <CategoriesFilter categories={categories} query={query} />
+      <SearchBar query={query} />
 
       <div className={styles.SortContainer}>
-        <SortDropdown />
-        <p className={styles.productCount}>{products.length} products</p>
+        <SortDropdown query={query} />
+        <p className={styles.productCount}>
+          {totalCount} {totalCount === 1 ? "product" : "products"}
+        </p>
       </div>
 
       <div className={styles.productGrid}>
@@ -98,6 +80,10 @@ export default async function ProductsPage({
           </div>
         )}
       </div>
-    </main>
+
+      {totalPages > 1 && (
+        <PaginationControls query={query} totalPages={totalPages} />
+      )}
+    </div>
   );
 }

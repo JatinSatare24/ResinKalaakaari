@@ -2,47 +2,50 @@
 
 /**
  * SORT DROPDOWN COMPONENT
- * Handles product sorting and updates URL parameters.
- * Wrapped in <Suspense> to prevent Next.js CSR Bailout during static builds.
+ * Writes ?sort= into the URL; the server page reads it.
+ * The options come from PRODUCT_SORTS, the same list the data layer uses.
  */
 
 // --- IMPORTS ---
-import React, { useTransition, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
+import type { ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
+import {
+  PRODUCT_SORTS,
+  isProductSort,
+  type ProductSort,
+} from "@/lib/product-sorts";
+import { buildProductsHref, type ProductsQuery } from "@/lib/search-params";
 import styles from "@/components/SortDropdown/SortDropdown.module.css";
 
 // --- INTERFACES ---
 export interface SortDropdownProps {
-  // Interface established for future scalability (e.g., dynamic sort options)
+  query: ProductsQuery; // current URL state, passed down from the server page
 }
 
-// --- INTERNAL COMPONENT (Handles the hooks) ---
-function SortDropdownContent(props: SortDropdownProps) {
-  // --- STATE & ROUTING ---
+const SORT_KEYS = Object.keys(PRODUCT_SORTS) as ProductSort[];
+
+// --- COMPONENT ---
+export default function SortDropdown({ query }: SortDropdownProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
+  const [value, setValue] = useState<string>(query.sort ?? "");
 
-  // --- HANDLERS ---
-  const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    try {
-      const value = e.target.value;
-      const params = new URLSearchParams(searchParams.toString());
+  function handleSort(e: ChangeEvent<HTMLSelectElement>) {
+    const next = e.target.value;
+    setValue(next);
 
-      if (value) {
-        params.set("sort", value);
-      } else {
-        params.delete("sort");
-      }
-
-      // Using startTransition to keep the UI responsive during route change
-      startTransition(() => {
-        router.push(`/products?${params.toString()}`);
-      });
-    } catch (err: unknown) {
-      console.error("Failed to update sort parameters:", err);
-    }
-  };
+    startTransition(() => {
+      // page: 1 -> a new sort order always starts from the first page.
+      router.push(
+        buildProductsHref({
+          ...query,
+          sort: isProductSort(next) ? next : undefined,
+          page: 1,
+        }),
+      );
+    });
+  }
 
   // --- RENDER ---
   return (
@@ -51,37 +54,17 @@ function SortDropdownContent(props: SortDropdownProps) {
         id="product-sort"
         onChange={handleSort}
         className={styles.select}
-        defaultValue={searchParams.get("sort") || ""}
+        value={value}
         aria-label="Sort products by price or date"
         aria-busy={isPending}
       >
         <option value="">Sort by</option>
-        <option value="price_asc">Price: Low to High</option>
-        <option value="price_desc">Price: High to Low</option>
-        <option value="newest">Newest</option>
+        {SORT_KEYS.map((key) => (
+          <option key={key} value={key}>
+            {PRODUCT_SORTS[key].label}
+          </option>
+        ))}
       </select>
     </div>
-  );
-}
-
-// --- MAIN EXPORT (The Suspense Boundary) ---
-export default function SortDropdown(props: SortDropdownProps) {
-  return (
-    // Fallback UI shown strictly during the server-side static build process
-    <Suspense
-      fallback={
-        <div className={styles.sortWrapper}>
-          <select
-            className={styles.select}
-            disabled
-            aria-label="Loading sort options"
-          >
-            <option>Sort by...</option>
-          </select>
-        </div>
-      }
-    >
-      <SortDropdownContent {...props} />
-    </Suspense>
   );
 }
