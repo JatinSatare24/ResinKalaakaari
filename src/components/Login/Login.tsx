@@ -3,26 +3,30 @@
 // --- IMPORTS ---
 import React, { useState } from "react";
 import Link from "next/link";
-import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import type { FormEvent } from "react";
 import { client } from "@/lib/supabase";
 import styles from "@/components/Login/Login.module.css";
 
 // --- INTERFACES ---
 export interface LoginPageProps {
-  // Reserved for future scalability or prop-drilling
+  authError?: string; // set by app/login/page.tsx from ?error= in the URL
 }
 
 // --- COMPONENT ---
-export default function LoginPage(props: LoginPageProps) {
+export default function LoginPage({ authError }: LoginPageProps) {
   // --- STATE ---
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  // If the auth callback bounced the user here with ?error=..., show a friendly message
+  const [errorMessage, setErrorMessage] = useState<string | null>(
+    authError ? "Sign-in failed or the link expired. Please try again." : null,
+  );
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // --- UTILS ---
+  // Lazy initializer: client() runs once on first render, then the same instance is reused
   const [supabase] = useState(() => client());
   const router = useRouter();
 
