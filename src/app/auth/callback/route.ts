@@ -34,8 +34,14 @@ export async function GET(request: Request) {
   }
 
   // 5. Success! Redirect to the destination
-  const safeRedirect = next.startsWith("/") ? next : "/";
-  return NextResponse.redirect(new URL(safeRedirect, requestUrl.origin));
+  // Resolve `next` against our origin, then check it still points at us.
+  // Catches "//evil.com" and "/\evil.com", which startsWith("/") lets through.
+  const target = new URL(next, requestUrl.origin);
+  const safeTarget =
+    target.origin === requestUrl.origin
+      ? target
+      : new URL("/", requestUrl.origin);
+  return NextResponse.redirect(safeTarget);
 }
 
 // Helper to handle error redirects cleanly
@@ -43,6 +49,6 @@ function redirectToError(requestUrl: URL, message: string) {
   console.error("Auth Callback Error:", message);
   // Redirect back to login with a friendly error message
   const errorUrl = new URL("/login", requestUrl.origin);
-  errorUrl.searchParams.set("error", message);
+  errorUrl.searchParams.set("error", "auth_failed"); // short code, not raw text
   return NextResponse.redirect(errorUrl);
 }
