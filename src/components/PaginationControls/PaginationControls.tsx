@@ -25,16 +25,14 @@ export default function PaginationControls({
           className={styles.button}
           rel="prev"
         >
-          ← 
+          ←
         </Link>
       ) : (
-        <span className={`${styles.button} ${styles.disabled}`}>
-          ←
-        </span>
+        <span className={`${styles.button} ${styles.disabled}`}>←</span>
       )}
 
       <p className={styles.status} aria-current="page">
-         {page} / {totalPages}
+        {page} / {totalPages}
       </p>
 
       {page < totalPages ? (
