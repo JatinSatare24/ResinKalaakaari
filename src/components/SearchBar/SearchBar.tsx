@@ -2,60 +2,56 @@
 
 /**
  * SEARCH BAR COMPONENT
- * Handles debounced product searching and updates URL parameters.
- * Wrapped in <Suspense> to prevent Next.js CSR Bailout during static builds.
+ * Debounced product search. Writes ?search= into the URL; the server page
+ * reads it and fetches the matching products.
  */
 
 // --- IMPORTS ---
-import React, { useState, useTransition, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useTransition } from "react";
+import type { ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
+import { buildProductsHref, type ProductsQuery } from "@/lib/search-params";
 import styles from "./SearchBar.module.css";
 
 // --- INTERFACES ---
 export interface SearchBarProps {
-  // Interface established for future scalability
+  query: ProductsQuery; // current URL state, passed down from the server page
 }
 
-// --- INTERNAL COMPONENT (Handles the hooks) ---
-function SearchBarContent(props: SearchBarProps) {
-  // --- STATE & ROUTING ---
+// --- COMPONENT ---
+export default function SearchBar({ query }: SearchBarProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  // Local state initialized from URL params to ensure persistence on reload
-  const [search, setSearch] = useState<string>(
-    searchParams.get("search") || "",
-  );
+  // Starts from the URL so a reload keeps the text. After that, the input
+  // owns its own value while the person types.
+  const [search, setSearch] = useState(query.search ?? "");
 
-  // --- SEARCH LOGIC (DEBOUNCED) ---
-  const debouncedSearch = useDebouncedCallback((value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (value.trim()) {
-      params.set("search", value.trim());
-    } else {
-      params.delete("search");
-    }
-
-    // Using startTransition to keep the UI responsive while navigation occurs
+  // Waits 400ms after the last keystroke, then updates the URL.
+  const updateUrl = useDebouncedCallback((value: string) => {
     startTransition(() => {
-      router.push(`/products?${params.toString()}`);
+      // replace (not push): every keystroke-search would otherwise add a
+      // history entry and make the Back button useless.
+      // page: 1 -> a new search always starts from the first page.
+      router.replace(
+        buildProductsHref({
+          ...query,
+          search: value.trim() || undefined,
+          page: 1,
+        }),
+      );
     });
   }, 400);
 
-  // --- HANDLERS ---
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value;
-    setSearch(value);
-    debouncedSearch(value);
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    setSearch(e.target.value);
+    updateUrl(e.target.value);
   }
 
   // --- RENDER ---
   return (
     <div className={styles.wrapper} role="search">
-      {/* --- SEARCH INPUT --- */}
       <input
         id="product-search"
         type="text"
@@ -66,10 +62,10 @@ function SearchBarContent(props: SearchBarProps) {
         aria-label="Search for resin art products"
         aria-busy={isPending}
         autoComplete="off"
+        maxLength={100}
       />
 
-      {/* --- STATUS INDICATOR --- */}
-      {/* a11y: aria-live ensures screen readers announce the search status */}
+      {/* a11y: aria-live makes screen readers announce the status */}
       <div
         aria-live="polite"
         aria-atomic="true"
@@ -78,26 +74,5 @@ function SearchBarContent(props: SearchBarProps) {
         {isPending && <span className={styles.status}>Searching...</span>}
       </div>
     </div>
-  );
-}
-
-// --- MAIN EXPORT (The Suspense Boundary) ---
-export default function SearchBar(props: SearchBarProps) {
-  return (
-    // Fallback UI shown strictly during the server-side static build process
-    <Suspense
-      fallback={
-        <div className={styles.wrapper}>
-          <input
-            type="text"
-            placeholder="Loading search..."
-            className={styles.input}
-            disabled
-          />
-        </div>
-      }
-    >
-      <SearchBarContent {...props} />
-    </Suspense>
   );
 }

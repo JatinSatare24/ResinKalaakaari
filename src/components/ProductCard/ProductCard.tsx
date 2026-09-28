@@ -1,23 +1,16 @@
 // --- IMPORTS ---
-import React from "react";
+import Image from "next/image";
 import Link from "next/link";
+import type { ProductSummary } from "@/lib/types";
 import styles from "@/components/ProductCard/ProductCard.module.css";
 
 // --- INTERFACES ---
-export interface Product {
-  name: string;
-  slug: string;
-  image_url: string;
-  price: number;
-}
-
 export interface ProductCardProps {
-  product: Product;
+  product: ProductSummary;
 }
 
 // --- COMPONENT ---
 export default function ProductCard({ product }: ProductCardProps) {
-  // --- RENDER ---
   return (
     <Link
       className={styles.link}
@@ -25,15 +18,17 @@ export default function ProductCard({ product }: ProductCardProps) {
       aria-label={`View details for ${product.name}`}
     >
       <article className={styles.card}>
-        {/* --- PRODUCT IMAGE --- */}
-        <img
+        {/* next/image resizes + compresses the picture and lazy-loads it.
+            width/height only reserve the space; CSS controls the real size. */}
+        <Image
           className={styles.image}
           src={product.image_url}
           alt={`Image of ${product.name}`}
-          loading="lazy"
+          width={600}
+          height={600}
+          sizes="(min-width: 1280px) 16vw, (min-width: 768px) 33vw, 50vw"
         />
 
-        {/* --- PRODUCT CONTENT --- */}
         <header className={styles.content}>
           <h2 className={styles.name}>{product.name}</h2>
           <p className={styles.price}>₹{product.price}</p>
