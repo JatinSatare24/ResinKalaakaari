@@ -22,12 +22,19 @@
 .masonry {
   column-count: 2;
   column-gap: 1rem;
+  list-style: none; /* it is a <ul>, so drop the bullets */
 }
 
+/* The <li>: keeps each tile whole inside a column. */
 .item {
   display: block;
   margin-bottom: 1rem;
   break-inside: avoid;
+}
+
+/* The <a> inside the <li>. */
+.link {
+  display: block;
   text-decoration: none;
 }
 

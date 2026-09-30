@@ -1,77 +1,32 @@
-"use client";
-
 // --- IMPORTS ---
-import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { client } from "@/lib/supabase";
-
-// Components
-import ProductCard from "../ProductCard/ProductCard";
-import Loader from "@/components/Spinner/Spinner";
+import { FiArrowRight } from "react-icons/fi";
+import ProductCard from "@/components/ProductCard/ProductCard";
+import { getFeaturedProducts } from "@/lib/data/products";
+import type { ProductSummary } from "@/lib/types";
 import styles from "@/components/FeaturedProducts/FeaturedProducts.module.css";
 
-// --- INTERFACES ---
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image_url: string;
-  slug: string;
-}
-
 // --- COMPONENT ---
-export default function FeaturedProducts() {
-  // --- STATE ---
-  const supabase = client();
-  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+// An async Server Component: it fetches on the server, so no useEffect, no
+// loading state, and the products are already in the HTML. The home page
+// wraps it in <Suspense> so it can stream in after the Hero.
+export default async function FeaturedProducts() {
+  let products: ProductSummary[];
 
-  // --- LIFECYCLE & DATA FETCHING ---
-  useEffect(() => {
-    const fetchFeaturedProducts = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("products")
-          .select("*")
-          .eq("is_featured", true)
-          .limit(6)
-          .order("created_at", { ascending: false });
-
-        if (error) {
-          throw error;
-        } else {
-          setFeaturedProducts((data as Product[]) || []);
-        }
-      } catch (err: any) {
-        console.error("Error fetching featured products: ", err.message);
-        setError("Failed to load featured products!");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFeaturedProducts();
-  }, [supabase]);
-
-  // --- RENDER GUARDS ---
-  if (loading) {
-    return <Loader message={"Loading Featured products"} />;
-  }
-
-  if (error) {
+  try {
+    products = await getFeaturedProducts();
+  } catch (error) {
+    // On the home page one broken section should not take the whole page
+    // down, so we catch here instead of letting error.tsx replace the page.
+    console.error(error);
     return (
       <p className={styles.message} role="alert">
-        {error}
+        Failed to load featured products.
       </p>
     );
   }
 
-  if (featuredProducts.length === 0) {
-    return null;
-  }
+  if (products.length === 0) return null;
 
   // --- MAIN RENDER ---
   return (
@@ -80,31 +35,25 @@ export default function FeaturedProducts() {
       id="featuredProducts"
       aria-labelledby="featured-heading"
     >
-      {/* --- HEADER --- */}
       <h2 id="featured-heading" className={styles.heading}>
         Featured Products
       </h2>
 
-      {/* --- PRODUCT GRID --- */}
-      <div className={styles.grid} role="list">
-        {featuredProducts.map((product) => (
-          <div key={product.id} role="listitem">
+      {/* A real list (ul/li) so screen readers announce "list, 7 items". */}
+      <ul className={styles.grid}>
+        {products.map((product) => (
+          <li key={product.id}>
             <ProductCard product={product} />
-          </div>
+          </li>
         ))}
 
         {/* --- CALL TO ACTION --- */}
-        <div className={styles.viewAllContainer}>
-          <Link
-            href="/products"
-            className={styles.viewAllButton}
-            aria-label="View all handcrafted products"
-          >
-            View All{" "}
-            <ArrowRight size={18} className={styles.icon} aria-hidden="true" />
+        <li className={styles.viewAllContainer}>
+          <Link href="/products" className={styles.viewAllButton}>
+            View All <FiArrowRight className={styles.icon} aria-hidden="true" />
           </Link>
-        </div>
-      </div>
+        </li>
+      </ul>
     </section>
   );
 }

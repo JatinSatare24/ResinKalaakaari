@@ -1,61 +1,32 @@
-"use client";
-
 // --- IMPORTS ---
-import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { client } from "@/lib/supabase";
-import Loader from "@/components/Spinner/Spinner";
+import { FiArrowRight } from "react-icons/fi";
+import { getCategories } from "@/lib/data/categories";
+import { buildProductsHref } from "@/lib/search-params";
+import type { Category } from "@/lib/types";
 import styles from "@/components/ShopByCategory/ShopByCategory.module.css";
 
-// --- INTERFACES ---
-export interface Category {
-  id: number;
-  name: string;
-  slug: string;
-}
+// How many category tiles the home page shows.
+const HOME_CATEGORY_LIMIT = 7;
 
 // --- COMPONENT ---
-export default function ShopByCategory() {
-  // --- STATE ---
-  const supabase = client();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+// An async Server Component, streamed in by <Suspense> on the home page.
+export default async function ShopByCategory() {
+  let categories: Category[];
 
-  // --- DATA FETCHING & LIFECYCLE ---
-  useEffect(() => {
-    const fetchShopByCategory = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("categories")
-          .select("id, name, slug")
-          .limit(7);
-
-        if (error) {
-          throw error;
-        } else {
-          setCategories(data || []);
-        }
-      } catch (err: any) {
-        console.error("Error fetching shopping Categories: ", err.message);
-        setError("Failed to load Shop by categories");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchShopByCategory();
-  }, [supabase]);
-
-  // --- RENDER GUARDS ---
-  if (loading) return <Loader message={"Loading art categories"} />;
-  if (error)
+  try {
+    categories = await getCategories(HOME_CATEGORY_LIMIT);
+  } catch (error) {
+    // One broken section should not take the whole home page down.
+    console.error(error);
     return (
       <p className={styles.message} role="alert">
-        {error}
+        Failed to load categories.
       </p>
     );
+  }
+
+  // No categories -> render nothing, not an empty heading with no tiles.
   if (categories.length === 0) return null;
 
   // --- MAIN RENDER ---
@@ -64,35 +35,29 @@ export default function ShopByCategory() {
       className={styles.shopByCategoryContainer}
       aria-labelledby="category-heading"
     >
-      {/* --- SECTION HEADER --- */}
       <h2 id="category-heading" className={styles.heading}>
         Shop by Category
       </h2>
 
-      {/* --- CATEGORY GRID --- */}
-      <div className={styles.grid} role="list">
+      {/* ul/li, not role="listitem" on a link: that role would replace the
+          link role, and screen readers would stop calling these links. */}
+      <ul className={styles.grid}>
         {categories.map((category) => (
-          <Link
-            key={category.id}
-            href={`/products?category=${category.slug}`}
-            className={styles.categoryCard}
-            aria-label={`Shop products in ${category.name}`}
-            role="listitem"
-          >
-            {category.name}
-          </Link>
+          <li key={category.id}>
+            <Link
+              href={buildProductsHref({ category: category.slug })}
+              className={styles.categoryCard}
+            >
+              {category.name}
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
 
       {/* --- CALL TO ACTION --- */}
       <div className={styles.viewAllContainer}>
-        <Link
-          href="/products"
-          className={styles.viewAllButton}
-          aria-label="View all product categories"
-        >
-          View All{" "}
-          <ArrowRight size={18} className={styles.icon} aria-hidden="true" />
+        <Link href="/products" className={styles.viewAllButton}>
+          View All <FiArrowRight className={styles.icon} aria-hidden="true" />
         </Link>
       </div>
     </section>

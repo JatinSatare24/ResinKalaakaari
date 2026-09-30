@@ -26,10 +26,11 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin: 1rem 0;
+  list-style: none; /* it is a <ul>, so drop the bullets */
 }
 
 /* Center the last card if odd number of categories (Mobile) */
-.grid a:last-child:nth-child(odd) {
+.grid li:last-child:nth-child(odd) {
   grid-column: span 2;
   justify-self: center;
   width: 70%;
@@ -144,7 +145,7 @@
   }
 
   /* Reset mobile centering behavior */
-  .grid a:last-child:nth-child(odd) {
+  .grid li:last-child:nth-child(odd) {
     grid-column: auto;
     width: 100%;
     justify-self: stretch;

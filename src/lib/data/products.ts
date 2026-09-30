@@ -2,7 +2,11 @@ import { cache } from "react";
 import { createServerSupabaseClient } from "@/lib/server";
 import { PRODUCTS_PER_PAGE } from "@/lib/constants";
 import { PRODUCT_SORTS, type ProductSort } from "@/lib/product-sorts";
-import type { ProductSummary, ProductWithCategory } from "@/lib/types";
+import type {
+  GalleryItem,
+  ProductSummary,
+  ProductWithCategory,
+} from "@/lib/types";
 
 const SUMMARY_COLUMNS = "id, name, slug, image_url, price";
 
@@ -118,4 +122,40 @@ export async function getRelatedProducts(
   if (error) throw new Error(`getRelatedProducts failed: ${error.message}`);
 
   return (data ?? []) as ProductSummary[];
+}
+
+// Home page "Featured Products": the newest products flagged is_featured.
+export async function getFeaturedProducts(
+  limit = 6,
+): Promise<ProductSummary[]> {
+  const supabase = await createServerSupabaseClient();
+
+  const { data, error } = await supabase
+    .from("products")
+    .select(SUMMARY_COLUMNS)
+    .eq("is_featured", true)
+    .order("created_at", { ascending: false })
+    .order("id") // tie-breaker, same reason as in getProducts
+    .limit(limit);
+
+  if (error) throw new Error(`getFeaturedProducts failed: ${error.message}`);
+
+  return (data ?? []) as ProductSummary[];
+}
+
+// Home page "Artistry in Resin" gallery: products flagged is_gallery, in the
+// order the owner set with gallery_order.
+export async function getGalleryProducts(): Promise<GalleryItem[]> {
+  const supabase = await createServerSupabaseClient();
+
+  const { data, error } = await supabase
+    .from("products")
+    .select("id, name, slug, image_url")
+    .eq("is_gallery", true)
+    .order("gallery_order", { ascending: true })
+    .order("id");
+
+  if (error) throw new Error(`getGalleryProducts failed: ${error.message}`);
+
+  return (data ?? []) as GalleryItem[];
 }

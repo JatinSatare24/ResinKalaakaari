@@ -20,3 +20,7 @@ export type ProductWithCategory = ProductSummary & {
   category_id: string | null;
   categories: { name: string; slug: string } | null;
 };
+
+// Home page gallery tile: a product without the price (the tile only shows
+// the picture and the name).
+export type GalleryItem = Omit<ProductSummary, "price">;
