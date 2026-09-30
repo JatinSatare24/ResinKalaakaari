@@ -1,238 +1,350 @@
 "use client";
 
-import { useState, createContext, useEffect, useRef } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
+import type { SupabaseClient, User } from "@supabase/supabase-js";
 import { client } from "@/lib/supabase";
+import { EMPTY_ITEMS, EMPTY_STORED_CART, sortLike } from "@/lib/cart";
+import {
+  getServerStoredCart,
+  getStoredCart,
+  setStoredCart,
+  subscribeStoredCart,
+} from "@/lib/cart-storage";
+import { MAX_CART_QUANTITY } from "@/lib/constants";
+import {
+  deleteAllCartItems,
+  deleteCartItem,
+  getCartItems,
+  loadCartForUser,
+  upsertCartItems,
+} from "@/lib/data/cart";
+import type { CartItem, CartProduct } from "@/lib/types";
 
-export type CartItem = {
-  id: string; // Changed to string for UUID
-  name: string;
-  price: number;
-  image_url: string;
-  quantity: number;
-};
+/*
+ * HOW THE CART WORKS (read this first)
+ *
+ * Guest (signed out): the cart lives only in localStorage.
+ * Signed in: the database (cart_items) is the truth. localStorage keeps a
+ *   copy, tagged with the user's id, so the page shows the cart instantly
+ *   on reload while the database copy loads.
+ *
+ * On sign-in we run loadCartForUser ONCE per user: merge the guest cart into
+ * the saved cart, then the database wins. On sign-out the local copy is wiped.
+ *
+ * Every change updates the screen first, then writes ONE row to the database
+ * through a queue (one write at a time, in click order). If a write fails we
+ * reload the cart from the database so the screen never keeps a lie.
+ */
 
 type CartContextType = {
   cart: CartItem[];
-  user: any;
+  user: User | null;
+  // True until Supabase has told us who is signed in. Checkout, Success,
+  // MyOrders, Profile and Admin read this as their "auth loading" flag.
   loading: boolean;
-  setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
-  addToCart: (product: any) => void;
-  removeFromCart: (id: string) => void;
-  updateQuantity: (id: string, value: number) => void;
-  clearCart: () => void;
+  // True once the cart can be trusted: auth is known and, for a signed-in
+  // user, the database copy has loaded. Changes are ignored before that.
+  cartReady: boolean;
+  cartLoadFailed: boolean;
+  syncError: string | null;
+  addToCart: (product: CartProduct) => Promise<void>;
+  removeFromCart: (id: string) => Promise<void>;
+  // `delta` is how much to change by (+1 / -1), not the new quantity.
+  updateQuantity: (id: string, delta: number) => Promise<void>;
+  clearCart: () => Promise<void>;
+  retryCartLoad: () => void;
 };
 
 export const CartContext = createContext<CartContextType | null>(null);
 
-export default function CartProvider({ children }: any) {
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [user, setUser] = useState<any>(null); // Local state for the user
-  const [loading, setLoading] = useState(true);
-  const isCartLoaded = useRef(false);
-  const supabase = client();
+// Same as useContext(CartContext) but throws a clear error outside the
+// provider, so callers don't need a `!`.
+export function useCart(): CartContextType {
+  const context = useContext(CartContext);
+  if (!context) throw new Error("useCart must be used inside <CartProvider>");
+  return context;
+}
 
-  // 1. Get User Session on Mount
+const SYNC_ERROR_MESSAGE =
+  "We couldn't save your last cart change, so we restored your saved cart.";
+
+export default function CartProvider({ children }: { children: ReactNode }) {
+  // The cart items. The server render and the first hydration render get an
+  // empty cart; the real one appears right after (no hydration mismatch).
+  const stored = useSyncExternalStore(
+    subscribeStoredCart,
+    getStoredCart,
+    getServerStoredCart,
+  );
+
+  const [user, setUser] = useState<User | null>(null);
+  const [authReady, setAuthReady] = useState(false);
+  // Result of the last database load: which user, and did it work.
+  const [loadResult, setLoadResult] = useState<{
+    userId: string;
+    ok: boolean;
+  } | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const [syncError, setSyncError] = useState<string | null>(null);
+  // The tail of the database write queue (see enqueue below).
+  const writeQueue = useRef<Promise<void>>(Promise.resolve());
+
+  // Effects depend on the id (a string), not the user object: Supabase hands
+  // out a new object on token refresh, and can emit SIGNED_IN again when a
+  // tab regains focus, none of which should reload the cart.
+  const userId = user?.id ?? null;
+
+  // 1. Who is signed in? INITIAL_SESSION fires once when the client starts, so
+  // no separate getUser() call (one less network request than before).
+  // Only set state here; never call other Supabase methods inside this callback.
   useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-    };
-    getUser();
-
-    // Listen for auth changes (Login/Logout)
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
+    } = client().auth.onAuthStateChange((_event, session) => {
+      const nextUser = session?.user ?? null;
+      setUser(nextUser);
+      // Signed out: forget the last load, so signing back in loads again.
+      if (!nextUser) setLoadResult(null);
+      setAuthReady(true);
     });
-
     return () => subscription.unsubscribe();
   }, []);
 
-  // 2. Load Cart from LocalStorage on Mount
+  // 2. A saved cart that belongs to someone else (signed out, or another
+  // account signed in) must not show up. Wipe the local copy.
+  // Declared before the load effect, so it runs first.
   useEffect(() => {
-    const persistData = localStorage.getItem("cart");
-    if (persistData) {
-      setCart(JSON.parse(persistData));
+    if (!authReady) return;
+    const { ownerId } = getStoredCart();
+    if (ownerId !== null && ownerId !== userId) {
+      setStoredCart(EMPTY_STORED_CART);
     }
-    isCartLoaded.current = true;
+  }, [authReady, userId]);
+
+  // 3. Signed in: merge the guest cart, load the saved cart, save the result.
+  // `cancelled` drops the answer if the user changed while we were waiting.
+  // Running twice (Strict Mode, two tabs) is safe: the merge gives the same
+  // result every time (see mergeCarts).
+  useEffect(() => {
+    if (!authReady || !userId) return;
+    let cancelled = false;
+    const local = getStoredCart();
+
+    (async () => {
+      try {
+        const items = await loadCartForUser(client(), userId, local);
+        if (cancelled) return;
+        setStoredCart({ ownerId: userId, items });
+        setLoadResult({ userId, ok: true });
+      } catch (error) {
+        console.error("Cart load failed:", error);
+        if (!cancelled) setLoadResult({ userId, ok: false });
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [authReady, userId, retryCount]);
+
+  const cartReady =
+    authReady &&
+    (userId === null || (loadResult?.userId === userId && loadResult.ok));
+  const cartLoadFailed =
+    userId !== null && loadResult?.userId === userId && !loadResult.ok;
+
+  // Hide a cart that is known to belong to somebody else (rule 2 wipes it a
+  // moment later). Before auth is known we show whatever is saved.
+  const items =
+    authReady && stored.ownerId !== null && stored.ownerId !== userId
+      ? EMPTY_ITEMS
+      : stored.items;
+
+  // --- Database writes ---
+
+  // Reload the cart from the database and show that.
+  const resync = useCallback(async (uid: string) => {
+    try {
+      const dbItems = await getCartItems(client(), uid);
+      const current = getStoredCart();
+      if (current.ownerId === uid) {
+        setStoredCart({
+          ownerId: uid,
+          items: sortLike(dbItems, current.items),
+        });
+      }
+    } catch (error) {
+      console.error("Cart resync failed:", error);
+    }
   }, []);
 
-  // 3. Save Cart to LocalStorage whenever it changes
-  useEffect(() => {
-    if (!isCartLoaded.current) return;
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
-
-  // 4. THE SYNC LOGIC: Guest Cart -> Database
-  useEffect(() => {
-    const syncCartWithDB = async () => {
-      // Only sync if a user is logged in AND we have items in the cart
-      if (user && cart.length > 0) {
-        const itemsToSync = cart.map((item) => ({
-          user_id: user.id,
-          product_id: item.id,
-          quantity: item.quantity,
-        }));
-
-        // .upsert handles the "Conflict Resolution" automatically
-        // because of the UNIQUE constraint we set in SQL
-        const { error } = await supabase
-          .from("cart_items")
-          .upsert(itemsToSync, { onConflict: "user_id,product_id" });
-
-        if (error) console.error("Sync Error:", error.message);
-      }
-    };
-
-    syncCartWithDB();
-  }, [user, cart]); // Runs whenever user logs in or cart updates
-
-  // 5. THE PULL LOGIC: Database -> React State
-  useEffect(() => {
-    const pullAndMergeCart = async () => {
-      // Only pull if we have a user and we haven't already synced this session
-      if (user) {
-        const { data, error } = await supabase
-          .from("cart_items")
-          .select(
-            `
-                    quantity,
-                    products (
-                        id,
-                        name,
-                        price,
-                        image_url
-                    )
-                `,
-          )
-          .eq("user_id", user.id);
-
-        if (error) {
-          console.error("Error pulling cart:", error.message);
-          return;
-        }
-
-        if (data) {
-          // STEP 1: Transform the nested Supabase data into our CartItem format
-          const dbItems: CartItem[] = data.map((item: any) => ({
-            id: item.products.id,
-            name: item.products.name,
-            price: item.products.price,
-            image_url: item.products.image_url,
-            quantity: item.quantity,
-          }));
-
-          // STEP 2: Merge logic
-          // If the user had items in their guest cart before logging in,
-          // we keep those AND the items from the database.
-          setCart((prevCart) => {
-            const merged = [...prevCart];
-
-            dbItems.forEach((dbItem) => {
-              const existingIndex = merged.findIndex(
-                (item) => item.id === dbItem.id,
-              );
-              if (existingIndex > -1) {
-                // If it exists in both, we trust the DB quantity or add them
-                // For now, let's just let the DB items take priority
-                merged[existingIndex] = dbItem;
-              } else {
-                merged.push(dbItem);
-              }
-            });
-
-            return merged;
-          });
-        }
-      }
-    };
-
-    pullAndMergeCart();
-  }, [user]); // Only runs when the user object changes (Login/Logout)
-
-  const addToCart = (product: any) => {
-    const productInCart = cart.find((c) => c.id === product.id);
-    if (productInCart) {
-      setCart((prev) =>
-        prev.map((p) =>
-          p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p,
-        ),
-      );
-    } else {
-      setCart((prev) => [...prev, { ...product, quantity: 1 }]);
-    }
-  };
-
-  const removeFromCart = async (id: string) => {
-    // Update local state first (for speed)
-    setCart((prev) => prev.filter((item) => item.id !== id));
-
-    // If logged in, tell the DB to drop that row
-    if (user) {
-      const { error } = await supabase
-        .from("cart_items")
-        .delete()
-        .eq("user_id", user.id)
-        .eq("product_id", id); // Ensure we only delete this specific product for this user
-
-      if (error) console.error("Error removing from DB:", error.message);
-    }
-  };
-
-  const updateQuantity = async (id: string, value: number) => {
-    // 1. Find the item to see what its current quantity is
-    const item = cart.find((i) => i.id === id);
-    if (!item) return;
-
-    const newQuantity = item.quantity + value;
-
-    // 2. Check if this is a "Hidden Deletion"
-    if (newQuantity <= 0) {
-      // If quantity is 0 or less, use our delete logic
-      await removeFromCart(id);
-    } else {
-      // 3. Otherwise, just update the state
-      // The existing useEffect will pick up this change and "Upsert" the new quantity to the DB
-      setCart((prev) =>
-        prev.map((item) =>
-          item.id === id ? { ...item, quantity: newQuantity } : item,
-        ),
-      );
-    }
-  };
-  const clearCart = async () => {
-    // Wipe local state
-    setCart([]);
-
-    // If logged in, wipe the user's DB cart
-    if (user) {
-      const { error } = await supabase
-        .from("cart_items")
-        .delete()
-        .eq("user_id", user.id); // Delete EVERY row for this user
-
-      if (error) console.error("Error clearing DB cart:", error.message);
-    }
-  };
-
-  return (
-    <CartContext.Provider
-      value={{
-        cart,
-        user,
-        loading,
-        setCart,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
+  // Runs database writes ONE AT A TIME, in the order they were queued.
+  // Without this, two quick clicks send two requests that can finish in the
+  // wrong order, and the database ends up with the older quantity.
+  const enqueue = useCallback(
+    (uid: string, write: (supabase: SupabaseClient) => Promise<void>) => {
+      const run = writeQueue.current.then(() => write(client()));
+      // The stored tail never rejects, so one failure can't block later writes.
+      writeQueue.current = run.catch(async (error) => {
+        console.error("Cart write failed:", error);
+        setSyncError(SYNC_ERROR_MESSAGE);
+        await resync(uid);
+      });
+      return writeQueue.current;
+    },
+    [resync],
   );
+
+  // Make the database row for ONE product match what the screen shows NOW.
+  // It reads the current quantity when it runs (not when it was queued), so
+  // a stale queued write can never put an old number back.
+  const syncProduct = useCallback(
+    (uid: string, productId: string) =>
+      enqueue(uid, async (supabase) => {
+        const { ownerId, items: current } = getStoredCart();
+        if (ownerId !== uid) return; // the account changed while we waited
+        const line = current.find((item) => item.id === productId);
+        if (line) await upsertCartItems(supabase, uid, [line]);
+        else await deleteCartItem(supabase, uid, productId);
+      }),
+    [enqueue],
+  );
+
+  // --- Cart actions ---
+  // Each one reads the LATEST cart from the store (not from the last render),
+  // so two clicks in the same instant both count.
+
+  const addToCart = useCallback(
+    async (product: CartProduct) => {
+      if (!cartReady) return;
+      setSyncError(null);
+
+      const { items: current } = getStoredCart();
+      const exists = current.some((item) => item.id === product.id);
+      const next = exists
+        ? current.map((item) =>
+            item.id === product.id
+              ? {
+                  ...item,
+                  quantity: Math.min(item.quantity + 1, MAX_CART_QUANTITY),
+                }
+              : item,
+          )
+        : [
+            ...current,
+            {
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              image_url: product.image_url,
+              quantity: 1,
+            },
+          ];
+
+      setStoredCart({ ownerId: userId, items: next });
+      if (userId) await syncProduct(userId, product.id);
+    },
+    [cartReady, userId, syncProduct],
+  );
+
+  const removeFromCart = useCallback(
+    async (id: string) => {
+      if (!cartReady) return;
+      setSyncError(null);
+
+      const { items: current } = getStoredCart();
+      setStoredCart({
+        ownerId: userId,
+        items: current.filter((item) => item.id !== id),
+      });
+      if (userId) await syncProduct(userId, id);
+    },
+    [cartReady, userId, syncProduct],
+  );
+
+  const updateQuantity = useCallback(
+    async (id: string, delta: number) => {
+      if (!cartReady) return;
+
+      const { items: current } = getStoredCart();
+      const line = current.find((item) => item.id === id);
+      if (!line) return;
+
+      const quantity = Math.min(line.quantity + delta, MAX_CART_QUANTITY);
+      if (quantity < 1) {
+        // Going below 1 means "remove this line".
+        await removeFromCart(id);
+        return;
+      }
+
+      setSyncError(null);
+      setStoredCart({
+        ownerId: userId,
+        items: current.map((item) =>
+          item.id === id ? { ...item, quantity } : item,
+        ),
+      });
+      if (userId) await syncProduct(userId, id);
+    },
+    [cartReady, userId, removeFromCart, syncProduct],
+  );
+
+  const clearCart = useCallback(async () => {
+    if (!cartReady) return;
+    setSyncError(null);
+
+    setStoredCart({ ownerId: userId, items: EMPTY_ITEMS });
+    if (userId) {
+      await enqueue(userId, (supabase) => deleteAllCartItems(supabase, userId));
+    }
+  }, [cartReady, userId, enqueue]);
+
+  const retryCartLoad = useCallback(() => {
+    setLoadResult(null);
+    setRetryCount((count) => count + 1);
+  }, []);
+
+  // useMemo keeps the value object the same between renders, so components
+  // that read the cart only re-render when something in it really changed
+  // (the layout re-renders this provider on navigation).
+  const value = useMemo<CartContextType>(
+    () => ({
+      cart: items,
+      user,
+      loading: !authReady,
+      cartReady,
+      cartLoadFailed,
+      syncError,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      retryCartLoad,
+    }),
+    [
+      items,
+      user,
+      authReady,
+      cartReady,
+      cartLoadFailed,
+      syncError,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      retryCartLoad,
+    ],
+  );
+
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
