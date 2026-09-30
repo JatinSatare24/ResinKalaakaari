@@ -5,19 +5,13 @@
  */
 
 // --- IMPORTS ---
-import React, { useContext } from "react";
-import { CartContext } from "@/context/CartContext";
+import Image from "next/image";
+import { useCart } from "@/context/CartContext";
+import { MAX_CART_QUANTITY } from "@/lib/constants";
+import type { CartItem } from "@/lib/types";
 import styles from "@/components/CartCard/CartCard.module.css";
 
 // --- INTERFACES ---
-export interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  image_url: string;
-  quantity: number;
-}
-
 export interface CartCardProps {
   item: CartItem;
 }
@@ -25,18 +19,23 @@ export interface CartCardProps {
 // --- COMPONENT ---
 export default function CartCard({ item }: CartCardProps) {
   // --- CONTEXT ---
-  const { removeFromCart, updateQuantity } = useContext(CartContext)!;
+  const { removeFromCart, updateQuantity } = useCart();
 
   // --- RENDER ---
   return (
     <article className={styles.card} aria-labelledby={`item-name-${item.id}`}>
       {/* --- PRODUCT IMAGE --- */}
       <div className={styles.imageContainer}>
-        <img
+        {/* width/height only reserve the aspect ratio; CartCard.module.css
+            sets the real size per breakpoint (95 / 150 / 200 / 300px), and
+            `sizes` mirrors that so the browser downloads a small file. */}
+        <Image
           src={item.image_url}
           alt={`Thumbnail for ${item.name}`}
+          width={300}
+          height={300}
+          sizes="(min-width: 1280px) 300px, (min-width: 1024px) 200px, (min-width: 768px) 150px, 95px"
           className={styles.image}
-          loading="lazy"
         />
       </div>
 
@@ -78,6 +77,7 @@ export default function CartCard({ item }: CartCardProps) {
             onClick={() => updateQuantity(item.id, +1)}
             className={styles.controlButton}
             aria-label={`Increase quantity of ${item.name}`}
+            disabled={item.quantity >= MAX_CART_QUANTITY}
           >
             +
           </button>
