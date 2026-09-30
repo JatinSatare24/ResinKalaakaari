@@ -1,53 +1,30 @@
 /**
  * GALLERY COMPONENT
- * Renders a high-end masonry grid of featured resin art products.
- * Server-side fetched for optimal SEO and performance.
+ * Masonry grid of the products the owner flagged for the gallery.
+ * Async Server Component: fetched on the server, streamed in by <Suspense>.
  */
 
 // --- IMPORTS ---
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { createServerSupabaseClient } from "@/lib/server";
+import { getGalleryProducts } from "@/lib/data/products";
+import type { GalleryItem } from "@/lib/types";
 import styles from "@/components/Gallery/Gallery.module.css";
-
-// --- INTERFACES ---
-export interface GalleryItem {
-  id: string;
-  name: string;
-  slug: string;
-  image_url: string;
-  gallery_order: number;
-}
 
 // --- COMPONENT ---
 export default async function Gallery() {
-  // --- UTILS & CLIENTS ---
-  const supabase = await createServerSupabaseClient();
-
-  // --- DATA FETCHING ---
-  // Wrapped in a try/catch for server-side reliability
-  let products: GalleryItem[] = [];
+  let products: GalleryItem[];
 
   try {
-    const { data, error } = await supabase
-      .from("products")
-      .select("id, name, slug, image_url, gallery_order")
-      .eq("is_gallery", true)
-      .order("gallery_order", { ascending: true });
-
-    if (error) throw error;
-    products = (data as GalleryItem[]) || [];
-  } catch (err: unknown) {
-    console.error("Gallery Fetch Exception:", err);
-    // Fail silently to avoid breaking the landing page
+    products = await getGalleryProducts();
+  } catch (error) {
+    // The gallery is decoration: if it fails, hide it instead of breaking
+    // the landing page.
+    console.error(error);
     return null;
   }
 
-  // --- RENDER GUARDS ---
-  if (products.length === 0) {
-    return null;
-  }
+  if (products.length === 0) return null;
 
   // --- MAIN RENDER ---
   return (
@@ -56,42 +33,39 @@ export default async function Gallery() {
       id="gallery"
       aria-labelledby="gallery-heading"
     >
-      {/* Note: 'container' is retained as a global class per protocol */}
-      <div className="container">
-        {/* --- HEADER --- */}
-        <h2 id="gallery-heading" className={styles.heading}>
-          Artistry in Resin
-        </h2>
+      <h2 id="gallery-heading" className={styles.heading}>
+        Artistry in Resin
+      </h2>
 
-        {/* --- MASONRY GRID --- */}
-        <div className={styles.masonry} role="list">
-          {products.map((product) => (
+      <ul className={styles.masonry}>
+        {products.map((product) => (
+          <li key={product.id} className={styles.item}>
+            {/* aria-label stops screen readers reading the name twice
+                (once from the image alt, once from the caption). */}
             <Link
-              key={product.id}
               href={`/products/${product.slug}`}
-              className={styles.item}
+              className={styles.link}
               aria-label={`View details for ${product.name}`}
-              role="listitem"
             >
-              <figure className={styles.imageWrapper} style={{ margin: 0 }}>
+              <figure className={styles.imageWrapper}>
                 <Image
                   src={product.image_url}
                   alt={`Handcrafted resin piece: ${product.name}`}
                   width={600}
                   height={800}
+                  // Masonry columns: 2 on phones, 3 on tablets, 4 on desktop.
+                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
                   className={styles.image}
-                  loading="lazy"
                 />
 
-                {/* --- IMAGE OVERLAY / CAPTION --- */}
                 <figcaption className={styles.overlay}>
                   <span className={styles.title}>{product.name}</span>
                 </figcaption>
               </figure>
             </Link>
-          ))}
-        </div>
-      </div>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

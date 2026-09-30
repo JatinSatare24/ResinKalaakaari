@@ -1,20 +1,11 @@
-"use client";
-
 // --- IMPORTS ---
-import React from "react";
 import Image from "next/image";
 import Carousel from "@/components/Carousel/Carousel";
 import { testimonials } from "@/data/testimonials";
 import styles from "./Testimonials.module.css";
 
-// --- INTERFACES ---
-export interface Testimonial {
-  id: string | number;
-  image: string;
-  alt: string;
-}
-
 // --- COMPONENT ---
+// A Server Component: the text is static and only the Carousel is interactive.
 export default function Testimonials() {
   // --- RENDER ---
   return (
@@ -36,25 +27,25 @@ export default function Testimonials() {
         </div>
 
         {/* --- TESTIMONIAL CAROUSEL --- */}
-        <div
-          className={styles.cardContainer}
-          role="region"
-          aria-roledescription="carousel"
-          aria-label="Customer testimonials"
-        >
-          <Carousel autoplay interval={4000} showArrows>
-            {(testimonials as Testimonial[]).map((testimonial) => (
+        <div className={styles.cardContainer}>
+          <Carousel
+            autoplay
+            interval={4000}
+            showArrows
+            label="Customer testimonials"
+          >
+            {testimonials.map((testimonial) => (
               <div key={testimonial.id} className={styles.card}>
-                <figure style={{ margin: 0, height: "100%" }}>
+                <figure className={styles.figure}>
+                  {/* No `priority` here: this section is far below the fold,
+                      so its images should load lazily. */}
                   <Image
                     src={testimonial.image}
-                    alt={testimonial.alt} // a11y: Crucial for image-based reviews
+                    alt={testimonial.alt}
                     width={800}
                     height={600}
                     className={styles.image}
-                    priority
                   />
-                  {/* figcaption can be added here if text content exists in data */}
                 </figure>
               </div>
             ))}
