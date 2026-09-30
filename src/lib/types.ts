@@ -24,3 +24,13 @@ export type ProductWithCategory = ProductSummary & {
 // Home page gallery tile: a product without the price (the tile only shows
 // the picture and the name).
 export type GalleryItem = Omit<ProductSummary, "price">;
+
+// The fields a cart line needs from a product. Enough to draw the cart
+// without another query.
+export type CartProduct = Pick<
+  ProductSummary,
+  "id" | "name" | "price" | "image_url"
+>;
+
+// One line in the cart: a product plus how many.
+export type CartItem = CartProduct & { quantity: number };
