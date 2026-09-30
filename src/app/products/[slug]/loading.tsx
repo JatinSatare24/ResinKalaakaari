@@ -1,6 +1,6 @@
-import LoadingUI from "@/components/LoadingUI/LoadingUI";
+import Loader from "@/components/Spinner/Spinner";
 
 // Shown instantly while a single product page fetches its data.
 export default function ProductLoading() {
-  return <LoadingUI variant="detail" label="Loading product" />;
+  return <Loader message="Loading product" />;
 }
