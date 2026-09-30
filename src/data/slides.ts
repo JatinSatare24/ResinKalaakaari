@@ -1,4 +1,10 @@
-export const slides = [
+export type Slide = {
+  image: string; // path inside /public
+  title: string;
+  subtitle: string;
+};
+
+export const slides: Slide[] = [
   {
     image: "/Hero/Hero1.webp",
     title: "Handcrafted Resin Art",

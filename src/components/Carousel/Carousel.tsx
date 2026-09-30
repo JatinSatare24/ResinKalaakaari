@@ -2,17 +2,18 @@
 
 /**
  * CAROUSEL COMPONENT
- * A flexible, auto-playing image/content slider.
- * Supports manual navigation and customizable intervals.
+ * A flexible, auto-playing slider. Client Component because it keeps the
+ * current slide in state and runs a timer.
  */
 
 // --- IMPORTS ---
-import React, { useState, useEffect, ReactNode } from "react";
+import { Children, useEffect, useState, type ReactNode } from "react";
 import styles from "./Carousel.module.css";
 
 // --- INTERFACES ---
 export interface CarouselProps {
   children: ReactNode | ReactNode[];
+  label: string; // read out by screen readers, e.g. "Customer testimonials"
   autoplay?: boolean;
   interval?: number;
   showArrows?: boolean;
@@ -22,54 +23,66 @@ export interface CarouselProps {
 // --- COMPONENT ---
 export default function Carousel({
   children,
+  label,
   autoplay = false,
   interval = 4000,
   showArrows = true,
   className = "",
 }: CarouselProps) {
   // --- STATE & VARIABLES ---
-  const slides = React.Children.toArray(children);
+  const slides = Children.toArray(children);
+  const count = slides.length;
   const [index, setIndex] = useState<number>(0);
+  // True while the mouse is over the carousel or keyboard focus is inside it.
+  const [paused, setPaused] = useState<boolean>(false);
 
   // --- HANDLERS ---
-  const next = () => {
-    setIndex((prev) => (prev + 1) % slides.length);
-  };
-
-  const prev = () => {
-    setIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
+  const next = () => setIndex((prev) => (prev + 1) % count);
+  const prev = () => setIndex((prev) => (prev === 0 ? count - 1 : prev - 1));
 
   // --- LIFECYCLE: AUTOPLAY ---
   useEffect(() => {
-    if (!autoplay || slides.length <= 1) return;
+    if (!autoplay || paused || count <= 1) return;
 
-    const timer = setInterval(next, interval);
+    // People who ask their device for less motion get no auto-sliding.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    // The functional setIndex means the timer never needs `next` itself,
+    // so the dependency list below is complete.
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % count);
+    }, interval);
     return () => clearInterval(timer);
-  }, [autoplay, interval, slides.length]);
+  }, [autoplay, paused, interval, count]);
 
   // --- RENDER ---
   return (
     <section
       className={`${styles.carousel} ${className}`}
-      role="region"
       aria-roledescription="carousel"
-      aria-label="Image Carousel"
+      aria-label={label}
+      // Auto-moving content must be stoppable (WCAG 2.2.2): hover or focus pauses it.
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
     >
       {/* Sliding Track */}
       <div
         className={styles.track}
         style={{ transform: `translateX(-${index * 100}%)` }}
-        aria-live={autoplay ? "off" : "polite"}
+        aria-live={autoplay && !paused ? "off" : "polite"}
       >
         {slides.map((slide, i) => (
           <div
             className={styles.slide}
             key={i}
-            aria-hidden={i !== index}
+            // `inert` hides off-screen slides from screen readers AND takes
+            // their links out of the Tab order (aria-hidden alone does not).
+            inert={i !== index}
             role="group"
             aria-roledescription="slide"
-            aria-label={`${i + 1} of ${slides.length}`}
+            aria-label={`${i + 1} of ${count}`}
           >
             {slide}
           </div>
@@ -77,12 +90,12 @@ export default function Carousel({
       </div>
 
       {/* Navigation Controls */}
-      {showArrows && slides.length > 1 && (
+      {showArrows && count > 1 && (
         <div className={styles.controls}>
           <button
             className={styles.prev}
             onClick={prev}
-            aria-label="Previous Slide"
+            aria-label="Previous slide"
             type="button"
           >
             &lt;
@@ -90,7 +103,7 @@ export default function Carousel({
           <button
             className={styles.next}
             onClick={next}
-            aria-label="Next Slide"
+            aria-label="Next slide"
             type="button"
           >
             &gt;

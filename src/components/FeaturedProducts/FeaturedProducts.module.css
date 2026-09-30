@@ -21,15 +21,10 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+  list-style: none; /* it is a <ul>, so drop the bullets */
 }
 
 /* --- UTILITY CLASSES --- */
-/* Kept per protocol: Styling hub preservation */
-.link {
-  text-decoration: none;
-  display: block;
-}
-
 .message {
   text-align: center;
   color: #6b7280;
