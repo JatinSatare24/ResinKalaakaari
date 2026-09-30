@@ -1,0 +1,28 @@
+/* Only what is new here. The button's own look still comes from
+   ProductDetail.module.css (imported by AddToCartButton.tsx). */
+
+/* Shown for a moment while the cart is still loading. */
+.button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* Visually hidden, but still read by screen readers. */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.error {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #8a1c1c;
+  text-align: center;
+}
