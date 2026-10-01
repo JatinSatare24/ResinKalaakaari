@@ -34,3 +34,56 @@ export type CartProduct = Pick<
 
 // One line in the cart: a product plus how many.
 export type CartItem = CartProduct & { quantity: number };
+
+// --- Orders ---
+
+// What the customer types on the checkout form. The keys match the columns
+// of the profiles table, so a saved profile can pre-fill the form directly.
+export type ShippingDetails = {
+  full_name: string;
+  phone: string;
+  address_line: string;
+  city: string;
+  state: string;
+  pincode: string;
+};
+
+// One row of the My Orders list.
+export type OrderSummary = {
+  id: string;
+  created_at: string;
+  total_price: number;
+  status: string; // free text in the database, so a plain string here
+  item_count: number; // number of order lines (not units)
+};
+
+// One product line of an order. `product` is null if the product was
+// deleted after the order was placed.
+export type OrderLine = {
+  id: string;
+  quantity: number;
+  price_at_purchase: number; // price when ordered; later price changes never touch it
+  product: { name: string; image_url: string } | null;
+};
+
+// The My Orders detail page.
+export type OrderDetail = {
+  id: string;
+  created_at: string;
+  status: string;
+  total_price: number;
+  transaction_id: string | null;
+  full_name: string;
+  phone: string;
+  shipping_address: string;
+  city: string;
+  state: string;
+  pincode: string;
+  lines: OrderLine[];
+};
+
+// What the payment (success) page needs.
+export type PayableOrder = Pick<
+  OrderDetail,
+  "id" | "total_price" | "status" | "transaction_id"
+>;
