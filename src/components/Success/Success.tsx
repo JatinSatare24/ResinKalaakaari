@@ -1,106 +1,60 @@
 "use client";
 
 // --- IMPORTS ---
-import React, { useEffect, useState, useContext, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import { FiSmartphone, FiCopy, FiCheckCircle } from "react-icons/fi";
-import { CartContext } from "@/context/CartContext";
-import { client } from "@/lib/supabase";
-import styles from "@/components/Success/Success.module.css";
-
-// --- NEW IMPORTS ---
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
+import { FiSmartphone, FiCopy, FiCheckCircle } from "react-icons/fi";
+import { submitPayment } from "@/app/checkout/actions";
+import FormError from "@/components/FormError/FormError";
+import { UPI_ID, UTR_LENGTH, WHATSAPP_NUMBER } from "@/lib/constants";
+import { shortOrderId } from "@/lib/orders";
+import type { PayableOrder } from "@/lib/types";
+import styles from "@/components/Success/Success.module.css";
 
 // --- INTERFACES ---
-export interface OrderData {
-  id: string;
-  total_price: number;
-  status: string;
-  transaction_id?: string;
+export interface SuccessProps {
+  order: PayableOrder; // loaded and ownership-checked on the server
 }
 
-function SuccessContent() {
-  const { width, height } = useWindowSize(); // Get screen dimensions
-  const searchParams = useSearchParams();
-  const orderId = searchParams.get("id");
-  const router = useRouter();
-  const { user, loading: authLoading } = useContext(CartContext)!;
+// --- COMPONENT ---
+// Everything here is interaction (copy, type a UTR, confetti), so it is a
+// client component. The data comes in as a prop from the server page.
+export default function Success({ order }: SuccessProps) {
+  const { width, height } = useWindowSize();
 
-  const [verifying, setVerifying] = useState<boolean>(true);
-  const [orderData, setOrderData] = useState<OrderData | null>(null);
-  const [utr, setUtr] = useState<string>("");
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  const [paymentSubmitted, setPaymentSubmitted] = useState<boolean>(false);
-  const [showConfetti, setShowConfetti] = useState<boolean>(false); // Control for the rain
+  const [utr, setUtr] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  // A UTR already saved earlier means the payment step is done.
+  const [paymentSubmitted, setPaymentSubmitted] = useState(
+    Boolean(order.transaction_id),
+  );
+  const [showConfetti, setShowConfetti] = useState(false);
 
-  const supabase = client();
-  const SANIKA_UPI_ID = "9175461840@ibl";
-  const PHONE_NUMBER = "919022223759";
-
-  useEffect(() => {
-    const verifyOrder = async () => {
-      if (!orderId) {
-        router.push("/");
-        return;
-      }
-      if (authLoading) return;
-      if (!user) {
-        router.push("/login");
-        return;
-      }
-
-      try {
-        const { data, error } = await supabase
-          .from("orders")
-          .select("id, total_price, status, transaction_id")
-          .eq("id", orderId)
-          .eq("user_id", user.id)
-          .single();
-
-        if (error || !data) {
-          router.push("/");
-        } else {
-          setOrderData(data as OrderData);
-          if (data.transaction_id) setPaymentSubmitted(true);
-        }
-      } catch (err: unknown) {
-        console.error("Order verification exception:", err);
-        router.push("/");
-      } finally {
-        setVerifying(false);
-      }
-    };
-
-    verifyOrder();
-  }, [orderId, user, authLoading, router, supabase]);
-
-  const handleConfirmPayment = async () => {
-    if (utr.length < 12) {
-      alert("Please enter a valid 12-digit UTR/Transaction ID");
+  const handleConfirmPayment = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (utr.length !== UTR_LENGTH) {
+      setError(`Enter the ${UTR_LENGTH}-character UTR / transaction ID.`);
       return;
     }
 
+    setError(null);
     setSubmitting(true);
     try {
-      const { error } = await supabase
-        .from("orders")
-        .update({
-          transaction_id: utr,
-          status: "verifying_payment",
-        })
-        .eq("id", orderId);
-
-      if (!error) {
-        setPaymentSubmitted(true);
-        setShowConfetti(true); // Start the rain!
-      } else {
-        throw error;
+      // The server action only sets the UTR and status on YOUR pending
+      // order. The old browser UPDATE could change any column.
+      const result = await submitPayment(order.id, utr);
+      if (!result.ok) {
+        setError(result.message);
+        return;
       }
-    } catch (err: unknown) {
+      setPaymentSubmitted(true);
+      setShowConfetti(true);
+    } catch (err) {
       console.error("Payment confirmation error:", err);
-      alert("Error submitting details. Please try again.");
+      setError("We couldn't submit your details. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -108,36 +62,36 @@ function SuccessContent() {
 
   const handleWhatsAppRedirect = () => {
     const message = encodeURIComponent(
-      `Hi Sanika! I just placed order #${orderId}. I've paid ₹${orderData?.total_price} via UPI. Here is my screenshot!`,
+      `Hi Sanika! I just placed order #${order.id}. I've paid ₹${order.total_price} via UPI. Here is my screenshot!`,
     );
-    window.open(`https://wa.me/${PHONE_NUMBER}?text=${message}`, "_blank");
+    window.open(
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
   };
 
-  const handleCopyUPI = () => {
-    navigator.clipboard.writeText(SANIKA_UPI_ID);
+  const handleCopyUPI = async () => {
+    try {
+      await navigator.clipboard.writeText(UPI_ID);
+    } catch (err) {
+      // Clipboard can be blocked (permissions, insecure page): not fatal.
+      console.error("Copy failed:", err);
+    }
   };
 
-  if (authLoading || verifying) {
-    return (
-      <div className={styles.center} aria-live="polite">
-        Verifying your order...
-      </div>
-    );
-  }
-
-  const upiLink = `upi://pay?pa=${SANIKA_UPI_ID}&pn=ResinKalaakaari&am=${orderData?.total_price}&cu=INR&tn=Order_${orderId?.slice(0, 8)}`;
+  const upiLink = `upi://pay?pa=${UPI_ID}&pn=ResinKalaakaari&am=${order.total_price}&cu=INR&tn=Order_${order.id.slice(0, 8)}`;
 
   return (
-    <main className={styles.container}>
-      {/* --- CONFETTI RAIN --- */}
+    // A div, not <main>: the root layout already provides the <main>.
+    <div className={styles.container}>
       {showConfetti && (
         <Confetti
           width={width}
           height={height}
-          recycle={false} // Stops raining after one burst
+          recycle={false} // one burst, then stop
           numberOfPieces={1000}
-          gravity={0.1} // Slower, more elegant fall
-          // colors={['#D4AF37', '#1A1A1A', '#F8F9FA']} // Gold, Black, White
+          gravity={0.1} // slower, more elegant fall
         />
       )}
 
@@ -151,9 +105,9 @@ function SuccessContent() {
               Almost Done!
             </h1>
             <p className={styles.message}>
-              To keep our art affordable, we accept direct UPI payments. Please
-              complete your payment of{" "}
-              <strong>₹{orderData?.total_price}</strong>.
+              Order <strong>#{shortOrderId(order.id)}</strong> is placed. To
+              keep our art affordable, we accept direct UPI payments. Please
+              complete your payment of <strong>₹{order.total_price}</strong>.
             </p>
 
             <section
@@ -170,8 +124,9 @@ function SuccessContent() {
               </div>
 
               <div className={styles.upiIdRow}>
-                <code aria-label="UPI ID">{SANIKA_UPI_ID}</code>
+                <code aria-label="UPI ID">{UPI_ID}</code>
                 <button
+                  type="button"
                   onClick={handleCopyUPI}
                   title="Copy UPI ID"
                   aria-label="Copy UPI ID to clipboard"
@@ -181,29 +136,38 @@ function SuccessContent() {
               </div>
             </section>
 
-            <section
+            <form
               className={styles.verificationSection}
+              onSubmit={handleConfirmPayment}
               aria-labelledby="proof-heading"
+              noValidate
             >
               <h3 id="proof-heading">Submit Payment Proof</h3>
               <input
                 type="text"
-                placeholder="Enter 12-digit UTR / Transaction ID"
-                value={utr.toUpperCase()}
-                onChange={(e) => setUtr(e.target.value)}
+                placeholder={`Enter ${UTR_LENGTH}-character UTR / Transaction ID`}
+                value={utr}
+                // Keep letters and digits only, in capitals: that is exactly
+                // what the database accepts.
+                onChange={(e) =>
+                  setUtr(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))
+                }
                 className={styles.utrInput}
-                maxLength={12}
-                aria-label="Enter 12-digit UTR or Transaction ID"
+                maxLength={UTR_LENGTH}
+                aria-label={`Enter ${UTR_LENGTH}-character UTR or Transaction ID`}
+                aria-invalid={error ? true : undefined}
+                autoComplete="off"
               />
+              {error && <FormError>{error}</FormError>}
               <button
-                onClick={handleConfirmPayment}
+                type="submit"
                 className={styles.confirmBtn}
                 disabled={submitting}
                 aria-busy={submitting}
               >
                 {submitting ? "Submitting..." : "Confirm Payment"}
               </button>
-            </section>
+            </form>
           </>
         ) : (
           <div role="alert" aria-live="assertive">
@@ -217,14 +181,15 @@ function SuccessContent() {
             <h1 className={styles.title}>Payment Received!</h1>
             <p className={styles.message}>
               Thank you! Sanika will verify your transaction (ID:{" "}
-              {utr || orderData?.transaction_id}) and update your order status
-              within 24 hours.
+              {utr || order.transaction_id}) and update your order status within
+              24 hours.
             </p>
           </div>
         )}
 
         <div className={styles.actions}>
           <button
+            type="button"
             onClick={handleWhatsAppRedirect}
             className={styles.whatsappBtn}
           >
@@ -235,20 +200,6 @@ function SuccessContent() {
           </Link>
         </div>
       </div>
-    </main>
-  );
-}
-
-export default function Success() {
-  return (
-    <Suspense
-      fallback={
-        <div className={styles.center} aria-live="polite">
-          Loading checkout details...
-        </div>
-      }
-    >
-      <SuccessContent />
-    </Suspense>
+    </div>
   );
 }
