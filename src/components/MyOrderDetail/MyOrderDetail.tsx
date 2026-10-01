@@ -1,134 +1,66 @@
-"use client";
-
 // --- IMPORTS ---
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { client } from "@/lib/supabase";
-import Loader from "@/components/Spinner/Spinner";
-import styles from "./MyOrderDetail.module.css";
+import Image from "next/image";
+import { formatStatus, orderSubtotal, shortOrderId } from "@/lib/orders";
+import type { OrderDetail } from "@/lib/types";
+import styles from "@/components/MyOrderDetail/MyOrderDetail.module.css";
 
 // --- INTERFACES ---
-export interface OrderProduct {
-  name: string;
-  image_url: string;
-}
-
-export interface OrderItem {
-  id: string;
-  quantity: number;
-  price_at_purchase: number;
-  products: OrderProduct; // Nested join data
-}
-
-export interface Order {
-  id: string;
-  status: string;
-  full_name: string;
-  shipping_address: string;
-  city: string;
-  state: string;
-  pincode: string;
-  phone: string;
-  total_price: number;
-  order_items: OrderItem[]; // Array of nested order items
+export interface MyOrderDetailProps {
+  order: OrderDetail;
 }
 
 // --- COMPONENT ---
-export default function MyOrderDetail() {
-  // --- STATE & ROUTING ---
-  const { id } = useParams();
-  const [order, setOrder] = useState<Order | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const supabase = client();
+// Server Component: pure display, no state, so no "use client".
+export default function MyOrderDetail({ order }: MyOrderDetailProps) {
+  // Shipping = total - items, so no page hardcodes the shipping fee.
+  const subtotal = orderSubtotal(order.lines);
+  const shipping = order.total_price - subtotal;
 
-  // --- DATA FETCHING & LIFECYCLE ---
-  useEffect(() => {
-    const fetchFullOrder = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("orders")
-          .select(
-            `
-                        *,
-                        order_items (
-                            *,
-                            products (name, image_url)
-                        )
-                    `,
-          )
-          .eq("id", id)
-          .single();
-
-        if (error) {
-          throw error; // Throw to the catch block for centralized handling
-        }
-
-        if (data) {
-          setOrder(data as Order);
-        }
-      } catch (err: unknown) {
-        console.error("Failed to fetch full order details:", err);
-      } finally {
-        // Ensure loading state is cleared regardless of success or failure
-        setLoading(false);
-      }
-    };
-
-    if (id) {
-      fetchFullOrder();
-    }
-  }, [id, supabase]);
-
-  // --- RENDER GUARDS ---
-  if (loading) return <Loader message={"Loading your order details"} />;
-  if (!order) return <p role="alert">Order not found.</p>;
-
-  // --- MAIN RENDER ---
   return (
-    <main className={styles.container} aria-labelledby="order-title">
-      {/* --- HEADER SECTION --- */}
+    // The layout already provides <main>, so this is a section.
+    <section className={styles.container} aria-labelledby="order-title">
       <header className={styles.header}>
-        <h1 id="order-title">Order #{order.id.slice(0, 8).toUpperCase()}</h1>
+        <h1 id="order-title">Order #{shortOrderId(order.id)}</h1>
         <span
           className={styles.statusBadge}
           data-status={order.status}
-          aria-label={`Order status: ${order.status}`}
+          aria-label={`Order status: ${formatStatus(order.status)}`}
         >
-          {order.status}
+          {formatStatus(order.status)}
         </span>
       </header>
 
-      {/* --- CONTENT GRID --- */}
       <div className={styles.grid}>
-        {/* --- LEFT: ITEMS LIST --- */}
         <section
           className={styles.itemsSection}
           aria-labelledby="items-heading"
         >
           <h3 id="items-heading">Items in your order</h3>
 
-          {order.order_items.map((item: OrderItem) => (
-            <article key={item.id} className={styles.itemCard}>
-              <img
-                src={item.products.image_url}
-                alt={`Product image for ${item.products.name}`}
-                loading="lazy"
-              />
+          {order.lines.map((line) => (
+            <article key={line.id} className={styles.itemCard}>
+              {line.product ? (
+                <Image
+                  src={line.product.image_url}
+                  alt={`Product image for ${line.product.name}`}
+                  width={90}
+                  height={90}
+                />
+              ) : null}
               <div className={styles.itemInfo}>
-                <h4>{item.products.name}</h4>
-                <p>Qty: {item.quantity}</p>
-                <p className={styles.price}>₹{item.price_at_purchase}</p>
+                {/* product is null if it was deleted after the order */}
+                <h4>{line.product?.name ?? "Product no longer available"}</h4>
+                <p>Qty: {line.quantity}</p>
+                <p className={styles.price}>₹{line.price_at_purchase}</p>
               </div>
             </article>
           ))}
         </section>
 
-        {/* --- RIGHT: SUMMARY & SHIPPING --- */}
         <aside
           className={styles.summarySection}
           aria-label="Order Summary and Shipping Details"
         >
-          {/* Shipping Address Card */}
           <div className={styles.card}>
             <h3>Shipping Address</h3>
             <address style={{ fontStyle: "normal" }}>
@@ -141,16 +73,15 @@ export default function MyOrderDetail() {
             </address>
           </div>
 
-          {/* Cost Summary Card */}
           <div className={styles.card}>
             <h3>Order Summary</h3>
             <div className={styles.row}>
               <span>Subtotal</span>
-              <span>₹{order.total_price - 100}</span>
+              <span>₹{subtotal}</span>
             </div>
             <div className={styles.row}>
               <span>Shipping</span>
-              <span>₹100</span>
+              <span>₹{shipping}</span>
             </div>
             <div className={`${styles.row} ${styles.total}`}>
               <span>Total</span>
@@ -159,6 +90,6 @@ export default function MyOrderDetail() {
           </div>
         </aside>
       </div>
-    </main>
+    </section>
   );
 }
