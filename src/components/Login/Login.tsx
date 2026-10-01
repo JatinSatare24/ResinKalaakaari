@@ -11,10 +11,11 @@ import styles from "@/components/Login/Login.module.css";
 // --- INTERFACES ---
 export interface LoginPageProps {
   authError?: string; // set by app/login/page.tsx from ?error= in the URL
+  next?: string; // where to go after login: already checked by safeNextPath
 }
 
 // --- COMPONENT ---
-export default function LoginPage({ authError }: LoginPageProps) {
+export default function LoginPage({ authError, next = "/" }: LoginPageProps) {
   // --- STATE ---
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -36,7 +37,11 @@ export default function LoginPage({ authError }: LoginPageProps) {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          // The callback route re-checks `next` before redirecting.
+          redirectTo:
+            next === "/"
+              ? `${window.location.origin}/auth/callback`
+              : `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
         },
       });
       if (error) setErrorMessage(error.message);
@@ -64,7 +69,7 @@ export default function LoginPage({ authError }: LoginPageProps) {
         setErrorMessage(error.message);
         setLoading(false);
       } else {
-        router.push("/");
+        router.push(next);
         router.refresh();
       }
     } catch (err: unknown) {
@@ -198,7 +203,7 @@ export default function LoginPage({ authError }: LoginPageProps) {
 
       {/* --- FOOTER LINKS --- */}
       <p className={styles.footerText}>
-        Don't have an account?{" "}
+        Don&apos;t have an account?{" "}
         <Link
           href="/signup"
           className={styles.link}
