@@ -1,7 +1,7 @@
 "use client";
 
 // --- IMPORTS ---
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -11,70 +11,29 @@ import {
   FiUser,
   FiLogOut,
   FiPackage,
-  FiSettings,
 } from "react-icons/fi";
 import { client } from "@/lib/supabase";
-import { CartContext } from "@/context/CartContext";
+import { useCart } from "@/context/CartContext";
 import styles from "@/components/Navbar/Navbar.module.css";
-
-// --- INTERFACES ---
-export interface UserMetadata {
-  full_name?: string;
-  avatar_url?: string;
-  picture?: string;
-  [key: string]: unknown; // Strict fallback for additional metadata
-}
-
-export interface SupabaseUser {
-  id: string;
-  email?: string;
-  user_metadata?: UserMetadata;
-}
 
 // --- COMPONENT ---
 export default function Navbar() {
   // --- STATE & REFS ---
   const [open, setOpen] = useState<boolean>(false);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false); // State for dropdown
-  const [user, setUser] = useState<SupabaseUser | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null); // To detect clicks outside
 
   // --- CONTEXT & UTILS ---
-  const { cart } = useContext(CartContext)!;
-  const [supabase] = useState(() => client());
+  // The signed-in user comes from the cart provider, which already listens
+  // to auth changes. (The Navbar used to run its own copy of that listener.)
+  const { cart, user } = useCart();
   const router = useRouter();
 
   // Derived state
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
-  // --- LIFECYCLE & DATA FETCHING ---
-  // 1. Fetch user and listen for changes
-  useEffect(() => {
-    const checkUser = async () => {
-      try {
-        const {
-          data: { user },
-          error,
-        } = await supabase.auth.getUser();
-        if (error) throw error;
-        setUser(user as SupabaseUser | null);
-      } catch (err: unknown) {
-        console.error("Failed to fetch user session:", err);
-      }
-    };
-    checkUser();
-
-    // Safe subscription to auth state changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser((session?.user as SupabaseUser) ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  // 2. Close dropdown when clicking outside
+  // --- LIFECYCLE ---
+  // Close the dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -91,7 +50,8 @@ export default function Navbar() {
   // --- HANDLERS ---
   const handleLogout = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
+      // client() returns the same browser client every time.
+      const { error } = await client().auth.signOut();
       if (error) throw error;
     } catch (err: unknown) {
       console.error("Failed to sign out:", err);
@@ -145,6 +105,7 @@ export default function Navbar() {
             >
               {/* Check for both avatar_url OR picture */}
               {user.user_metadata?.avatar_url || user.user_metadata?.picture ? (
+                // eslint-disable-next-line @next/next/no-img-element -- Google avatar host is not in next.config remotePatterns
                 <img
                   src={
                     user.user_metadata.avatar_url || user.user_metadata.picture

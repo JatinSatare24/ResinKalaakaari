@@ -62,6 +62,9 @@ type CartContextType = {
   // `delta` is how much to change by (+1 / -1), not the new quantity.
   updateQuantity: (id: string, delta: number) => Promise<void>;
   clearCart: () => Promise<void>;
+  // Resolves when every queued database write has finished. Checkout waits
+  // for this, because the order is built from the SAVED cart.
+  flushCart: () => Promise<void>;
   retryCartLoad: () => void;
 };
 
@@ -309,6 +312,9 @@ export default function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [cartReady, userId, enqueue]);
 
+  // The queue tail never rejects (see enqueue), so this never throws.
+  const flushCart = useCallback(() => writeQueue.current, []);
+
   const retryCartLoad = useCallback(() => {
     setLoadResult(null);
     setRetryCount((count) => count + 1);
@@ -329,6 +335,7 @@ export default function CartProvider({ children }: { children: ReactNode }) {
       removeFromCart,
       updateQuantity,
       clearCart,
+      flushCart,
       retryCartLoad,
     }),
     [
@@ -342,6 +349,7 @@ export default function CartProvider({ children }: { children: ReactNode }) {
       removeFromCart,
       updateQuantity,
       clearCart,
+      flushCart,
       retryCartLoad,
     ],
   );

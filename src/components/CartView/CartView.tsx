@@ -18,7 +18,6 @@ import styles from "@/components/CartView/CartView.module.css";
 export default function CartView() {
   const {
     cart,
-    user,
     cartReady,
     cartLoadFailed,
     syncError,
@@ -89,11 +88,12 @@ export default function CartView() {
           <span>₹{cartTotal(cart)}</span>
         </div>
 
-        {/* /checkout is protected by proxy.ts too. The check here just skips
-            a redirect round-trip for a guest. */}
+        {/* Always go to /checkout. For a guest, proxy.ts redirects to
+            /login?next=/checkout, so the "who may enter" rule lives in ONE
+            place and login returns them here. */}
         <button
           type="button"
-          onClick={() => router.push(user ? "/checkout" : "/login")}
+          onClick={() => router.push("/checkout")}
           className={cardStyles.checkoutBtn}
         >
           Proceed to Checkout
