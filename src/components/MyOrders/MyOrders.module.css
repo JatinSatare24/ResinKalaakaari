@@ -97,6 +97,16 @@
   color: #92400e;
 }
 
+.statusBadge[data-status="verifying_payment"] {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.statusBadge[data-status="in-process"] {
+  background-color: #f3e8ff;
+  color: #6b21a8;
+}
+
 .statusBadge[data-status="confirmed"] {
   background-color: #e0e7ff;
   color: #3730a3;
