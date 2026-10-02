@@ -87,3 +87,15 @@ export type PayableOrder = Pick<
   OrderDetail,
   "id" | "total_price" | "status" | "transaction_id"
 >;
+
+// --- Admin ---
+
+// One row of the admin orders table.
+export type AdminOrder = {
+  id: string;
+  created_at: string;
+  transaction_id: string | null; // the UTR, once the customer has paid
+  full_name: string;
+  total_price: number;
+  status: string;
+};

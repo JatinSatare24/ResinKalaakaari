@@ -103,7 +103,7 @@ export async function getOrderForPayment(
 // The SQL functions raise exceptions whose message is a short code. If the
 // message is one of the codes we know, hand it back; otherwise it is a real
 // failure and the caller should throw.
-function knownFailure<T extends string>(
+export function knownFailure<T extends string>(
   known: readonly T[],
   message: string,
 ): T | undefined {
