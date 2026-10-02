@@ -1,222 +1,184 @@
 "use client";
 
 // --- IMPORTS ---
-import React, { useState, useEffect, useContext } from "react";
-import { useRouter } from "next/navigation";
-import { CartContext } from "@/context/CartContext";
-import { client } from "@/lib/supabase";
-import Loader from "@/components/Spinner/Spinner";
+import {
+  useState,
+  useTransition,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
+import Link from "next/link";
+import { saveProfile } from "@/app/profile/actions";
+import FormError from "@/components/FormError/FormError";
+import { hasErrors, parseShipping, type ShippingErrors } from "@/lib/checkout";
+import { validateProfile } from "@/lib/profile";
+import type { ShippingDetails } from "@/lib/types";
 import styles from "@/components/Profile/Profile.module.css";
 
 // --- INTERFACES ---
-export interface ProfileState {
-  full_name: string;
-  phone: string;
-  address_line: string;
-  city: string;
-  state: string;
-  pincode: string;
+export interface ProfileProps {
+  initial: ShippingDetails; // saved details, loaded on the server
+  email: string; // shown read-only
 }
 
 // --- COMPONENT ---
-export default function Profile() {
-  // --- CONTEXT & UTILS ---
-  const { user, loading: authLoading } = useContext(CartContext)!;
-  const supabase = client();
-  const router = useRouter();
+// Only the form is interactive, so it is the only client code. The page
+// (Server Component) loads the data and checks the session.
+export default function Profile({ initial, email }: ProfileProps) {
+  const [form, setForm] = useState<ShippingDetails>(initial);
+  const [fieldErrors, setFieldErrors] = useState<ShippingErrors>({});
+  const [formError, setFormError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  // --- STATE ---
-  const [loading, setLoading] = useState<boolean>(true);
-  const [updating, setUpdating] = useState<boolean>(false);
-  const [profile, setProfile] = useState<ProfileState>({
-    full_name: "",
-    phone: "",
-    address_line: "",
-    city: "",
-    state: "",
-    pincode: "",
-  });
-
-  // --- LIFECYCLE & DATA FETCHING ---
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (!user) return;
-
-      try {
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", user.id)
-          .single();
-
-        if (error) throw error;
-
-        if (data) {
-          setProfile({
-            full_name: data.full_name || "",
-            phone: data.phone || "",
-            address_line: data.address_line || "",
-            city: data.city || "",
-            state: data.state || "",
-            pincode: data.pincode || "",
-          });
-        }
-      } catch (err: unknown) {
-        console.error("Error fetching profile:", err);
-      } finally {
-        setLoading(false);
-      }
+  const handleChange =
+    (name: keyof ShippingDetails) =>
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setForm((prev) => ({ ...prev, [name]: event.target.value }));
+      setSaved(false);
     };
 
-    if (!authLoading) {
-      if (!user) router.push("/login");
-      else fetchProfile();
-    }
-  }, [user, authLoading, router, supabase]);
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSaved(false);
+    setFormError(null);
 
-  // --- HANDLERS ---
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setUpdating(true);
+    // Instant feedback. The server action runs the same rules again.
+    const details = parseShipping(form);
+    const errors = validateProfile(details);
+    setFieldErrors(errors);
+    if (hasErrors(errors)) return;
 
-    try {
-      // 1. Create the payload without the ID
-      const payload: Partial<ProfileState> = {
-        full_name: profile.full_name,
-        phone: profile.phone,
-        address_line: profile.address_line,
-        city: profile.city,
-        state: profile.state,
-        pincode: profile.pincode,
-      };
-
-      // 2. Perform the update with the .eq() filter
-      const { error } = await supabase
-        .from("profiles")
-        .update(payload)
-        .eq("id", user?.id);
-
-      if (error) throw error;
-
-      alert("Profile updated successfully! ✨");
-    } catch (err: any) {
-      console.error("Supabase Error:", err.message);
-      alert(`Error: ${err.message}`);
-    } finally {
-      setUpdating(false);
-    }
+    startTransition(async () => {
+      const result = await saveProfile(details);
+      if (result.ok) {
+        setSaved(true);
+        return;
+      }
+      setFieldErrors(result.fieldErrors ?? {});
+      setFormError(result.message);
+    });
   };
 
-  // --- RENDER GUARDS ---
-  if (authLoading || loading)
-    return <Loader message={"Loading your profile"} />;
+  const fieldProps = (name: keyof ShippingDetails) => ({
+    value: form[name],
+    onChange: handleChange(name),
+    "aria-invalid": fieldErrors[name] ? true : undefined,
+    "aria-describedby": fieldErrors[name] ? `${name}-error` : undefined,
+    style: fieldErrors[name] ? { borderColor: "#dc2626" } : undefined,
+  });
+  const errorFor = (name: keyof ShippingDetails) =>
+    fieldErrors[name] ? (
+      <FormError id={`${name}-error`}>{fieldErrors[name]}</FormError>
+    ) : null;
 
-  // --- MAIN RENDER ---
   return (
-    <main className={styles.container} aria-labelledby="profile-title">
-      {/* --- HEADER --- */}
+    // The layout already provides <main>, so this is a section.
+    <section className={styles.container} aria-labelledby="profile-title">
       <header className={styles.header}>
         <h1 id="profile-title">Your Profile</h1>
-        <button
-          className={styles.ordersShortcut}
-          onClick={() => router.push("/my-orders")}
-          aria-label="Navigate to my orders"
-        >
+        {/* A real link (keyboard, middle-click) instead of router.push. */}
+        <Link href="/my-orders" className={styles.ordersShortcut}>
           📦 View My Orders
-        </button>
+        </Link>
       </header>
 
-      {/* --- PROFILE FORM --- */}
+      {/* noValidate: we show our own messages instead of browser bubbles. */}
       <form
-        onSubmit={handleUpdate}
+        onSubmit={handleSubmit}
         className={styles.form}
         aria-label="Edit Profile Details"
+        noValidate
       >
-        {/* Personal Details Section */}
         <section
           className={styles.section}
           aria-labelledby="personal-details-heading"
         >
-          <h3 id="personal-details-heading">Personal Details</h3>
+          <h2 id="personal-details-heading">Personal Details</h2>
           <input
+            {...fieldProps("full_name")}
             type="text"
             placeholder="Full Name"
             aria-label="Full Name"
-            value={profile.full_name}
-            onChange={(e) =>
-              setProfile({ ...profile, full_name: e.target.value })
-            }
+            autoComplete="name"
           />
+          {errorFor("full_name")}
           <input
             type="email"
-            aria-label="Email (Disabled)"
-            value={user?.email || ""}
+            aria-label="Email (cannot be changed)"
+            value={email}
             disabled
             className={styles.disabledInput}
           />
           <input
+            {...fieldProps("phone")}
             type="tel"
             placeholder="Phone Number"
             aria-label="Phone Number"
-            value={profile.phone}
-            onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+            autoComplete="tel"
           />
+          {errorFor("phone")}
         </section>
 
-        {/* Shipping Address Section */}
         <section
           className={styles.section}
           aria-labelledby="shipping-address-heading"
         >
-          <h3 id="shipping-address-heading">Shipping Address</h3>
+          <h2 id="shipping-address-heading">Shipping Address</h2>
           <textarea
+            {...fieldProps("address_line")}
             placeholder="Full Address"
             aria-label="Full Shipping Address"
             rows={3}
-            value={profile.address_line}
-            onChange={(e) =>
-              setProfile({ ...profile, address_line: e.target.value })
-            }
+            autoComplete="street-address"
           />
+          {errorFor("address_line")}
           <div className={styles.row}>
             <input
+              {...fieldProps("city")}
               type="text"
               placeholder="City"
               aria-label="City"
-              value={profile.city}
-              onChange={(e) => setProfile({ ...profile, city: e.target.value })}
+              autoComplete="address-level2"
             />
             <input
+              {...fieldProps("state")}
               type="text"
               placeholder="State"
               aria-label="State"
-              value={profile.state}
-              onChange={(e) =>
-                setProfile({ ...profile, state: e.target.value })
-              }
+              autoComplete="address-level1"
             />
             <input
+              {...fieldProps("pincode")}
               type="text"
+              inputMode="numeric"
               placeholder="Pincode"
               aria-label="Pincode"
-              value={profile.pincode}
-              onChange={(e) =>
-                setProfile({ ...profile, pincode: e.target.value })
-              }
+              autoComplete="postal-code"
             />
           </div>
+          {errorFor("city")}
+          {errorFor("state")}
+          {errorFor("pincode")}
         </section>
 
-        {/* Submit Action */}
+        {formError && <FormError>{formError}</FormError>}
+        {/* Replaces the old alert() popup. role="status" is announced politely. */}
+        {saved && (
+          <p role="status" className={styles.saved}>
+            Profile saved.
+          </p>
+        )}
+
         <button
           type="submit"
-          disabled={updating}
+          disabled={isPending}
           className={styles.saveBtn}
-          aria-busy={updating}
+          aria-busy={isPending}
         >
-          {updating ? "Saving..." : "Save Changes"}
+          {isPending ? "Saving..." : "Save Changes"}
         </button>
       </form>
-    </main>
+    </section>
   );
 }

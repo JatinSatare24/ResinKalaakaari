@@ -40,6 +40,9 @@
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
+  /* It is a <Link> now, not a <button>. */
+  display: block;
+  text-decoration: none;
 }
 
 .ordersShortcut:hover {
@@ -64,7 +67,7 @@
   gap: 15px;
 }
 
-.section h3 {
+.section h2 {
   font-size: 14px;
   font-weight: 700;
   color: #6b7280;
@@ -134,12 +137,12 @@
   cursor: not-allowed;
 }
 
-/* Retained per protocol rules */
-.loader {
-  text-align: center;
-  padding: 80px 20px;
-  color: #6b7280;
-  font-style: italic;
+/* "Profile saved." message (replaces the old alert popup) */
+.saved {
+  margin: 0;
+  color: #166534;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 /* ===============================
