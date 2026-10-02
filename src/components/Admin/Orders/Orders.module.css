@@ -16,11 +16,16 @@
   color: #1a1a1a;
 }
 
-.loader {
+.summary {
+  margin: -10px 0 20px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.empty {
+  padding: 40px 0;
   text-align: center;
-  padding: 100px 20px;
-  font-size: 18px;
-  color: #666;
+  color: #6b7280;
 }
 
 /* ==========================================================================
@@ -88,30 +93,39 @@
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
+  /* Fallback for a status we have no colour for. */
+  background: #f3f4f6;
+  color: #374151;
 }
 
-/* Status Colors (Lowercased to match TSX logic) */
-.pending {
+/* Status colours. data-status holds the raw value, so "in-process" and
+   "verifying_payment" match exactly. */
+.badge[data-status="pending"] {
   background: #fff3cd;
   color: #856404;
 }
 
-.verifying_payment {
-  background: #e0e7ff;
-  color: #3730a3;
+.badge[data-status="verifying_payment"] {
+  background: #dbeafe;
+  color: #1e40af;
 }
 
-.confirmed {
+.badge[data-status="in-process"] {
+  background: #f3e8ff;
+  color: #6b21a8;
+}
+
+.badge[data-status="confirmed"] {
   background: #d1ecf1;
   color: #0c5460;
 }
 
-.shipped {
+.badge[data-status="shipped"] {
   background: #cce5ff;
   color: #004085;
 }
 
-.delivered {
+.badge[data-status="delivered"] {
   background: #d4edda;
   color: #155724;
 }
