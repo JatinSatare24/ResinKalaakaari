@@ -45,6 +45,16 @@
   color: #92400e;
 }
 
+.statusBadge[data-status="verifying_payment"] {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.statusBadge[data-status="in-process"] {
+  background: #f3e8ff;
+  color: #6b21a8;
+}
+
 .statusBadge[data-status="confirmed"] {
   background: #e0e7ff;
   color: #3730a3;
@@ -53,6 +63,11 @@
 .statusBadge[data-status="shipped"] {
   background: #d1fae5;
   color: #065f46;
+}
+
+.statusBadge[data-status="delivered"] {
+  background: #f3f4f6;
+  color: #1f2937;
 }
 
 /* --- GRID LAYOUT --- */
