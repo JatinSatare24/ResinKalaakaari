@@ -2,6 +2,10 @@
 // products page, so the last row is never half empty.
 export const PRODUCTS_PER_PAGE = 12;
 
+// Orders per page on the admin list. A table row is short, so 20 fits a
+// screen or two without scrolling forever.
+export const ADMIN_ORDERS_PER_PAGE = 20;
+
 // Most units of ONE product a cart may hold. A sanity ceiling (it stops
 // nonsense like 1000000000 from an edited localStorage), not a stock rule.
 export const MAX_CART_QUANTITY = 99;

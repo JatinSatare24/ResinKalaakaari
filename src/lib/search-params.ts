@@ -24,6 +24,11 @@ function parsePage(value: string | undefined): number {
   return Number.isSafeInteger(n) && n >= 1 ? n : 1;
 }
 
+// For pages that only have ?page= (the admin list).
+export function parsePageParam(raw: RawSearchParams): number {
+  return parsePage(first(raw.page));
+}
+
 // Everything in a URL is untrusted text. This is the one place it gets
 // cleaned before it reaches the data layer.
 export function parseProductsQuery(raw: RawSearchParams): ProductsQuery {
@@ -46,4 +51,9 @@ export function buildProductsHref(query: Partial<ProductsQuery>): string {
   if (query.page && query.page > 1) params.set("page", String(query.page));
   const queryString = params.toString();
   return queryString ? `/products?${queryString}` : "/products";
+}
+
+// Link to one page of the admin orders list (page 1 has no query string).
+export function buildAdminOrdersHref(page: number): string {
+  return page > 1 ? `/admin/orders?page=${page}` : "/admin/orders";
 }
