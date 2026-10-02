@@ -32,12 +32,14 @@ export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const isCheckout = pathname.startsWith("/checkout");
   const isMyOrders = pathname.startsWith("/my-orders");
+  const isProfile = pathname.startsWith("/profile");
   const isAdmin = pathname.startsWith("/admin");
 
-  // Auth gate: covers all three protected areas. This is only the FIRST,
-  // optimistic gate (fast redirect); each protected page checks again with
-  // requireUser(), and RLS protects the data itself.
-  if (!user && (isCheckout || isMyOrders || isAdmin)) {
+  // Auth gate: covers every signed-in area. This is only the FIRST,
+  // optimistic gate (fast redirect, no role check: that would need a database
+  // call on every request). Each protected page checks again on the server
+  // (requireUser / requireAdmin), and RLS protects the data itself.
+  if (!user && (isCheckout || isMyOrders || isProfile || isAdmin)) {
     const loginUrl = new URL("/login", request.url);
     // Remember where they were going; login sends them back (see safe-next.ts).
     loginUrl.searchParams.set("next", pathname + request.nextUrl.search);
