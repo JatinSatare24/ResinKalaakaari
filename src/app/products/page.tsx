@@ -82,7 +82,11 @@ export default async function ProductsPage({
       </div>
 
       {totalPages > 1 && (
-        <PaginationControls query={query} totalPages={totalPages} />
+        <PaginationControls
+          page={query.page}
+          totalPages={totalPages}
+          buildHref={(page) => buildProductsHref({ ...query, page })}
+        />
       )}
     </div>
   );

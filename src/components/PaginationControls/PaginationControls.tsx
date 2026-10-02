@@ -1,30 +1,27 @@
 // --- IMPORTS ---
 import Link from "next/link";
-import { buildProductsHref, type ProductsQuery } from "@/lib/search-params";
 import styles from "@/components/PaginationControls/PaginationControls.module.css";
 
 // --- INTERFACES ---
 export interface PaginationControlsProps {
-  query: ProductsQuery; // current filters, kept in the links
+  page: number; // current page, 1-based
   totalPages: number;
+  // Turns a page number into a URL, so the same controls serve the products
+  // page (keeps filters in the link) and the admin list.
+  buildHref: (page: number) => string;
 }
 
 // --- COMPONENT ---
 // Plain links, no client state: each button is just a URL with ?page=N.
 export default function PaginationControls({
-  query,
+  page,
   totalPages,
+  buildHref,
 }: PaginationControlsProps) {
-  const { page } = query;
-
   return (
     <nav className={styles.nav} aria-label="Pagination">
       {page > 1 ? (
-        <Link
-          href={buildProductsHref({ ...query, page: page - 1 })}
-          className={styles.button}
-          rel="prev"
-        >
+        <Link href={buildHref(page - 1)} className={styles.button} rel="prev">
           ←
         </Link>
       ) : (
@@ -36,11 +33,7 @@ export default function PaginationControls({
       </p>
 
       {page < totalPages ? (
-        <Link
-          href={buildProductsHref({ ...query, page: page + 1 })}
-          className={styles.button}
-          rel="next"
-        >
+        <Link href={buildHref(page + 1)} className={styles.button} rel="next">
           →
         </Link>
       ) : (
