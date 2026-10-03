@@ -73,7 +73,8 @@ export async function getProducts({
 
   if (error) {
     // PGRST103 = "range not satisfiable": the page number is past the end.
-    // The page component turns this into a redirect.
+    // The page component turns this into a redirect to page 1 (an empty
+    // result has no total, so it cannot know the real last page).
     if (error.code === "PGRST103") return { products: [], totalCount: 0 };
     throw new Error(`getProducts failed: ${error.message}`);
   }

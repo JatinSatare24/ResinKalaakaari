@@ -19,6 +19,8 @@ export const SHIPPING_FEE = 100;
 export const UTR_LENGTH = 12;
 
 // Where customers pay, and where they send the payment screenshot.
-// (The send-order-email edge function has its own copy: Phase 8.)
+// The send-order-email edge function keeps its own copy of UPI_ID in
+// supabase/functions/send-order-email/config.ts (the function runs on Deno and
+// cannot import from src/). Change both together.
 export const UPI_ID = "9175461840@ibl";
 export const WHATSAPP_NUMBER = "919022223759";

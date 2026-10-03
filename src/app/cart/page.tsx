@@ -5,7 +5,7 @@ import CartView from "@/components/CartView/CartView";
 // component (it read the cart), so it could not set a title. Now this page is
 // a thin server component and CartView holds the client-side cart UI.
 export const metadata: Metadata = {
-  title: "Your Cart | Resin Kalaakari",
+  title: "Your Cart | Resin Kalaakaari",
   // A cart is personal and empty for crawlers; keep it out of search results.
   robots: { index: false },
 };
