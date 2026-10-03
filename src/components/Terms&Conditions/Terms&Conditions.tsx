@@ -2,13 +2,8 @@
 import React from "react";
 import styles from "@/components/Policies/Policies.module.css";
 
-// --- INTERFACES ---
-export interface TermsAndConditionsProps {
-  // Interface established for future scalability (e.g., dynamic "Last Updated" date)
-}
-
 // --- COMPONENT ---
-const TermsAndConditions: React.FC<TermsAndConditionsProps> = () => {
+const TermsAndConditions: React.FC = () => {
   // --- RENDER ---
   return (
     <main className={styles.container} aria-labelledby="terms-title">

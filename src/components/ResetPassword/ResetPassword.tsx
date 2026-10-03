@@ -6,13 +6,8 @@ import { useRouter } from "next/navigation";
 import { client } from "@/lib/supabase";
 import styles from "@/components/Login/Login.module.css";
 
-// --- INTERFACES ---
-export interface ResetPasswordProps {
-  // Interface established for future scalability (e.g., passing custom redirect paths)
-}
-
 // --- COMPONENT ---
-export default function ResetPassword(props: ResetPasswordProps) {
+export default function ResetPassword() {
   // --- STATE ---
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
