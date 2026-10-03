@@ -25,7 +25,7 @@ export default function CartCard({ item }: CartCardProps) {
   return (
     <article className={styles.card} aria-labelledby={`item-name-${item.id}`}>
       {/* --- PRODUCT IMAGE --- */}
-      <div className={styles.imageContainer}>
+      <div>
         {/* width/height only reserve the aspect ratio; CartCard.module.css
             sets the real size per breakpoint (95 / 150 / 200 / 300px), and
             `sizes` mirrors that so the browser downloads a small file. */}
@@ -64,11 +64,7 @@ export default function CartCard({ item }: CartCardProps) {
           </button>
 
           {/* aria-live ensures screen readers announce the number update immediately */}
-          <span
-            aria-live="polite"
-            aria-atomic="true"
-            className={styles.quantityDisplay}
-          >
+          <span aria-live="polite" aria-atomic="true">
             {item.quantity}
           </span>
 
