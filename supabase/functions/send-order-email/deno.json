@@ -1,5 +1,9 @@
 {
   "imports": {
-    "@supabase/functions-js": "jsr:@supabase/functions-js@^2"
+    "@supabase/supabase-js": "npm:@supabase/supabase-js@2.104.0",
+    "resend": "npm:resend@6.12.2",
+    "jspdf": "npm:jspdf@4.2.1",
+    "jspdf-autotable": "npm:jspdf-autotable@5.0.8",
+    "qrcode": "npm:qrcode@1.5.4"
   }
 }
