@@ -49,10 +49,6 @@ import type { CartItem, CartProduct } from "@/lib/types";
 type CartContextType = {
   cart: CartItem[];
   user: User | null;
-  // True until Supabase has told us who is signed in. No component reads it
-  // any more (protected pages check the user on the server); it is kept for
-  // now and can go in a later cleanup.
-  loading: boolean;
   // True once the cart can be trusted: auth is known and, for a signed-in
   // user, the database copy has loaded. Changes are ignored before that.
   cartReady: boolean;
@@ -328,7 +324,6 @@ export default function CartProvider({ children }: { children: ReactNode }) {
     () => ({
       cart: items,
       user,
-      loading: !authReady,
       cartReady,
       cartLoadFailed,
       syncError,
@@ -342,7 +337,6 @@ export default function CartProvider({ children }: { children: ReactNode }) {
     [
       items,
       user,
-      authReady,
       cartReady,
       cartLoadFailed,
       syncError,
