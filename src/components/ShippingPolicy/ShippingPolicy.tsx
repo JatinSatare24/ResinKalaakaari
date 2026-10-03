@@ -8,13 +8,8 @@
 import React from "react";
 import styles from "@/components/Policies/Policies.module.css";
 
-// --- INTERFACES ---
-export interface ShippingPolicyProps {
-  // Interface established for future scalability (e.g., dynamic shipping rates)
-}
-
 // --- COMPONENT ---
-export default function ShippingPolicy(props: ShippingPolicyProps) {
+export default function ShippingPolicy() {
   // --- RENDER ---
   return (
     <main className={styles.container} aria-labelledby="shipping-policy-title">
