@@ -41,7 +41,8 @@ export default async function ProductsPage({
 
   const totalPages = Math.max(1, Math.ceil(totalCount / PRODUCTS_PER_PAGE));
 
-  // ?page=999 (old bookmark, hand-typed URL): go to the last real page.
+  // ?page=999 (old bookmark, hand-typed URL): the data layer reports an empty
+  // result, so totalPages is 1 and this lands on page 1.
   // redirect() throws on purpose, so it must not sit inside a try/catch.
   if (query.page > totalPages) {
     redirect(buildProductsHref({ ...query, page: totalPages }));

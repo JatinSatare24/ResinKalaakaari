@@ -15,10 +15,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
 
-  if (!product) return { title: "Product not found | Resin Kalaakari" };
+  if (!product) return { title: "Product not found | Resin Kalaakaari" };
 
   return {
-    title: `${product.name} | Resin Kalaakari`,
+    title: `${product.name} | Resin Kalaakaari`,
     description: product.description?.slice(0, 160) ?? undefined,
     openGraph: { images: [product.image_url] },
   };
