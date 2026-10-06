@@ -81,9 +81,7 @@ export default function ShippingPolicy() {
         </p>
 
         {/* Possible Delays Subsection */}
-        <h3 style={{ marginTop: "15px", fontSize: "1.1rem" }}>
-          Possible Delays
-        </h3>
+        <h3 className={styles.subheading}>Possible Delays</h3>
         <p>
           While we do our best to ensure timely delivery, there may be
           occasional delays due to factors beyond our control such as holidays,
@@ -102,15 +100,7 @@ export default function ShippingPolicy() {
           <strong className={styles.highlight}>complete and accurate</strong>{" "}
           shipping details to avoid any delays or delivery issues.
         </p>
-        <div
-          className={styles.noteBox}
-          style={{
-            marginTop: "10px",
-            padding: "10px",
-            background: "#f9f9f9",
-            borderRadius: "5px",
-          }}
-        >
+        <div className={styles.noteBox}>
           <p>
             <strong className={styles.highlight}>Tracking:</strong> Tracking
             details will be shared once your order has been shipped so you can
@@ -127,8 +117,7 @@ export default function ShippingPolicy() {
           <span className={styles.highlight}>advance payment</span> is received.
         </p>
         <div
-          className={styles.alertBox}
-          style={{ borderLeft: "4px solid #e74c3c", marginTop: "15px" }}
+          className={`${styles.alertBox} ${styles.alertBoxClaims}`}
           role="alert"
         >
           <p>

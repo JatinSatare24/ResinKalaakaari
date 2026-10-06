@@ -38,6 +38,11 @@
   margin-bottom: 16px;
 }
 
+/* The check mark on the payment-received view (decorative, hidden from screen readers). */
+.iconSuccess {
+  color: #10b981;
+}
+
 .title {
   font-size: 22px;
   font-weight: 800;

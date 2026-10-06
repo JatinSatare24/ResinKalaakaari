@@ -63,7 +63,7 @@ export default function MyOrderDetail({ order }: MyOrderDetailProps) {
         >
           <div className={styles.card}>
             <h3>Shipping Address</h3>
-            <address style={{ fontStyle: "normal" }}>
+            <address>
               <p>{order.full_name}</p>
               <p>{order.shipping_address}</p>
               <p>

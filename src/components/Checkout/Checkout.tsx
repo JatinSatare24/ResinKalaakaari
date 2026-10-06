@@ -150,8 +150,8 @@ export default function Checkout({ initialShipping }: CheckoutProps) {
     <div className={styles.pageWrapper}>
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <h1 style={{ fontWeight: 700 }}>Checkout</h1>
-          <Link href="/cart" style={{ fontSize: "14px", color: "#666" }}>
+          <h1>Checkout</h1>
+          <Link href="/cart" className={styles.backLink}>
             Back to Cart
           </Link>
         </div>
@@ -266,9 +266,7 @@ export default function Checkout({ initialShipping }: CheckoutProps) {
                   {isSubmitting ? "Placing order..." : "Place Order"}
                 </button>
 
-                <p
-                  style={{ fontSize: "12px", color: "#666", marginTop: "12px" }}
-                >
+                <p className={styles.priceNote}>
                   Prices are confirmed again when you place the order.
                 </p>
               </div>

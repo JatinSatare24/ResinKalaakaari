@@ -158,6 +158,11 @@
   margin: 4px 0;
 }
 
+/* <address> is italic by default; the shipping details should not be. */
+.card address {
+  font-style: normal;
+}
+
 .row {
   display: flex;
   justify-content: space-between;

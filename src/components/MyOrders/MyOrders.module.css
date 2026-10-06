@@ -21,6 +21,8 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  list-style: none;
+  padding: 0;
 }
 
 .orderCard {
@@ -123,7 +125,12 @@
 }
 
 /* --- BUTTONS --- */
+/* The button is a <Link>: the card styles give the border and padding, and
+   display/text-decoration/color remove the link's own look. */
 .detailsBtn {
+  display: block;
+  text-decoration: none;
+  color: inherit;
   width: 100%;
   /* Full width on mobile feels more "app-like" */
   background: transparent;
@@ -148,6 +155,11 @@
   padding: 60px 20px;
   background: #f9fafb;
   border-radius: 20px;
+}
+
+.emptyState .detailsBtn {
+  margin: 16px auto 0;
+  max-width: 220px;
 }
 
 /* ===============================

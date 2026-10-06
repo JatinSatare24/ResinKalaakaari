@@ -159,3 +159,17 @@
     top: 100px; /* Adjust based on your Navbar height */
   }
 }
+
+/* ==========================================================================
+   SMALL TEXT (moved here from inline styles)
+   ========================================================================== */
+.backLink {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.priceNote {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 12px;
+}

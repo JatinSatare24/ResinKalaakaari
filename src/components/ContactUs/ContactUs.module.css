@@ -97,6 +97,16 @@
   overflow: hidden;
 }
 
+.mapSide iframe {
+  border: 0;
+  border-radius: 20px;
+}
+
+/* <address> is italic by default; the contact list should not be. */
+.infoSide {
+  font-style: normal;
+}
+
 /* ===============================
    DESKTOP LAYOUT (≥ 1024px)
 ================================= */

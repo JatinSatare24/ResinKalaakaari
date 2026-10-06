@@ -182,10 +182,7 @@ export default function LoginPage({ authError, next = "/" }: LoginPageProps) {
         )}
 
         {successMessage && (
-          <p
-            style={{ color: "#2ecc71", fontSize: "14px", marginBottom: "10px" }}
-            role="alert"
-          >
+          <p className={styles.successText} role="alert">
             {successMessage}
           </p>
         )}
@@ -213,19 +210,11 @@ export default function LoginPage({ authError, next = "/" }: LoginPageProps) {
         </Link>
       </p>
 
-      <p className={styles.footerText} style={{ marginTop: "10px" }}>
+      <p className={`${styles.footerText} ${styles.forgotText}`}>
         <button
           onClick={handleForgotPassword}
-          className={styles.link}
+          className={`${styles.link} ${styles.forgotBtn}`}
           aria-label="Send a password reset link to your email"
-          style={{
-            fontSize: "12px",
-            opacity: 0.7,
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            fontFamily: "inherit",
-          }}
         >
           Forgot your password?
         </button>
