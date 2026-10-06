@@ -445,9 +445,8 @@
   .nav {
     height: 5.5rem;
     /* The bar stays full width, but the logo and icons line up with the
-       centered content column: side padding is the gutter, or more once the
-       screen is wider than the content cap. */
-    padding: 0 max(var(--page-gutter), calc((100% - var(--content-max)) / 2));
+       centered content column. */
+    padding: 0 var(--content-inset);
   }
 
   /* Logo aligns naturally */

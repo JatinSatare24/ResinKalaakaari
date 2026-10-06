@@ -72,7 +72,7 @@
 
 .name {
   font-family: var(--font-inter);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   color: #222;
   margin-bottom: 2px;
@@ -86,7 +86,7 @@
 
 .price {
   font-family: var(--font-inter);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   color: #000;
   letter-spacing: 0.2px;
@@ -106,7 +106,7 @@
   border-radius: 999px;
   text-align: center;
   margin: 12px auto;
-  font-size: 14px;
+  font-size: 0.875rem;
   outline: none;
   transition:
     border 0.2s ease,
@@ -130,7 +130,7 @@
 }
 
 .productCount {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #6b7280;
   white-space: nowrap;
 }
@@ -144,22 +144,34 @@
   text-align: center;
   padding: 40px 20px;
   color: #555;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 /* ===============================
    RESPONSIVE: TABLET (≥ 768px)
+   Cards stop using fixed heights: the picture is square and the card
+   stretches to the tallest card in its row.
 ================================= */
 @media (min-width: 768px) {
+  .productContainer {
+    max-width: var(--content-max);
+    margin: 5px auto;
+  }
+
   .productGrid {
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    padding: 16px 24px;
+    padding: 16px var(--page-gutter);
   }
 
   .card {
-    height: 320px;
+    height: 100%;
     border-radius: 16px;
+  }
+
+  .image {
+    height: auto;
+    aspect-ratio: 1 / 1;
   }
 
   .content {
@@ -172,11 +184,11 @@
   }
 
   .name {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 
   .price {
-    font-size: 17px;
+    font-size: 1rem;
   }
 
   .search {
@@ -184,96 +196,40 @@
   }
 
   .SortContainer {
-    width: 90%;
+    width: 100%;
+    padding: 0 var(--page-gutter);
   }
 }
 
 /* ===============================
    RESPONSIVE: DESKTOP (≥ 1024px)
+   Four columns on the products list. Nothing grows past here.
 ================================= */
 @media (min-width: 1024px) {
   .productGrid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 24px;
-    /* max-width: 1200px; */
-    margin: 0 auto;
-  }
-
-  .card {
-    height: 450px;
-  }
-
-  .image {
-    height: 72%;
   }
 
   .content {
-    padding: 10px 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
     gap: 2px;
-    flex-grow: 1;
   }
 
   .name {
-    font-size: 18px;
-  }
-
-  .price {
-    font-size: 18px;
+    font-size: 1.0625rem;
   }
 
   .search {
     width: 30%;
     height: 40px;
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 
   .SortContainer {
-    width: 92%;
-    margin: 16px auto;
-  }
-}
-
-/* ===============================
-   RESPONSIVE: LARGE SCREENS (≥ 1280px)
-================================= */
-@media (min-width: 1280px) {
-  .productGrid {
-    grid-template-columns: repeat(6, 1fr);
-    gap: 24px;
-  }
-
-  .card {
-    height: 800px;
-    width: 450px;
-  }
-
-  .content {
-    padding: 10px 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1rem;
-    flex-grow: 1;
-  }
-
-  .name {
-    font-size: 24px;
-  }
-
-  .price {
-    font-size: 24px;
-  }
-
-  .SortContainer {
-    width: 93%;
     margin: 16px auto;
   }
 
   .productCount {
-    font-size: 1.2rem;
-    margin: 0 1rem;
+    font-size: 0.875rem;
   }
 }

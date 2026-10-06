@@ -84,8 +84,15 @@
    RESPONSIVE: DESKTOP (≥ 1024px)
 ================================= */
 @media (min-width: 1024px) {
+  /* A fixed, shorter height: the hero no longer grows with the screen. */
+  .hero,
+  .slide {
+    height: 30rem;
+  }
+
   .overlay {
-    padding: 40px 60px;
+    /* Lines the button up with the page content column. */
+    padding: 2.5rem var(--content-inset);
   }
 
   .cta {
@@ -101,10 +108,6 @@
 @media (min-width: 1280px) {
   .carousel {
     display: none;
-  }
-
-  .hero {
-    height: 80vh;
   }
 
   .desktopBanner {
@@ -129,32 +132,16 @@
   }
 
   .headline {
-    font-size: 4rem;
+    /* Grows a little with the screen, then stops at 3rem. */
+    font-size: clamp(2.25rem, 3.5vw, 3rem);
     font-weight: 700;
     color: #1a1a1a;
   }
 
   .subText {
-    font-size: 1.5rem;
-    /* Kept small as requested */
+    font-size: 1.25rem;
     color: #666;
     margin-top: 0.5rem;
-  }
-}
-
-/* ===============================
-   RESPONSIVE: EXTRA LARGE (≥ 1440px)
-================================= */
-@media (min-width: 1440px) {
-  .hero {
-    /* max-width: 1280px; */
-    margin: 0 auto;
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  .slide {
-    border-radius: 12px;
   }
 }
 

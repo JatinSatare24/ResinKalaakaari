@@ -80,7 +80,7 @@
 ================================= */
 @media (min-width: 768px) {
   .featuredSection {
-    padding: 3rem 2rem;
+    padding: 3rem var(--content-inset);
   }
 
   .heading {
@@ -106,12 +106,11 @@
 
 /* ===============================
    RESPONSIVE: DESKTOP (≥ 1024px)
+   Three columns (six products = two clean rows). Nothing grows past here.
 ================================= */
 @media (min-width: 1024px) {
   .featuredSection {
-    padding: 4rem 3rem;
-    /* max-width: 1200px; */
-    margin: 0 auto;
+    padding: 4rem var(--content-inset);
   }
 
   .heading {
@@ -119,7 +118,6 @@
   }
 
   .grid {
-    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
   }
 
@@ -129,33 +127,6 @@
 
   .viewAllButton {
     font-size: 1rem;
-    padding: 0.8rem 2rem;
-  }
-}
-
-/* ===============================
-   RESPONSIVE: LARGE SCREENS (≥ 1280px)
-================================= */
-@media (min-width: 1280px) {
-  .featuredSection {
-    margin: 0 auto;
-  }
-
-  .heading {
-    font-size: 2.5rem;
-  }
-
-  .grid {
-    grid-template-columns: repeat(6, 1fr);
-    gap: 2rem;
-  }
-
-  .viewAllContainer {
-    width: 25%;
-  }
-
-  .viewAllButton {
-    font-size: 1.5rem;
     padding: 0.8rem 2rem;
   }
 }

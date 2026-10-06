@@ -131,7 +131,7 @@
 ================================= */
 @media (min-width: 768px) {
   .shopByCategoryContainer {
-    padding: 2rem 2rem 4rem;
+    padding: 2rem var(--content-inset) 4rem;
   }
 
   .heading {
@@ -172,9 +172,8 @@
 ================================= */
 @media (min-width: 1024px) {
   .shopByCategoryContainer {
-    padding: 1.5rem 2rem 3rem;
+    padding: 1.5rem var(--content-inset) 3rem;
     /* max-width: 1200px; */
-    margin: 0 auto;
   }
 
   .heading {
@@ -199,24 +198,5 @@
     font-size: 1.1rem;
     padding: 0.9rem 0.3rem;
     margin-top: 2rem;
-  }
-}
-
-/* ===============================
-   RESPONSIVE: LARGE SCREENS (≥ 1280px)
-================================= */
-@media (min-width: 1280px) {
-  .categoryCard {
-    font-size: 1.5rem;
-  }
-
-  .viewAllContainer {
-    width: 6%;
-    /* Note: Fixed leading zero syntax */
-  }
-
-  .viewAllButton {
-    font-size: 1.6rem;
-    padding: 0.8rem 0.5rem;
   }
 }
