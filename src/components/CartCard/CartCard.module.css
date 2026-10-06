@@ -35,7 +35,7 @@
 }
 
 .name {
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 500;
   width: 200px;
   margin-bottom: 4px;
@@ -43,13 +43,13 @@
 }
 
 .price {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #666;
   margin-bottom: 8px;
 }
 
 .total {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
 }
 
@@ -82,7 +82,7 @@
   right: 13px;
   border: none;
   background: transparent;
-  font-size: 18px;
+  font-size: 1.125rem;
   cursor: pointer;
   color: #666;
 }
@@ -107,7 +107,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   border-bottom: 1px solid #eee;
   padding-bottom: 10px;
@@ -115,7 +115,7 @@
 }
 
 .totalRow span:last-child {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 700;
 }
 
@@ -169,13 +169,13 @@
 
 .title {
   font-family: var(--font-playfair);
-  font-size: 22px;
+  font-size: 1.375rem;
   font-weight: 600;
   margin-bottom: 8px;
 }
 
 .subtitle {
-  font-size: 14px;
+  font-size: 0.875rem;
   color: #666;
   margin-bottom: 20px;
 }
@@ -185,7 +185,7 @@
   border-radius: 999px;
   background: #111;
   color: #fff;
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   text-decoration: none;
@@ -200,41 +200,29 @@
   transform: scale(0.97);
 }
 
-/* ==========================================================================
-   4. RESPONSIVE DESIGN (Media Queries)
-   ========================================================================== */
-
-/* Tablet (≥ 768px) */
+/* ===============================
+   RESPONSIVE: TABLET (≥ 768px)
+   Cards sit two across in one white box, with no fixed heights or widths.
+================================= */
 @media (min-width: 768px) {
   .cartContainer {
-    width: 95%;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    align-items: flex-start;
+    /* Lines the box up with the navbar and footer content column. */
+    margin: 0 var(--content-inset);
     background: #fff;
     border-radius: 16px;
     padding: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    position: relative;
     border: 1px solid #f1f1f1;
   }
 
   .card {
-    display: flex;
-    width: 46%;
-    height: 200px;
+    height: auto;
     gap: 20px;
-    align-items: center;
     justify-content: space-between;
-    background: #fff;
-    border-radius: 16px;
-    padding: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    position: relative;
-    margin: 5px 8px;
-    border: 1px solid #f1f1f1;
+    margin: 0;
   }
 
   .image {
@@ -243,56 +231,39 @@
   }
 
   .name {
-    width: 150px;
-    font-size: 16px;
+    width: auto;
+    font-size: 1rem;
   }
 
   .price {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   .summary {
-    width: 35%;
+    width: 100%;
+    max-width: 24rem;
     margin: 1rem auto;
   }
 }
 
-/* Desktop (≥ 1024px) */
+/* ===============================
+   RESPONSIVE: DESKTOP (≥ 1024px)
+   A bigger picture. Nothing grows past here.
+================================= */
 @media (min-width: 1024px) {
   .cartContainer {
-    width: 90%;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 1rem auto;
     gap: 1rem;
-    align-items: center;
-    background: #fff;
-    border-radius: 16px;
-    padding: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    position: relative;
-    border: 1px solid #f1f1f1;
+    margin: 1rem var(--content-inset);
   }
 
   .card {
-    display: flex;
-    width: 45%;
-    height: 300px;
     gap: 2rem;
-    align-items: center;
     justify-content: space-around;
-    background: #fff;
-    border-radius: 16px;
-    padding: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    position: relative;
-    margin: auto;
-    border: 1px solid #f1f1f1;
   }
 
   .image {
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
   }
 
   .content {
@@ -304,89 +275,18 @@
   }
 
   .summary {
-    width: 30%;
     margin: 2rem auto;
   }
 
   .name {
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
 
   .price {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 
   .total {
-    font-size: 15px;
-  }
-}
-
-/* Large Screens (≥ 1280px) */
-@media (min-width: 1280px) {
-  .cartContainer {
-    width: 80%;
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    margin: 1.5rem auto;
-    gap: 5px;
-    align-items: flex-start;
-    background: #fff;
-    border-radius: 16px;
-    padding: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    position: relative;
-    border: 1px solid #f1f1f1;
-  }
-
-  .card {
-    display: flex;
-    width: 30%;
-    height: 400px;
-    gap: 3rem;
-    align-items: center;
-    justify-content: space-between;
-    background: #fff;
-    border-radius: 16px;
-    padding: 1rem 3rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    position: relative;
-    margin: 2rem 1rem;
-  }
-
-  .image {
-    width: 300px;
-    height: 300px;
-  }
-
-  .name {
-    font-size: 24px;
-    width: 300px;
-  }
-
-  .price {
-    font-size: 20px;
-  }
-
-  .total {
-    font-size: 20px;
-  }
-
-  .content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 0.8rem;
-  }
-
-  .summary {
-    width: 15%;
-  }
-
-  .totalRow,
-  .checkoutBtn,
-  .clearBtn {
-    font-size: 1.3rem;
+    font-size: 0.9375rem;
   }
 }
