@@ -463,7 +463,7 @@
 
   .FiUser,
   .FiShoppingCart {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   .cartLink {
@@ -511,8 +511,8 @@
   }
 
   .avatar {
-    width: 2rem;
-    height: 2rem;
+    width: 1.75rem;
+    height: 1.75rem;
     border-radius: 50%;
     border: 1.5px solid #fce4ec;
     /* Subtle pastel border */
@@ -521,7 +521,7 @@
 
   .FiUser,
   .FiShoppingCart {
-    font-size: 1.75rem;
+    font-size: 1.375rem;
   }
 
   .dropdown {
