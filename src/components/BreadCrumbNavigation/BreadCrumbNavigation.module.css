@@ -35,30 +35,22 @@
   cursor: default;
 }
 
-/* ==========================================================================
-   3. RESPONSIVE DESIGN (Media Queries)
-   ========================================================================== */
-
-/* Tablet View */
+/* ===============================
+   RESPONSIVE: TABLET (≥ 768px)
+   Lines up with the page content column.
+================================= */
 @media (min-width: 768px) {
   .breadcrumb {
     font-size: 0.9rem;
-    margin: 0.2rem 2rem 1rem;
+    margin: 0.2rem 0 1rem;
   }
 }
 
-/* Small Desktop View */
+/* ===============================
+   RESPONSIVE: DESKTOP (≥ 1024px)
+================================= */
 @media (min-width: 1024px) {
   .breadcrumb {
     font-size: 1rem;
-    margin: 0.2rem 2rem 1rem;
-  }
-}
-
-/* Large Desktop View */
-@media (min-width: 1280px) {
-  .breadcrumb {
-    font-size: 1.7rem;
-    margin: 1rem 7rem;
   }
 }
