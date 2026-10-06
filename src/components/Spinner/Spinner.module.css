@@ -9,8 +9,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 60vh; /* keeps the page from jumping while it loads */
+  /* A full-page loader fills the screen, so the footer stays below the fold
+     while loading instead of showing and then dropping down. */
+  min-height: 100vh;
   width: 100%;
+}
+
+/* A loader for one section of a page (used on the home page). */
+.section {
+  min-height: 24rem;
 }
 
 .spinner {
@@ -50,5 +57,12 @@
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+/* Slow the spin for people who ask for less motion (it still shows progress). */
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 2.4s;
   }
 }
