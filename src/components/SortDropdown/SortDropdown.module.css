@@ -9,7 +9,7 @@
   padding: 10px 36px 10px 16px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: #111827;
   background-color: #ffffff;
   /* Custom Dropdown Arrow SVG */
@@ -46,15 +46,5 @@
   .select {
     width: 60%;
     font-size: 1rem;
-  }
-}
-
-/* ===============================
-   RESPONSIVE: LARGE SCREENS (≥ 1280px)
-================================= */
-@media (min-width: 1280px) {
-  .select {
-    width: 60%;
-    font-size: 1.5rem;
   }
 }

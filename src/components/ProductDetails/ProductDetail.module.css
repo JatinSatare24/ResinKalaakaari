@@ -51,19 +51,19 @@
 
 .name {
   font-family: var(--font-playfair);
-  font-size: 22px;
+  font-size: 1.375rem;
   font-weight: 600;
   margin-bottom: 8px;
 }
 
 .price {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 12px;
 }
 
 .description {
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: #666;
   line-height: 1.6;
   margin-bottom: 20px;
@@ -78,7 +78,7 @@
   border-radius: 999px;
   background: #111;
   color: #fff;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -120,16 +120,26 @@
    RESPONSIVE: TABLET (≥ 768px)
 ================================= */
 @media (min-width: 768px) {
+  /* Lines the page up with the navbar and footer content column. */
+  .container,
+  .relatedProductsContainer {
+    padding: 0 var(--content-inset);
+  }
+
   .productLayout {
     padding: 2rem;
   }
 
   .name {
-    font-size: 24px;
+    font-size: 1.5rem;
   }
 
   .price {
-    font-size: 22px;
+    font-size: 1.375rem;
+  }
+
+  .relatedProductsTitle {
+    font-size: 1.5rem;
   }
 
   .relatedProducts {
@@ -139,6 +149,7 @@
 
 /* ===============================
    RESPONSIVE: DESKTOP (≥ 1024px)
+   Square picture next to the text. Nothing grows past here.
 ================================= */
 @media (min-width: 1024px) {
   .productLayout {
@@ -149,11 +160,23 @@
 
   .imageWrapper {
     flex: 1;
-    height: 420px;
+    aspect-ratio: 1 / 1;
   }
 
   .content {
     flex: 1;
+  }
+
+  .name {
+    font-size: 1.75rem;
+  }
+
+  .price {
+    font-size: 1.5rem;
+  }
+
+  .description {
+    font-size: 1rem;
   }
 
   .button {
@@ -163,60 +186,5 @@
 
   .relatedProducts {
     grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* ===============================
-   RESPONSIVE: LARGE SCREENS (≥ 1280px)
-================================= */
-@media (min-width: 1280px) {
-  .productLayout {
-    width: 95%;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 3rem;
-    margin: auto;
-  }
-
-  .imageWrapper {
-    flex: 1;
-    height: 900px;
-    width: 900px;
-  }
-
-  .content {
-    flex: 2;
-  }
-
-  .name {
-    font-size: 3rem;
-  }
-
-  .price {
-    font-size: 2rem;
-  }
-
-  .description {
-    font-size: 1.3rem;
-  }
-
-  .button {
-    font-size: 1.5rem;
-    margin: auto;
-    width: 20%;
-  }
-
-  .relatedProductsContainer {
-    width: 95%;
-  }
-
-  .relatedProductsTitle {
-    font-size: 2rem;
-    margin: 0.5rem;
-  }
-
-  .relatedProducts {
-    grid-template-columns: repeat(4, 1fr);
-    width: 500px;
   }
 }

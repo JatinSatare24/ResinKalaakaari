@@ -16,7 +16,7 @@
   padding: 10px 42px 10px 16px;
   border: 1px solid #d1d5db;
   border-radius: 999px;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: #111827;
   background-color: #ffffff;
   outline: none;
@@ -47,7 +47,7 @@
   right: 14px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #9ca3af;
   pointer-events: none;
   white-space: nowrap;
@@ -63,12 +63,12 @@
   }
 
   .input {
-    font-size: 16px;
+    font-size: 1rem;
     padding: 12px 44px 12px 18px;
   }
 
   .status {
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
 }
 
@@ -83,26 +83,12 @@
   }
 
   .input {
-    font-size: 20px;
+    font-size: 1rem;
     padding: 12px 46px 12px 20px;
   }
 
   .status {
     right: 16px;
-    font-size: 13px;
-  }
-}
-
-/* ===============================
-   RESPONSIVE: LARGE SCREENS (≥ 1280px)
-================================= */
-@media (min-width: 1280px) {
-  .wrapper {
-    margin: 3rem auto 1rem;
-    width: 25%;
-  }
-
-  .input {
-    font-size: 1.7rem;
+    font-size: 0.8125rem;
   }
 }

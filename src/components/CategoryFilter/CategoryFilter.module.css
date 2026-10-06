@@ -48,47 +48,13 @@
   border-color: #6b46c1;
 }
 
-/* ==========================================================================
-   4. RESPONSIVE DESIGN (Media Queries)
-   ========================================================================== */
-
-/* Tablet (≥ 768px) */
+/* ===============================
+   RESPONSIVE: TABLET (≥ 768px)
+   The pills keep their size and the row no longer has a fixed height.
+================================= */
 @media (min-width: 768px) {
   .container {
     gap: 1rem;
-    margin: 5px 30px;
-    height: 50px;
-  }
-
-  .name {
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
-}
-
-/* Small Desktop (≥ 1024px) */
-@media (min-width: 1024px) {
-  .container {
-    height: 80px;
-    gap: 1rem;
-    margin: 5px 30px;
-  }
-
-  .name {
-    font-size: 1.5rem;
-    font-weight: 600;
-  }
-}
-
-/* Large Desktop (≥ 1280px) */
-@media (min-width: 1280px) {
-  .container {
-    gap: 1.5rem;
-    margin: 5px 7rem;
-  }
-
-  .name {
-    font-size: 1.5rem;
-    font-weight: 600;
+    margin: 5px 0;
   }
 }
