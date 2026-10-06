@@ -8,7 +8,7 @@
    ========================================================================== */
 .card {
   display: flex;
-  height: 150px;
+  min-height: 150px;
   gap: 1.2rem;
   align-items: center;
   background: #fff;
@@ -32,12 +32,12 @@
 
 .content {
   flex: 1;
+  min-width: 0;
 }
 
 .name {
   font-size: 0.9375rem;
   font-weight: 500;
-  width: 200px;
   margin-bottom: 4px;
   color: #222;
 }
@@ -62,6 +62,7 @@
 
 /* Updated to target the specific class name used in the JSX */
 .controlButton {
+  position: relative;
   width: 32px;
   height: 32px;
   border-radius: 10px;
@@ -89,6 +90,20 @@
 
 .remove:hover {
   color: #000;
+}
+
+/* A bigger tap area for the (x) button without changing how it looks. */
+.remove::after {
+  content: "";
+  position: absolute;
+  inset: -0.75rem;
+}
+
+/* Same idea for the +/- buttons: they stay 32px, but the tap area is about 44px. */
+.controlButton::after {
+  content: "";
+  position: absolute;
+  inset: -0.375rem;
 }
 
 /* ==========================================================================
