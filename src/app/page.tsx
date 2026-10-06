@@ -5,7 +5,7 @@ import FeaturedProducts from "@/components/FeaturedProducts/FeaturedProducts";
 import ShopByCategory from "@/components/ShopByCategory/ShopByCategory";
 import Gallery from "@/components/Gallery/Gallery";
 import Testimonials from "@/components/Testimonials/Testimonials";
-import LoadingUI from "@/components/LoadingUI/LoadingUI";
+import Loader from "@/components/Spinner/Spinner";
 
 // Title, description and the social-share image come from the root layout.
 // Only the canonical URL is specific to the home page.
@@ -25,20 +25,20 @@ export default function Home() {
           ready, and a slow one never blocks the others. */}
       <Suspense
         fallback={
-          <LoadingUI variant="section" label="Loading featured products" />
+          <Loader variant="section" message="Loading featured products" />
         }
       >
         <FeaturedProducts />
       </Suspense>
 
       <Suspense
-        fallback={<LoadingUI variant="section" label="Loading categories" />}
+        fallback={<Loader variant="section" message="Loading categories" />}
       >
         <ShopByCategory />
       </Suspense>
 
       <Suspense
-        fallback={<LoadingUI variant="section" label="Loading gallery" />}
+        fallback={<Loader variant="section" message="Loading gallery" />}
       >
         <Gallery />
       </Suspense>

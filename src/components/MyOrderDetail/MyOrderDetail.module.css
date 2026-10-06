@@ -23,7 +23,7 @@
 }
 
 .header h1 {
-  font-size: 20px;
+  font-size: 1.25rem;
   /* Scaled down for mobile */
   font-weight: 800;
   margin: 0;
@@ -33,7 +33,7 @@
 .statusBadge {
   padding: 6px 14px;
   border-radius: 99px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -80,7 +80,7 @@
 
 /* --- ORDER ITEMS SECTION --- */
 .itemsSection h3 {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 700;
   margin-bottom: 16px;
   color: #374151;
@@ -109,14 +109,14 @@
 
 .itemInfo h4 {
   margin: 0 0 4px 0;
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: #111;
 }
 
 .itemInfo p {
   margin: 0;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #6b7280;
 }
 
@@ -142,7 +142,7 @@
 }
 
 .card h3 {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
   margin-bottom: 12px;
   color: #111;
@@ -152,7 +152,7 @@
 }
 
 .card p {
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.5;
   color: #4b5563;
   margin: 4px 0;
@@ -167,7 +167,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: #6b7280;
 }
 
@@ -176,7 +176,7 @@
   padding-top: 16px;
   border-top: 2px solid #f9fafb;
   font-weight: 800;
-  font-size: 18px;
+  font-size: 1.125rem;
   color: #111;
 }
 
@@ -198,7 +198,7 @@
   }
 
   .header h1 {
-    font-size: 28px;
+    font-size: 1.75rem;
   }
 
   .grid {
