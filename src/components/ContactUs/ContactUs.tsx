@@ -4,15 +4,8 @@ import { FiPhone, FiMail, FiMapPin, FiClock } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 import styles from "@/components/ContactUs/ContactUs.module.css";
 
-// --- INTERFACES ---
-export interface ContactUsProps {
-  /** * Interface established for future prop drilling
-   * (e.g., dynamic contact data from a CMS)
-   */
-}
-
 // --- COMPONENT ---
-const ContactUs: React.FC<ContactUsProps> = () => {
+const ContactUs = () => {
   // --- STATE & LIFECYCLE ---
   // (Reserved for future interactive logic like a contact form state)
 
@@ -25,14 +18,14 @@ const ContactUs: React.FC<ContactUsProps> = () => {
           Get in Touch
         </h1>
         <p className={styles.subtitle}>
-          Have a question about a custom order? I'd love to hear from you.
+          Have a question about a custom order? I&apos;d love to hear from you.
         </p>
       </header>
 
       {/* --- MAIN CONTENT GRID --- */}
       <div className={styles.contentGrid}>
         {/* --- LEFT SIDE: CONTACT INFO --- */}
-        <address className={styles.infoSide} style={{ fontStyle: "normal" }}>
+        <address className={styles.infoSide}>
           {/* Phone Contact */}
           <section
             className={styles.contactCard}
@@ -109,7 +102,6 @@ const ContactUs: React.FC<ContactUsProps> = () => {
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3781.6837383929296!2d73.8129471!3d18.5882917!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b9602032e8a1%3A0x7bf5bd72b14bbdae!2sResin%20Kalaakaari!5e0!3m2!1sen!2sin!4v1777040914200!5m2!1sen!2sin"
             width="100%"
             height="100%"
-            style={{ border: 0, borderRadius: "20px" }}
             allowFullScreen={true}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"

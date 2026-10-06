@@ -76,8 +76,8 @@ export default function ResetPassword() {
 
       {/* --- CONDITIONAL VIEWS --- */}
       {success ? (
-        <div style={{ textAlign: "center" }} role="alert" aria-live="assertive">
-          <p style={{ color: "#2ecc71", marginBottom: "20px" }}>
+        <div role="alert" aria-live="assertive">
+          <p className={styles.resetSuccess}>
             Password updated successfully! Taking you to the home page...
           </p>
         </div>

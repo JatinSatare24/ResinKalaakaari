@@ -172,8 +172,7 @@ export default function Success({ order }: SuccessProps) {
         ) : (
           <div role="alert" aria-live="assertive">
             <div
-              className={styles.icon}
-              style={{ color: "#10b981" }}
+              className={`${styles.icon} ${styles.iconSuccess}`}
               aria-hidden="true"
             >
               <FiCheckCircle size={50} />

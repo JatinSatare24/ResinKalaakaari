@@ -27,7 +27,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
       />
 
       <article className={styles.productLayout} aria-labelledby="product-title">
-        <figure className={styles.imageWrapper} style={{ margin: 0 }}>
+        <figure className={styles.imageWrapper}>
           {/* This image is at the top of the page, so load it right away
               instead of lazily. */}
           <Image

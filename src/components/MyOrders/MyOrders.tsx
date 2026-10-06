@@ -9,14 +9,6 @@ export interface MyOrdersProps {
   orders: OrderSummary[];
 }
 
-// A <Link> that looks like the old buttons: the card styles give the border
-// and padding, this only removes the link's own underline and colour.
-const linkAsButton = {
-  display: "block",
-  textDecoration: "none",
-  color: "inherit",
-} as const;
-
 // --- COMPONENT ---
 // No "use client": it only shows data, so it stays a Server Component and
 // ships no JavaScript. Navigation uses real links (keyboard, middle-click,
@@ -27,11 +19,7 @@ export default function MyOrders({ orders }: MyOrdersProps) {
       <div className={styles.emptyState}>
         <h2>No orders yet!</h2>
         <p>Your artistic sanctuary is waiting for its first piece.</p>
-        <Link
-          href="/products"
-          className={styles.detailsBtn}
-          style={{ ...linkAsButton, margin: "16px auto 0", maxWidth: "220px" }}
-        >
+        <Link href="/products" className={styles.detailsBtn}>
           Start Shopping
         </Link>
       </div>
@@ -45,10 +33,7 @@ export default function MyOrders({ orders }: MyOrdersProps) {
         My Orders
       </h1>
 
-      <ul
-        className={styles.orderList}
-        style={{ listStyle: "none", padding: 0 }}
-      >
+      <ul className={styles.orderList}>
         {orders.map((order) => (
           <li key={order.id}>
             <article className={styles.orderCard}>
@@ -81,7 +66,6 @@ export default function MyOrders({ orders }: MyOrdersProps) {
                 <Link
                   href={`/my-orders/${order.id}`}
                   className={styles.detailsBtn}
-                  style={linkAsButton}
                   aria-label={`View details for order ${shortOrderId(order.id)}`}
                 >
                   View Details
