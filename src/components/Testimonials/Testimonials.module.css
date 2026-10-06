@@ -80,7 +80,7 @@
 ================================= */
 @media (min-width: 768px) {
   .testimonials {
-    padding: 3rem 2rem 4.5rem;
+    padding: 3rem var(--content-inset) 4.5rem;
   }
 
   .heading {
@@ -97,21 +97,16 @@
 
 /* ===============================
    RESPONSIVE: DESKTOP (≥ 1024px)
+   Text on the left, card on the right, inside the content column.
 ================================= */
 @media (min-width: 1024px) {
   .testimonials {
-    width: 100%;
-    max-width: 100%;
-    /* Background spans full width */
-    padding: 6rem 10%;
-    margin: 0;
+    padding: 6rem var(--content-inset);
   }
 
   .contentWrapper {
     flex-direction: row;
-    /* Side-by-side on desktop */
     justify-content: space-between;
-    /* max-width: 1200px; */
     margin: 0 auto;
     text-align: left;
   }
@@ -120,11 +115,12 @@
     flex: 1;
     text-align: left;
     padding-right: 4rem;
+    height: auto;
   }
 
   .heading {
-    font-size: 3rem;
-    /* Make it big to fill space */
+    /* Grows a little with the screen, then stops at 3rem. */
+    font-size: clamp(2rem, 3.2vw, 3rem);
     line-height: 1.1;
     margin-bottom: 1.5rem;
   }
@@ -139,53 +135,10 @@
   .cardContainer {
     flex: 1;
     max-width: 500px;
-    /* Limits the carousel width */
   }
 
   .card {
     max-width: 100%;
     height: 600px;
-    /* Adjust to fit your screenshots */
-  }
-}
-
-/* ===============================
-   RESPONSIVE: LARGE SCREENS (≥ 1280px)
-================================= */
-@media (min-width: 1280px) {
-  .testimonials {
-    /* Expand the container so it doesn't look like a small island */
-    width: 40%;
-    padding: 4rem 1rem;
-    margin: 2rem auto;
-  }
-
-  .heading {
-    font-size: 3rem;
-    margin-bottom: 3rem;
-  }
-
-  .description {
-    display: block;
-    font-size: 2rem;
-    color: #666;
-    max-width: 400px;
-  }
-
-  .card {
-    /* BIGGER CARD SIZE */
-    width: 1200px;
-    /* Increased from 500px */
-    height: 900px;
-    /* Increased from 700px to fit long Google reviews */
-    padding: 1rem;
-    margin: auto;
-    /* Optional: Stronger shadow for the bigger card */
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  }
-
-  .image {
-    /* Ensure the image fills the bigger card perfectly */
-    object-fit: contain;
   }
 }

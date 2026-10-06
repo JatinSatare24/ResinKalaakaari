@@ -22,6 +22,15 @@ body {
      mobile layout never reads them. */
   --content-max: 80rem; /* widest the page content may get (1280px) */
   --page-gutter: 1rem; /* side space between content and the screen edge */
+
+  /* Side padding for a full-width bar or section whose content should line up
+     with the centered column: the gutter, or more once the screen is wider than
+     --content-max. The 100% resolves against the element's parent, so only use
+     this inside `padding`. */
+  --content-inset: max(
+    var(--page-gutter),
+    calc((100% - var(--content-max)) / 2)
+  );
 }
 
 @media (min-width: 768px) {
