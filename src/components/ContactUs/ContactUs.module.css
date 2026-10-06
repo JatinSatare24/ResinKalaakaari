@@ -7,7 +7,6 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: clamp(2rem, 8vh, 6rem) 20px;
-  font-family: "Inter", sans-serif;
 }
 
 .contentGrid {
@@ -108,9 +107,25 @@
 }
 
 /* ===============================
+   RESPONSIVE: TABLET (≥ 768px)
+   Lines the page up with the navbar and footer content column.
+================================= */
+@media (min-width: 768px) {
+  .contactContainer {
+    max-width: none;
+    padding: clamp(2rem, 8vh, 6rem) var(--content-inset);
+  }
+}
+
+/* ===============================
    DESKTOP LAYOUT (≥ 1024px)
 ================================= */
 @media (min-width: 1024px) {
+  /* Page titles stop at 3rem, the same as the About and policy pages. */
+  .title {
+    font-size: 3rem;
+  }
+
   .contentGrid {
     grid-template-columns: 1fr 1.2fr;
     /* Info on left, Map on right */
