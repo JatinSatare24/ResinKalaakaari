@@ -121,9 +121,11 @@
   }
 
   .container {
+    /* Centered column: the dark footer background stays edge to edge. */
+    max-width: var(--content-max);
     grid-template-columns: repeat(2, 1fr);
     gap: 2.5rem;
-    padding: 0 2rem;
+    padding: 0 var(--page-gutter);
   }
 
   .logo {
@@ -150,7 +152,6 @@
   .container {
     grid-template-columns: repeat(4, 1fr);
     gap: 3rem;
-    padding: 0 3rem;
   }
 
   .logo {
@@ -167,52 +168,5 @@
 
   .section a {
     font-size: 0.95rem;
-  }
-}
-
-/* ===============================
-   RESPONSIVE: LARGE SCREENS (≥ 1280px)
-================================= */
-@media (min-width: 1280px) {
-  .footer {
-    padding-top: 4rem;
-  }
-
-  .container {
-    /* grid-template-columns: repeat(4, 1fr); */
-    display: flex;
-    justify-content: space-around;
-    gap: 2rem;
-    padding: 0 3rem;
-    width: 90%;
-  }
-
-  .logo {
-    font-size: 2rem;
-  }
-
-  .heading {
-    font-size: 1.5rem;
-  }
-
-  .description {
-    font-size: 1.5rem;
-    width: 450px;
-  }
-
-  .section {
-    height: 90%;
-  }
-
-  .section a {
-    font-size: 1.5rem;
-  }
-
-  .socialLink {
-    padding-left: 30px;
-  }
-
-  .bottom {
-    font-size: 1.5rem;
   }
 }
