@@ -17,6 +17,23 @@ body {
 :root {
   --font-primary: var(--font-inter);
   --font-accent: var(--font-playfair);
+
+  /* Phase 9 desktop layout rules. Used only inside min-width queries, so the
+     mobile layout never reads them. */
+  --content-max: 80rem; /* widest the page content may get (1280px) */
+  --page-gutter: 1rem; /* side space between content and the screen edge */
+}
+
+@media (min-width: 768px) {
+  :root {
+    --page-gutter: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --page-gutter: 2rem;
+  }
 }
 
 body {

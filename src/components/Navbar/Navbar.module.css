@@ -58,7 +58,7 @@
   top: 30px;
   background: #333;
   color: white;
-  font-size: 10px;
+  font-size: 0.625rem;
   padding: 2px 6px;
   border-radius: 4px;
   white-space: nowrap;
@@ -76,7 +76,7 @@
   border: none;
   border-bottom: 1px solid #eee;
   padding: 10px 0;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
   color: #d32f2f;
   /* Red for logout */
@@ -144,13 +144,13 @@
 
 .userName {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 0.875rem;
   margin: 0;
   color: #111;
 }
 
 .userEmail {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #666;
   margin: 2px 0 0 0;
 }
@@ -168,7 +168,7 @@
   padding: 12px 20px;
   color: #444;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 0.875rem;
   transition: background 0.2s;
 }
 
@@ -187,7 +187,7 @@
   border: none;
   color: #ff4d4d;
   /* Red for logout */
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
   text-align: left;
@@ -253,7 +253,7 @@
   border-radius: 999px;
   background: #111;
   color: #fff;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -290,13 +290,13 @@
 
 .menuTitle {
   font-family: var(--font-playfair);
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 600;
 }
 
 /* Close Button */
 .close {
-  font-size: 22px;
+  font-size: 1.375rem;
   background: none;
   border: none;
   cursor: pointer;
@@ -310,7 +310,7 @@
 }
 
 .menuLinks a {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
   padding: 10px 0;
   text-decoration: none;
@@ -443,20 +443,28 @@
 ================================= */
 @media (min-width: 768px) {
   .nav {
-    height: 120px;
-    padding: 0 1.5rem;
+    height: 5.5rem;
+    /* The bar stays full width, but the logo and icons line up with the
+       centered content column: side padding is the gutter, or more once the
+       screen is wider than the content cap. */
+    padding: 0 max(var(--page-gutter), calc((100% - var(--content-max)) / 2));
   }
 
   /* Logo aligns naturally */
   .logo {
     position: static;
     transform: none;
-    margin: auto 0.5rem 1.5rem;
+    margin: 0;
+  }
+
+  /* Logo sized to fit inside the shorter bar (the image is about 1.65:1) */
+  .image {
+    width: 7.5rem;
   }
 
   .FiUser,
   .FiShoppingCart {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 
   .cartLink {
@@ -480,7 +488,7 @@
 
   .desktopLinks a {
     text-decoration: none;
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 500;
     color: #333;
     transition: color 0.3s ease;
@@ -496,17 +504,16 @@
 ================================= */
 @media (min-width: 1024px) {
   .nav {
-    padding: 0 2rem;
-    height: 130px;
+    height: 6rem;
   }
 
-  .logo {
-    margin: auto 0.5rem 1rem;
+  .image {
+    width: 8rem;
   }
 
   .avatar {
-    width: 40px;
-    height: 40px;
+    width: 2rem;
+    height: 2rem;
     border-radius: 50%;
     border: 1.5px solid #fce4ec;
     /* Subtle pastel border */
@@ -515,18 +522,21 @@
 
   .FiUser,
   .FiShoppingCart {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 
   .dropdown {
-    width: 300px;
+    width: 16rem;
   }
 
   .dropdownItem,
   .userName,
-  .userEmail,
   .logoutBtn {
-    font-size: 1.2rem;
+    font-size: 1rem;
+  }
+
+  .userEmail {
+    font-size: 0.875rem;
   }
 
   .cartLink {
@@ -538,7 +548,7 @@
   }
 
   .desktopLinks a {
-    font-size: 16px;
+    font-size: 1rem;
   }
 
   .cartLink {
@@ -547,33 +557,8 @@
   }
 
   .badge {
-    font-size: 11px;
+    font-size: 0.6875rem;
     min-width: 18px;
     height: 18px;
-  }
-}
-
-/* ===============================
-   RESPONSIVE: LARGE SCREENS (≥ 1280px)
-================================= */
-@media (min-width: 1280px) {
-  .nav {
-    width: 100%;
-    margin: 0 auto;
-    height: 150px;
-    padding: 0 3rem;
-  }
-
-  .logo {
-    margin: auto 0.5rem 1.5rem;
-  }
-
-  .FiUser,
-  .FiShoppingCart {
-    font-size: 2rem;
-  }
-
-  .cartLink {
-    font-size: 0.5rem;
   }
 }
