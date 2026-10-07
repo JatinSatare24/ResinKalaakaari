@@ -41,6 +41,10 @@
 }
 
 .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem; /* 44px tap target */
   font-family: var(--font-inter);
   font-weight: 600;
   font-size: 0.95rem;

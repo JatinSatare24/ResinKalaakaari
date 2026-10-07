@@ -26,7 +26,7 @@
 
 .eyebrow {
   font-family: var(--font-inter);
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -51,6 +51,10 @@
 }
 
 .link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem; /* 44px tap target */
   font-family: var(--font-inter);
   font-weight: 600;
   font-size: 0.95rem;
