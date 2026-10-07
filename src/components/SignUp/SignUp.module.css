@@ -10,6 +10,8 @@
 }
 
 .card {
+  /* 1rem of space either side on phones; max-width takes over on wider screens. */
+  width: calc(100% - 2rem);
   max-width: 420px;
   margin: 80px auto;
   padding: 40px;
@@ -66,7 +68,6 @@
 }
 
 .input:focus {
-  outline: none;
   border-color: #d1c4e9;
   /* Light pastel purple */
 }

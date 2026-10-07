@@ -4,6 +4,8 @@
 
 /* --- MOBILE FIRST: BASE LAYOUT --- */
 .authContainer {
+  /* 1rem of space either side on phones; max-width takes over on wider screens. */
+  width: calc(100% - 2rem);
   max-width: 420px;
   margin: 80px auto;
   padding: 40px;
@@ -62,7 +64,6 @@
 }
 
 .inputField:focus {
-  outline: none;
   border-color: #d1c4e9;
   /* Light pastel purple */
 }
@@ -197,7 +198,8 @@
 }
 
 .forgotBtn {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
   opacity: 0.7;
   background: none;
   border: none;
