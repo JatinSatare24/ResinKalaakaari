@@ -10,7 +10,7 @@
 }
 
 .adminTitle {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 20px;
   color: #1a1a1a;
@@ -18,7 +18,7 @@
 
 .summary {
   margin: -10px 0 20px;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: #6b7280;
 }
 
@@ -65,7 +65,7 @@
   align-items: center;
   padding: 12px 0;
   border-bottom: 1px solid #f3f4f6;
-  font-size: 14px;
+  font-size: 0.875rem;
   word-break: break-all;
 }
 
@@ -79,7 +79,7 @@
   content: attr(data-label);
   font-weight: 700;
   color: #9ca3af;
-  font-size: 11px;
+  font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -90,7 +90,7 @@
 .badge {
   padding: 4px 10px;
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   /* Fallback for a status we have no colour for. */
@@ -134,9 +134,11 @@
   padding: 8px;
   border-radius: 6px;
   border: 1px solid #d1d5db;
-  font-size: 13px;
+  font-size: 0.875rem;
   background-color: white;
   max-width: 160px;
+  /* 44px tap target on phones; the desktop table puts it back below. */
+  min-height: 2.75rem;
 }
 
 /* ==========================================================================
@@ -145,8 +147,8 @@
 @media (min-width: 1024px) {
   .adminWrapper {
     margin: 40px auto;
-    /* Increased for more breathing room */
-    padding: 0 20px;
+    /* Lines the table up with the navbar and footer content column. */
+    padding: 0 var(--content-inset);
   }
 
   .orderTable {
@@ -235,6 +237,7 @@
   .statusSelect {
     width: 100%;
     max-width: 170px;
+    min-height: 0;
     padding: 8px 12px;
     border: 1px solid #e2e8f0;
     border-radius: 6px;

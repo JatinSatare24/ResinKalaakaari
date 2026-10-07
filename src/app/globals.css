@@ -62,3 +62,17 @@ main {
   flex: 1;
   /* This tells the main area to 'grow' to fill available space */
 }
+
+/* Text for screen readers only. The admin table caption already uses this
+   class name but nothing defined it, so the caption showed as visible text. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
