@@ -9,7 +9,7 @@
   padding: 10px 36px 10px 16px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: #111827;
   background-color: #ffffff;
   /* Custom Dropdown Arrow SVG */
@@ -17,7 +17,6 @@
   background-repeat: no-repeat;
   background-position: right 12px center;
   cursor: pointer;
-  outline: none;
   transition:
     border-color 0.5s ease,
     box-shadow 0.2s ease;
