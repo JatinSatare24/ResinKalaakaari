@@ -105,8 +105,9 @@
 
 /* Update the actual Logo Image */
 .image {
-  /* Fluid scaling: starts at 110px, grows with screen, stops at 200px */
-  width: clamp(110px, 19vw, 220px);
+  /* A fixed 110px on phones, so it always fits the 75px bar (it used to grow
+     to about 146px between 580px and 767px). From 768px the rules below take over. */
+  width: 110px;
   height: auto !important;
   /* Forces aspect ratio maintenance */
   transition: width 0.3s ease;
@@ -262,6 +263,15 @@
 
 .cartLink:active {
   transform: scale(0.95);
+}
+
+/* A bigger tap area for the two icon buttons without changing how they look:
+   an invisible box of about 44px around each icon. */
+.iconBtn::after,
+.cartLink::after {
+  content: "";
+  position: absolute;
+  inset: -0.625rem;
 }
 
 /* ===============================
