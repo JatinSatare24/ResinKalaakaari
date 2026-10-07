@@ -35,6 +35,11 @@
   transition: color 0.3s ease;
 }
 
+.footer :focus-visible {
+  /* The footer is dark, so its focus ring is white. */
+  outline-color: #fff;
+}
+
 .section a:hover {
   color: #ffffff;
 }
