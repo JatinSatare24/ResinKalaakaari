@@ -17,10 +17,12 @@ Built as a full-stack Next.js app on Supabase (Postgres, Auth and Edge Functions
 - Profile page for saved contact and shipping details.
 - Invoice PDF emailed when payment proof is submitted.
 
-**Admin**
+**Admin** (the shop owner manages everything herself)
 
-- Orders list (newest first, 20 per page) with customer, total, UTR and status.
-- Change an order's status from a dropdown (pending, in-process, confirmed, shipped, delivered).
+- Dashboard with a card each for Orders, Products and Categories, and a tab strip on every admin page.
+- Orders list (newest first, 20 per page) with customer, total, UTR and status. Change a status from a dropdown (pending, in-process, confirmed, shipped, delivered).
+- Products list (A to Z, search by name, 20 per page). Add or edit a product: name, price, description, category, one photo, and "featured" and "gallery" switches. Photos are shrunk in the browser and uploaded straight to storage.
+- Categories: add a category or rename one.
 - Admin link in the navbar, shown to admins only.
 
 ## Tech stack
@@ -40,7 +42,7 @@ Built as a full-stack Next.js app on Supabase (Postgres, Auth and Edge Functions
 - **One data layer.** Every Supabase call lives in `src/lib/data/<entity>.ts`, typed, and throws on error. Components never call Supabase directly.
 - **Never trust the browser.** Server Actions re-validate everything they receive. Orders are created and priced by Postgres functions (`create_order`, `submit_payment_proof`), so a customer cannot set their own price or status.
 - **Layered access control.** `proxy.ts` is a fast first gate (guests go to login). Pages then check the user on the server (`requireUser`, `requireAdmin`), and Row Level Security protects the data itself.
-- **Admin role.** Admins are rows in an `admin_users` table that no API role can read or write. A `SECURITY DEFINER` function, `is_admin()`, answers "is the caller an admin?". Status changes go through `admin_set_order_status`, which re-checks the role.
+- **Admin role.** Admins are rows in an `admin_users` table that no API role can read or write. A `SECURITY DEFINER` function, `is_admin()`, answers "is the caller an admin?". Every admin write (order status, products, categories) goes through a Postgres function that re-checks the role, so the admin has no direct write access to the tables.
 
 ## Project structure
 
@@ -49,7 +51,7 @@ src/
   app/          routes, layouts, loading / error / not-found files, Server Actions
   components/   UI components, each with its own CSS Module
   context/      CartContext (cart state: guest and signed-in)
-  lib/          pure helpers (cart, checkout, orders, auth, search params)
+  lib/          pure helpers (cart, checkout, orders, auth, search params, product admin rules, photo resizing)
   lib/data/     the only code that talks to Supabase
   proxy.ts      first auth gate for protected routes
 supabase/
@@ -72,7 +74,7 @@ Create `.env.local` in the project root:
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=your-project-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-publishable-key
 ```
 
 Start the dev server:
@@ -85,7 +87,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ### Edge function secrets
 
-The `send-order-email` function reads `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` and `RESEND_API_KEY` from the Supabase function environment. Never put the service role key in `.env.local`, in client code or in the repo.
+The `send-order-email` function reads `SUPABASE_URL`, `RESEND_API_KEY` and the project's admin key from the Supabase function environment (`SUPABASE_SECRET_KEYS`, with `SUPABASE_SERVICE_ROLE_KEY` as the fallback on older projects). Never put an admin key in `.env.local`, in client code or in the repo. The website itself only uses the project URL and the publishable key.
 
 ## Scripts
 
@@ -95,6 +97,8 @@ The `send-order-email` function reads `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY
 | `npm run build`        | Production build                   |
 | `npm run start`        | Run the production build           |
 | `npm run lint`         | ESLint                             |
+| `npm run lint:fix`     | ESLint, fixing what it can         |
+| `npm run format`       | Prettier, rewriting files          |
 | `npm run format:check` | Prettier check (markdown included) |
 | `npm run type-check`   | TypeScript check, no output        |
 
