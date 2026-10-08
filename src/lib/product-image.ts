@@ -38,6 +38,22 @@ export function newProductImagePath(): string {
   return `${PRODUCT_IMAGE_FOLDER}/${name}.jpg`;
 }
 
+// All photos of a product in display order: the main photo first, then the
+// extras by sort_order. Sorted here as well as in the query so the order never
+// depends on how the database happens to return the rows. A link that appears
+// twice (an extra equal to the main photo) is shown once.
+export function buildPhotoList(
+  main: string,
+  extras: { image_url: string; sort_order: number }[],
+): string[] {
+  const photos = main ? [main] : [];
+  const ordered = [...extras].sort((a, b) => a.sort_order - b.sort_order);
+  for (const { image_url } of ordered) {
+    if (image_url && !photos.includes(image_url)) photos.push(image_url);
+  }
+  return photos;
+}
+
 // From a public photo link back to its path inside the bucket
 // ("products/abc.jpg"), or null when the link is not one of OUR uploads.
 // The server uses it before deleting, so it can never be pointed at the
