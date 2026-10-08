@@ -1,0 +1,12 @@
+/* Phase 9 desktop rule: cap the width and centre it from tablet up. The
+   mobile layout is left alone. */
+.shell {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .shell {
+    max-width: var(--content-max);
+    margin-inline: auto;
+  }
+}

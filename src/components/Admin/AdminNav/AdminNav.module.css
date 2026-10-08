@@ -1,0 +1,44 @@
+/* The admin tab strip. Scrolls sideways on a very narrow phone instead of
+   wrapping, and every tab is at least 44px tall to tap. */
+.nav {
+  padding: 12px 15px 0;
+}
+
+.list {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #374151;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  border-color: #111111;
+}
+
+.tab:focus-visible {
+  outline: 3px solid #d4af37;
+  outline-offset: 2px;
+}
+
+.active {
+  background: #111111;
+  border-color: #111111;
+  color: #ffffff;
+}

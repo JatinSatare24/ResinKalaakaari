@@ -181,7 +181,7 @@ export default function Navbar() {
                 </Link>
                 {showAdminLink && (
                   <Link
-                    href="/admin/orders"
+                    href="/admin"
                     onClick={() => setDropdownOpen(false)}
                     className={styles.dropdownItem}
                     role="menuitem"
