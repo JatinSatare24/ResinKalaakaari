@@ -2,6 +2,7 @@
 import Image from "next/image";
 import AddToCartButton from "@/components/AddToCartButton/AddToCartButton";
 import Breadcrumb from "@/components/BreadCrumbNavigation/BreadCrumbNavigation";
+import ProductGallery from "@/components/ProductGallery/ProductGallery";
 import type { ProductWithCategory } from "@/lib/types";
 import styles from "@/components/ProductDetails/ProductDetail.module.css";
 
@@ -11,8 +12,9 @@ export interface ProductDetailProps {
 }
 
 // --- COMPONENT ---
-// A Server Component now: it only displays data. The one interactive part
-// (the button) is its own client component.
+// A Server Component now: it only displays data. The interactive parts (the
+// button, and the gallery when there are several photos) are their own client
+// components.
 export default function ProductDetail({ product }: ProductDetailProps) {
   return (
     // The root layout already wraps every page in <main>, so this is a div.
@@ -27,19 +29,26 @@ export default function ProductDetail({ product }: ProductDetailProps) {
       />
 
       <article className={styles.productLayout} aria-labelledby="product-title">
-        <figure className={styles.imageWrapper}>
-          {/* This image is at the top of the page, so load it right away
-              instead of lazily. */}
-          <Image
-            src={product.image_url}
-            alt={product.name}
-            width={900}
-            height={900}
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            loading="eager"
-            fetchPriority="high"
-          />
-        </figure>
+        {/* Two or more photos: the swipeable gallery (the only client piece
+            besides the button). One photo: exactly the picture this page has
+            always shown, with no extra script. */}
+        {product.photos.length > 1 ? (
+          <ProductGallery photos={product.photos} name={product.name} />
+        ) : (
+          <figure className={styles.imageWrapper}>
+            {/* This image is at the top of the page, so load it right away
+                instead of lazily. */}
+            <Image
+              src={product.image_url}
+              alt={product.name}
+              width={900}
+              height={900}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              loading="eager"
+              fetchPriority="high"
+            />
+          </figure>
+        )}
 
         <section className={styles.content}>
           <h1 id="product-title" className={styles.name}>
