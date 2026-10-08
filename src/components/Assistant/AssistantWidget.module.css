@@ -9,12 +9,12 @@
      maroon. White on it is above 9:1 contrast. */
   --assistant-color: #333333;
   position: fixed;
-  right: 16px;
-  bottom: 26px;
+  right: 26px;
+  bottom: 16px;
   z-index: 900; /* under the navbar drawer (999) */
   box-sizing: border-box;
-  width: 46px;
-  height: 46px;
+  width: 56px;
+  height: 56px;
   /* A chat bubble: rounded on three corners, a square corner at the bottom
      right where the "tail" would be. */
   border-radius: 20px 20px 6px 20px;
