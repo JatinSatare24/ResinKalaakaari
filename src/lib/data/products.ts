@@ -25,7 +25,7 @@ export type ProductsResult = {
 // Search text goes into a PostgREST filter *string* (see .or() below), where
 // commas and parentheses have special meaning, and % _ act as wildcards.
 // So we swap those characters for spaces before using the text.
-function cleanSearch(search: string): string {
+export function cleanSearch(search: string): string {
   return search
     .replace(/[%_*,()"\\]/g, " ")
     .replace(/\s+/g, " ")

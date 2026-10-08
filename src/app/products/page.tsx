@@ -59,7 +59,11 @@ export default async function ProductsPage({
       />
 
       <CategoriesFilter categories={categories} query={query} />
-      <SearchBar query={query} />
+      <SearchBar
+        basePath="/products"
+        keep={{ category: query.category, sort: query.sort }}
+        initialValue={query.search}
+      />
 
       <div className={styles.SortContainer}>
         <SortDropdown query={query} />

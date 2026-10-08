@@ -57,3 +57,46 @@ export function buildProductsHref(query: Partial<ProductsQuery>): string {
 export function buildAdminOrdersHref(page: number): string {
   return page > 1 ? `/admin/orders?page=${page}` : "/admin/orders";
 }
+
+// One place that builds "page + a few ?params" links, shared by every search
+// box. `params` are the URL params to carry along (category, sort, search...);
+// empty ones are left out. Page 1 has no ?page=, so links stay short.
+export function buildSearchHref(
+  basePath: string,
+  params: Record<string, string | undefined>,
+  page = 1,
+): string {
+  const query = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value) query.set(key, value);
+  }
+  if (page > 1) query.set("page", String(page));
+  const queryString = query.toString();
+  return queryString ? `${basePath}?${queryString}` : basePath;
+}
+
+// The admin products list has just ?search= and ?page=.
+export type AdminProductsQuery = {
+  search?: string;
+  page: number; // always a whole number >= 1
+};
+
+export function parseAdminProductsQuery(
+  raw: RawSearchParams,
+): AdminProductsQuery {
+  return {
+    search: first(raw.search)?.trim().slice(0, MAX_SEARCH_LENGTH) || undefined,
+    page: parsePage(first(raw.page)),
+  };
+}
+
+// Link to one page of the admin products list.
+export function buildAdminProductsHref(
+  query: Partial<AdminProductsQuery>,
+): string {
+  return buildSearchHref(
+    "/admin/products",
+    { search: query.search },
+    query.page,
+  );
+}
