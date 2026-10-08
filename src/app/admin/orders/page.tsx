@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import AdminShell from "@/components/Admin/AdminShell/AdminShell";
 import AdminOrders from "@/components/Admin/Orders/Orders";
 import { requireAdmin } from "@/lib/auth";
 import { ADMIN_ORDERS_PER_PAGE } from "@/lib/constants";
@@ -36,11 +37,13 @@ export default async function AdminOrdersPage({
   if (page > totalPages) redirect(buildAdminOrdersHref(totalPages));
 
   return (
-    <AdminOrders
-      orders={orders}
-      page={page}
-      totalPages={totalPages}
-      totalCount={totalCount}
-    />
+    <AdminShell>
+      <AdminOrders
+        orders={orders}
+        page={page}
+        totalPages={totalPages}
+        totalCount={totalCount}
+      />
+    </AdminShell>
   );
 }

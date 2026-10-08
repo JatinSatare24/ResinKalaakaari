@@ -1,0 +1,148 @@
+.wrapper {
+  width: 100%;
+  margin: 20px auto;
+  padding: 15px;
+  min-height: 60vh;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.summary {
+  margin: 6px 0 16px;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.empty {
+  padding: 40px 0;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* --- add form --- */
+.addForm {
+  margin-bottom: 24px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.addRow {
+  display: flex;
+  gap: 10px;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 1rem; /* 16px: stops iPhone zooming into the box */
+}
+
+.input:focus-visible {
+  outline: 3px solid #d4af37;
+  outline-offset: 1px;
+}
+
+.saved {
+  margin-top: 6px;
+  font-size: 0.875rem;
+  color: #166534;
+}
+
+/* --- buttons (brand pill) --- */
+.button,
+.secondaryButton {
+  min-height: 44px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button {
+  border: 1px solid #111111;
+  background: #111111;
+  color: #ffffff;
+}
+
+.button:hover:not(:disabled) {
+  background: #000000;
+}
+
+.button:active:not(:disabled) {
+  background: #d4af37;
+}
+
+.secondaryButton {
+  border: 1px solid #111111;
+  background: #ffffff;
+  color: #111111;
+}
+
+.secondaryButton:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+
+.button:disabled,
+.secondaryButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* --- list --- */
+.list {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #eeeeee;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.rowInfo {
+  min-width: 0;
+}
+
+.rowName {
+  font-weight: 600;
+  color: #1a1a1a;
+  overflow-wrap: anywhere;
+}
+
+.rowMeta {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.renameForm {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+
+.renameButtons {
+  display: flex;
+  gap: 10px;
+}
