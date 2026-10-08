@@ -1,6 +1,7 @@
 // --- IMPORTS ---
 import Image from "next/image";
 import Link from "next/link";
+import RebuildIndexButton from "@/components/Admin/Products/RebuildIndexButton";
 import PaginationControls from "@/components/PaginationControls/PaginationControls";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import { buildAdminProductsHref } from "@/lib/search-params";
@@ -14,6 +15,7 @@ export interface AdminProductsListProps {
   page: number;
   totalPages: number;
   totalCount: number;
+  showRebuildIndex?: boolean; // the AI assistant is on
 }
 
 // --- COMPONENT ---
@@ -25,6 +27,7 @@ export default function AdminProductsList({
   page,
   totalPages,
   totalCount,
+  showRebuildIndex = false,
 }: AdminProductsListProps) {
   return (
     <section className={styles.wrapper} aria-labelledby="admin-products-title">
@@ -42,6 +45,8 @@ export default function AdminProductsList({
           ? `${totalCount} ${totalCount === 1 ? "match" : "matches"} for "${search}"`
           : `${totalCount} ${totalCount === 1 ? "product" : "products"}, A to Z`}
       </p>
+
+      {showRebuildIndex && <RebuildIndexButton />}
 
       <SearchBar
         basePath="/admin/products"

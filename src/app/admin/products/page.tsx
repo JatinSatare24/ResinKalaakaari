@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import AdminShell from "@/components/Admin/AdminShell/AdminShell";
 import AdminProductsList from "@/components/Admin/Products/ProductsList";
+import { isAiAvailable, readAiConfig } from "@/lib/ai/config";
 import { requireAdmin } from "@/lib/auth";
 import { ADMIN_PRODUCTS_PER_PAGE } from "@/lib/constants";
 import { getAdminProducts } from "@/lib/data/admin-products";
@@ -45,6 +46,7 @@ export default async function AdminProductsPage({
         page={query.page}
         totalPages={totalPages}
         totalCount={totalCount}
+        showRebuildIndex={isAiAvailable(readAiConfig())}
       />
     </AdminShell>
   );

@@ -1,7 +1,11 @@
+import AssistantWidget from "@/components/Assistant/AssistantWidget";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import "./globals.css";
 import CartProvider from "@/context/CartContext";
+import { AI_LIMITS, isAiAvailable, readAiConfig } from "@/lib/ai/config";
+import { buildWhatsAppUrl } from "@/lib/ai/guard";
+import { QUICK_REPLIES } from "@/lib/ai/knowledge";
 import { Inter, Playfair_Display } from "next/font/google";
 import type { Metadata } from "next";
 
@@ -51,6 +55,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // The bubble is drawn only when the assistant is switched on AND fully set
+  // up (isAiAvailable). Read on the server, so nothing about it reaches a
+  // browser when it is off. Shop pages are built ahead of time, so changing
+  // the switch needs a new deploy; the chat endpoint re-checks it on every
+  // request anyway.
+  const assistantOn = isAiAvailable(readAiConfig());
+
   return (
     <html lang="en">
       <body className={`${inter.variable} ${playfair.variable}`}>
@@ -60,6 +71,14 @@ export default function RootLayout({
             <main>{children}</main>
             <Footer />
           </div>
+          {assistantOn && (
+            <AssistantWidget
+              quickReplies={QUICK_REPLIES}
+              whatsappUrl={buildWhatsAppUrl(null)}
+              maxMessageChars={AI_LIMITS.maxMessageChars}
+              historyLimit={AI_LIMITS.maxHistoryMessages}
+            />
+          )}
         </CartProvider>
       </body>
     </html>
