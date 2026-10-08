@@ -9,6 +9,7 @@ Built as a full-stack Next.js app on Supabase (Postgres, Auth and Edge Functions
 **Customers**
 
 - Browse products with category filter, search, sorting and pagination (the URL holds the state, so every view is shareable).
+- Product page with a photo gallery (swipe on a phone, thumbnails, a "2 / 5" counter) when a product has more than one photo.
 - Cart that works for guests (saved in the browser) and merges into a saved cart on sign-in.
 - Sign in with email and password or Google, plus signup confirmation and password reset.
 - Checkout with address pre-filled from the profile, priced on the server.
@@ -21,7 +22,7 @@ Built as a full-stack Next.js app on Supabase (Postgres, Auth and Edge Functions
 
 - Dashboard with a card each for Orders, Products and Categories, and a tab strip on every admin page.
 - Orders list (newest first, 20 per page) with customer, total, UTR and status. Change a status from a dropdown (pending, in-process, confirmed, shipped, delivered).
-- Products list (A to Z, search by name, 20 per page). Add or edit a product: name, price, description, category, one photo, and "featured" and "gallery" switches. Photos are shrunk in the browser and uploaded straight to storage.
+- Products list (A to Z, search by name, 20 per page). Add or edit a product: name, price, description, category, up to 5 photos (add several at once, move them up or down, choose the main one) and "featured" and "gallery" switches. Photos are shrunk in the browser and uploaded straight to storage.
 - Categories: add a category or rename one.
 - Admin link in the navbar, shown to admins only.
 
