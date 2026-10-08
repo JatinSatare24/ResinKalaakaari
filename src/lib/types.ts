@@ -99,3 +99,26 @@ export type AdminOrder = {
   total_price: number;
   status: string;
 };
+
+// One row of the admin products list.
+export type AdminProduct = {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  image_url: string;
+  is_featured: boolean; // nullable in the database; NULL is read as false
+  is_gallery: boolean;
+  categories: { name: string } | null;
+};
+
+// Everything the edit form needs to start filled in.
+export type AdminProductDetail = Omit<AdminProduct, "categories"> & {
+  description: string;
+  category_id: string;
+};
+
+// One row of the admin categories list.
+export type AdminCategory = Category & {
+  product_count: number; // how many products are in it
+};

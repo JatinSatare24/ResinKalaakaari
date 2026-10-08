@@ -24,3 +24,22 @@ export const UTR_LENGTH = 12;
 // cannot import from src/). Change both together.
 export const UPI_ID = "9175461840@ibl";
 export const WHATSAPP_NUMBER = "919022223759";
+
+// --- Product admin (Phase 10) ---
+
+// Products per page on the admin list.
+export const ADMIN_PRODUCTS_PER_PAGE = 20;
+
+// Limits for the admin product and category forms. The admin_* SQL functions
+// (phase-10-product-admin-A.sql) enforce the same numbers, so change both
+// together. The description limit was set from the longest existing
+// description (1444 characters) plus headroom.
+export const MAX_PRODUCT_NAME_LENGTH = 100;
+export const MAX_PRODUCT_DESCRIPTION_LENGTH = 2000;
+export const MAX_CATEGORY_NAME_LENGTH = 60;
+export const MIN_PRODUCT_PRICE = 1; // whole rupees
+export const MAX_PRODUCT_PRICE = 100000; // whole rupees; catches an extra zero
+
+// The Supabase Storage bucket that holds product photos. A product's
+// image_url must point inside it (the SQL functions check this too).
+export const PRODUCT_IMAGE_BUCKET = "Resin Kalaakaari product image bucket";
