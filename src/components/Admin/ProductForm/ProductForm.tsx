@@ -7,7 +7,7 @@ import {
   createProductAction,
   updateProductAction,
 } from "@/app/admin/products/actions";
-import ImageField from "@/components/Admin/ProductForm/ImageField";
+import PhotosField from "@/components/Admin/ProductForm/PhotosField";
 import FormError from "@/components/FormError/FormError";
 import { MAX_PRODUCT_DESCRIPTION_LENGTH } from "@/lib/constants";
 import {
@@ -46,8 +46,8 @@ export default function ProductForm({
     justAdded ? "Product added." : null,
   );
   const [isPending, startTransition] = useTransition();
-  // The photo link the database has. Changes only after a successful save.
-  const [savedImageUrl, setSavedImageUrl] = useState(initial.image_url);
+  // The photo links the database has. Changes only after a successful save.
+  const [savedPhotos, setSavedPhotos] = useState(initial.photos);
   const [photoBusy, setPhotoBusy] = useState(false);
 
   // Changes one field and clears that field's old error message.
@@ -102,7 +102,7 @@ export default function ProductForm({
         setFormError(result.message);
         return;
       }
-      setSavedImageUrl(values.image_url);
+      setSavedPhotos(values.photos);
       setSaved("Saved.");
     });
   }
@@ -207,12 +207,12 @@ export default function ProductForm({
         )}
       </div>
 
-      <ImageField
-        value={values.image_url}
-        savedValue={savedImageUrl}
-        error={errors.image_url}
+      <PhotosField
+        photos={values.photos}
+        savedPhotos={savedPhotos}
+        error={errors.photos}
         disabled={isPending}
-        onChange={(url) => setField("image_url", url)}
+        onChange={(photos) => setField("photos", photos)}
         onBusyChange={setPhotoBusy}
       />
 

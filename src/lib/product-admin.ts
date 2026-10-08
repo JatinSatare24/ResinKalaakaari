@@ -9,6 +9,7 @@ import {
   MAX_CATEGORY_NAME_LENGTH,
   MAX_PRODUCT_DESCRIPTION_LENGTH,
   MAX_PRODUCT_NAME_LENGTH,
+  MAX_PRODUCT_PHOTOS,
   MAX_PRODUCT_PRICE,
   MIN_PRODUCT_PRICE,
   PRODUCT_IMAGE_BUCKET,
@@ -21,7 +22,9 @@ export type ProductFormValues = {
   name: string;
   description: string;
   price: string;
-  image_url: string;
+  // The photos in display order: photos[0] is the main photo (the one the
+  // shop cards, cart and orders show), the rest are the extras.
+  photos: string[];
   category_id: string;
   is_featured: boolean;
   is_gallery: boolean;
@@ -32,8 +35,12 @@ export type ProductInput = Omit<ProductFormValues, "price"> & {
   price: number; // a whole number of rupees
 };
 
+// Everything about a product EXCEPT its photos (the *WithPhotos functions in
+// lib/data/admin-products.ts take the two separately).
+export type ProductDetails = Omit<ProductInput, "photos">;
+
 export type ProductField =
-  "name" | "description" | "price" | "image_url" | "category_id";
+  "name" | "description" | "price" | "photos" | "category_id";
 export type ProductFormErrors = Partial<Record<ProductField, string>>;
 
 export type ProductCheck =
@@ -43,7 +50,7 @@ export const EMPTY_PRODUCT_FORM: ProductFormValues = {
   name: "",
   description: "",
   price: "",
-  image_url: "",
+  photos: [],
   category_id: "",
   is_featured: false,
   is_gallery: false,
@@ -72,7 +79,7 @@ export function parseProductForm(value: unknown): ProductFormValues {
       typeof priceField === "number" && Number.isFinite(priceField)
         ? String(priceField)
         : text("price"),
-    image_url: text("image_url"),
+    photos: parsePhotos(source.photos),
     category_id: text("category_id"),
     is_featured: source.is_featured === true,
     is_gallery: source.is_gallery === true,
@@ -102,7 +109,7 @@ function checkPrice(text: string): { price: number } | { error: string } {
 
 // The photo must be a public link inside the product images bucket, with no
 // ?query or #hash (same rule as c_image_re in the SQL functions).
-function isProductImageUrl(url: string): boolean {
+export function isProductImageUrl(url: string): boolean {
   const prefix = `/storage/v1/object/public/${encodeURIComponent(PRODUCT_IMAGE_BUCKET)}/`;
   try {
     const parsed = new URL(url);
@@ -136,10 +143,8 @@ export function validateProduct(values: ProductFormValues): ProductCheck {
   const priceCheck = checkPrice(values.price);
   if ("error" in priceCheck) errors.price = priceCheck.error;
 
-  if (!values.image_url) errors.image_url = "Add a photo for this product.";
-  else if (!isProductImageUrl(values.image_url)) {
-    errors.image_url = "That photo is not from this shop. Choose it again.";
-  }
+  const photosCheck = validatePhotos(values.photos);
+  if (!photosCheck.ok) errors.photos = photosCheck.error;
 
   if (!isUuid(values.category_id)) errors.category_id = "Choose a category.";
 
@@ -147,6 +152,44 @@ export function validateProduct(values: ProductFormValues): ProductCheck {
     return { ok: false, errors };
   }
   return { ok: true, value: { ...values, price: priceCheck.price } };
+}
+
+// --- Photos (Phase 10b) ---
+
+export type PhotosCheck =
+  { ok: true; photos: string[] } | { ok: false; error: string };
+
+// A Server Action's argument can be ANYTHING a client sends. Anything that is
+// not an array gives an empty list; every item is trimmed and a non-string
+// becomes "" (which then fails the check below).
+export function parsePhotos(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.map((item) => (typeof item === "string" ? item.trim() : ""));
+}
+
+// The ordered photo list of ONE product: photos[0] is the main photo, the rest
+// are the extras. Same rules as admin_set_product_photos, in the same order:
+// not empty, not too many, every link inside our bucket, no link twice.
+export function validatePhotos(photos: string[]): PhotosCheck {
+  if (photos.length === 0) {
+    return { ok: false, error: "Add at least one photo for this product." };
+  }
+  if (photos.length > MAX_PRODUCT_PHOTOS) {
+    return {
+      ok: false,
+      error: `A product can have ${MAX_PRODUCT_PHOTOS} photos at most. Remove one first.`,
+    };
+  }
+  if (!photos.every(isProductImageUrl)) {
+    return {
+      ok: false,
+      error: "A photo is not from this shop. Remove it and add it again.",
+    };
+  }
+  if (new Set(photos).size !== photos.length) {
+    return { ok: false, error: "The same photo was added twice." };
+  }
+  return { ok: true, photos };
 }
 
 // --- Categories ---

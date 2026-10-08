@@ -40,6 +40,13 @@ export const MAX_CATEGORY_NAME_LENGTH = 60;
 export const MIN_PRODUCT_PRICE = 1; // whole rupees
 export const MAX_PRODUCT_PRICE = 100000; // whole rupees; catches an extra zero
 
+// --- Product photo gallery (Phase 10b) ---
+
+// Most photos ONE product may have, the main photo included (main + 4 extras).
+// admin_set_product_photos (phase-10b-gallery-A.sql) enforces the same number
+// as c_max_photos, so change both together.
+export const MAX_PRODUCT_PHOTOS = 5;
+
 // The Supabase Storage bucket that holds product photos. A product's
 // image_url must point inside it (the SQL functions check this too).
 export const PRODUCT_IMAGE_BUCKET = "Resin Kalaakaari product image bucket";

@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { createServerSupabaseClient } from "@/lib/server";
 import { PRODUCTS_PER_PAGE } from "@/lib/constants";
+import { buildPhotoList } from "@/lib/product-image";
 import { PRODUCT_SORTS, type ProductSort } from "@/lib/product-sorts";
 import type {
   GalleryItem,
@@ -85,6 +86,11 @@ export async function getProducts({
   };
 }
 
+// The row as Supabase returns it: the extra photos arrive as a joined list.
+type ProductRow = Omit<ProductWithCategory, "photos"> & {
+  product_images: { image_url: string; sort_order: number }[] | null;
+};
+
 // cache() = if this is called twice with the same slug during ONE request
 // (generateMetadata + the page both need it), the query runs only once.
 export const getProductBySlug = cache(
@@ -93,15 +99,24 @@ export const getProductBySlug = cache(
 
     const { data, error } = await supabase
       .from("products")
+      // product_images(...) = the extra photos, joined in the SAME query (no
+      // second round trip). A product with none gets an empty list.
       .select(
-        "id, name, slug, description, price, image_url, category_id, categories(name, slug)",
+        "id, name, slug, description, price, image_url, category_id, categories(name, slug), product_images(image_url, sort_order)",
       )
       .eq("slug", slug)
+      .order("sort_order", { referencedTable: "product_images" })
       .maybeSingle(); // no match -> data is null, not an error
 
     if (error) throw new Error(`getProductBySlug failed: ${error.message}`);
+    if (!data) return null;
 
-    return data as unknown as ProductWithCategory | null;
+    // image_url stays the main photo; photos = main first, then the extras.
+    const { product_images, ...product } = data as unknown as ProductRow;
+    return {
+      ...product,
+      photos: buildPhotoList(product.image_url, product_images ?? []),
+    };
   },
 );
 

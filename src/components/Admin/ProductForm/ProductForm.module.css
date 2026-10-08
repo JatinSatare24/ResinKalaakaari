@@ -52,11 +52,82 @@
   color: #6b7280;
 }
 
-.preview {
-  width: 160px;
-  height: 160px;
+.photoList {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.photoItem {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
+  background: #ffffff;
+}
+
+/* The main photo stands out with the shop's gold. */
+.photoItemMain {
+  border-color: #d4af37;
+  background: #fffbeb;
+}
+
+.photoThumb {
+  flex: none;
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
   object-fit: cover;
+}
+
+.photoBody {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.photoLabel {
+  margin: 0;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.photoActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.smallButton {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 14px;
+  border: 1px solid #111111;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.smallButton:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+
+.smallButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.removeButton {
+  border-color: #b91c1c;
+  color: #b91c1c;
 }
 
 .switches {
