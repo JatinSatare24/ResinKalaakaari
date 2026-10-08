@@ -19,6 +19,9 @@ export type ProductWithCategory = ProductSummary & {
   description: string | null;
   category_id: string | null;
   categories: { name: string; slug: string } | null;
+  // Every photo in display order. photos[0] is always the main photo
+  // (image_url), so a product with no extra photos has exactly one entry.
+  photos: string[];
 };
 
 // Home page gallery tile: a product without the price (the tile only shows
@@ -116,6 +119,8 @@ export type AdminProduct = {
 export type AdminProductDetail = Omit<AdminProduct, "categories"> & {
   description: string;
   category_id: string;
+  // Same meaning as ProductWithCategory.photos: main photo first.
+  photos: string[];
 };
 
 // One row of the admin categories list.

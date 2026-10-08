@@ -41,7 +41,7 @@ export default async function AdminEditProductPage({
           name: product.name,
           description: product.description,
           price: String(product.price),
-          image_url: product.image_url,
+          photos: product.photos,
           category_id: product.category_id,
           is_featured: product.is_featured,
           is_gallery: product.is_gallery,

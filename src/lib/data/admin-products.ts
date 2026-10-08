@@ -11,7 +11,8 @@ import { ADMIN_PRODUCTS_PER_PAGE } from "@/lib/constants";
 import { knownFailure } from "@/lib/data/orders";
 import { cleanSearch } from "@/lib/data/products";
 import { isUuid } from "@/lib/orders";
-import type { ProductInput } from "@/lib/product-admin";
+import type { ProductDetails } from "@/lib/product-admin";
+import { buildPhotoList } from "@/lib/product-image";
 import type { AdminProductsQuery } from "@/lib/search-params";
 import type { AdminProduct, AdminProductDetail } from "@/lib/types";
 
@@ -82,25 +83,37 @@ export const getAdminProduct = cache(
     const { data, error } = await supabase
       .from("products")
       .select(
-        "id, name, slug, description, price, image_url, category_id, is_featured, is_gallery",
+        "id, name, slug, description, price, image_url, category_id, is_featured, is_gallery, product_images(image_url, sort_order)",
       )
       .eq("id", id)
+      .order("sort_order", { referencedTable: "product_images" })
       .maybeSingle(); // no match -> data is null, not an error
 
     if (error) throw new Error(`getAdminProduct failed: ${error.message}`);
     if (!data) return null;
 
-    const row = data as unknown as Omit<AdminProductDetail, "is_featured"> & {
+    const { product_images, ...row } = data as unknown as Omit<
+      AdminProductDetail,
+      "is_featured" | "photos"
+    > & {
       is_featured: boolean | null;
+      product_images: { image_url: string; sort_order: number }[] | null;
     };
-    return { ...row, is_featured: row.is_featured === true };
+    return {
+      ...row,
+      is_featured: row.is_featured === true,
+      photos: buildPhotoList(row.image_url, product_images ?? []),
+    };
   },
 );
 
 // --- Writes (each one is a Postgres function) ---
 
-// The checks both functions share. The SQL raises these as exception
-// messages; anything else is a real failure and gets thrown.
+// The failures the SQL functions raise, as exception messages. The functions
+// below hand a known one back as a result; anything else is a real failure
+// and gets thrown. (Phase 10 had single-photo createProduct / updateProduct
+// here; Phase 10b replaced both with the *WithPhotos pair below, because a
+// product's text and its photos must be saved in one transaction.)
 const SAVE_FAILURES = [
   "not_authenticated",
   "not_admin",
@@ -112,75 +125,106 @@ const SAVE_FAILURES = [
 ] as const;
 
 const CREATE_FAILURES = [...SAVE_FAILURES, "slug_unavailable"] as const;
-export type CreateProductFailure = (typeof CREATE_FAILURES)[number];
-
 const UPDATE_FAILURES = [...SAVE_FAILURES, "product_not_found"] as const;
-export type UpdateProductFailure = (typeof UPDATE_FAILURES)[number];
 
-export type CreateProductResult =
-  { ok: true; id: string } | { ok: false; reason: CreateProductFailure };
+// --- Save with photos (Phase 10b, phase-10b-gallery-A2-atomic.sql) ---
+// ONE database call per Save. The wrappers save the text and the whole photo
+// list in a single transaction: all of it is stored, or none of it. (The
+// photo list is ONE ordered array: photos[0] becomes the main photo, which is
+// products.image_url, and the rest become the extras in that order. "Make
+// main" and "move up / down" are therefore the same call with the list in a
+// new order.) The callers validate first (validateProduct / validatePhotos);
+// the database checks every rule again.
 
-// The slug is made by the database from the name (and never changes later).
-export async function createProduct(
-  input: ProductInput,
-): Promise<CreateProductResult> {
+// The two new codes the photo list can add to the ones above.
+const PHOTO_LIST_FAILURES = ["too_many_photos", "duplicate_photo"] as const;
+
+const CREATE_WITH_PHOTOS_FAILURES = [
+  ...CREATE_FAILURES,
+  ...PHOTO_LIST_FAILURES,
+] as const;
+export type CreateWithPhotosFailure =
+  (typeof CREATE_WITH_PHOTOS_FAILURES)[number];
+
+const UPDATE_WITH_PHOTOS_FAILURES = [
+  ...UPDATE_FAILURES,
+  ...PHOTO_LIST_FAILURES,
+] as const;
+export type UpdateWithPhotosFailure =
+  (typeof UPDATE_WITH_PHOTOS_FAILURES)[number];
+
+export type CreateWithPhotosResult =
+  { ok: true; id: string } | { ok: false; reason: CreateWithPhotosFailure };
+
+export async function createProductWithPhotos(
+  details: ProductDetails,
+  photos: string[],
+): Promise<CreateWithPhotosResult> {
   const supabase = await createServerSupabaseClient();
 
-  const { data, error } = await supabase.rpc("admin_create_product", {
-    p_name: input.name,
-    p_description: input.description,
-    p_price: input.price,
-    p_image_url: input.image_url,
-    p_category_id: input.category_id,
-    p_is_featured: input.is_featured,
-    p_is_gallery: input.is_gallery,
-  });
+  const { data, error } = await supabase.rpc(
+    "admin_create_product_with_photos",
+    {
+      p_name: details.name,
+      p_description: details.description,
+      p_price: details.price,
+      p_photos: photos,
+      p_category_id: details.category_id,
+      p_is_featured: details.is_featured,
+      p_is_gallery: details.is_gallery,
+    },
+  );
 
   if (error) {
-    const reason = knownFailure(CREATE_FAILURES, error.message);
+    const reason = knownFailure(CREATE_WITH_PHOTOS_FAILURES, error.message);
     if (reason) return { ok: false, reason };
-    throw new Error(`createProduct failed: ${error.message}`);
+    throw new Error(`createProductWithPhotos failed: ${error.message}`);
   }
   if (typeof data !== "string") {
-    throw new Error("createProduct failed: no product id returned");
+    throw new Error("createProductWithPhotos failed: no product id returned");
   }
   return { ok: true, id: data };
 }
 
-export type UpdateProductResult =
+export type UpdateWithPhotosResult =
   | {
       ok: true;
-      // The photo that was just replaced, when it is now unused AND was
-      // uploaded by the admin form. The caller may delete that file. Null
-      // when nothing should be deleted.
-      replacedImageUrl: string | null;
+      // Links of files that no product uses any more AND that the admin form
+      // uploaded (products/ folder). The caller may delete them from the
+      // bucket after the save. Empty when there is nothing to delete.
+      unusedUrls: string[];
     }
-  | { ok: false; reason: UpdateProductFailure };
+  | { ok: false; reason: UpdateWithPhotosFailure };
 
-export async function updateProduct(
+export async function updateProductWithPhotos(
   id: string,
-  input: ProductInput,
-): Promise<UpdateProductResult> {
+  details: ProductDetails,
+  photos: string[],
+): Promise<UpdateWithPhotosResult> {
   const supabase = await createServerSupabaseClient();
 
-  const { data, error } = await supabase.rpc("admin_update_product", {
-    p_id: id,
-    p_name: input.name,
-    p_description: input.description,
-    p_price: input.price,
-    p_image_url: input.image_url,
-    p_category_id: input.category_id,
-    p_is_featured: input.is_featured,
-    p_is_gallery: input.is_gallery,
-  });
+  const { data, error } = await supabase.rpc(
+    "admin_update_product_with_photos",
+    {
+      p_id: id,
+      p_name: details.name,
+      p_description: details.description,
+      p_price: details.price,
+      p_photos: photos,
+      p_category_id: details.category_id,
+      p_is_featured: details.is_featured,
+      p_is_gallery: details.is_gallery,
+    },
+  );
 
   if (error) {
-    const reason = knownFailure(UPDATE_FAILURES, error.message);
+    const reason = knownFailure(UPDATE_WITH_PHOTOS_FAILURES, error.message);
     if (reason) return { ok: false, reason };
-    throw new Error(`updateProduct failed: ${error.message}`);
+    throw new Error(`updateProductWithPhotos failed: ${error.message}`);
   }
-  return {
-    ok: true,
-    replacedImageUrl: typeof data === "string" ? data : null,
-  };
+  // Anything else than a list of strings means a broken function, not a result.
+  if (!Array.isArray(data) || !data.every((url) => typeof url === "string")) {
+    throw new Error("updateProductWithPhotos failed: unexpected result");
+  }
+  return { ok: true, unusedUrls: data };
 }
