@@ -136,3 +136,48 @@
 .back:hover {
   text-decoration: underline;
 }
+
+/* --- AI assistant: rebuild the search index --- */
+.indexRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin: 12px 0;
+}
+
+.indexButton {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1.5px solid #111111;
+  background: #ffffff;
+  color: #111111;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.indexButton:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.indexHelp {
+  font-size: 0.85rem;
+  color: #666666;
+}
+
+.indexOk,
+.indexError {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.indexOk {
+  color: #1b5e20;
+}
+
+.indexError {
+  color: #b71c1c;
+}

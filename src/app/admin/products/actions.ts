@@ -8,6 +8,9 @@
 // stored, or none of it.
 import { revalidatePath } from "next/cache";
 import { getCurrentUser, getIsAdmin } from "@/lib/auth";
+import { isAiAvailable, readAiConfig } from "@/lib/ai/config";
+import { rebuildSearchIndex, syncProductEmbedding } from "@/lib/ai/embed-sync";
+import { buildEmbedSyncDeps } from "@/lib/ai/live-deps";
 import { MAX_PRODUCT_PHOTOS } from "@/lib/constants";
 import {
   createProductWithPhotos,
@@ -99,6 +102,16 @@ function refresh() {
   revalidatePath("/admin");
 }
 
+// Keeps the assistant's search index in step with the product that was just
+// saved. Best effort: it never throws and never changes the save's result. If
+// the assistant is off, or the embedding fails or times out, the product is
+// still saved, and the "Rebuild search index" button catches up later.
+async function indexProduct(id: string) {
+  const config = readAiConfig();
+  if (!isAiAvailable(config)) return;
+  await syncProductEmbedding(id, buildEmbedSyncDeps(config));
+}
+
 export async function createProductAction(
   values: unknown,
 ): Promise<ProductActionResult<{ id: string }>> {
@@ -117,6 +130,7 @@ export async function createProductAction(
   }
   if (!result.ok) return refusal(result.reason);
 
+  await indexProduct(result.id);
   refresh();
   return { ok: true, id: result.id };
 }
@@ -148,6 +162,36 @@ export async function updateProductAction(
   // After the save, so a failed delete can never undo it.
   await deleteProductImages(result.unusedUrls);
 
+  await indexProduct(id);
   refresh();
   return { ok: true };
+}
+
+// The "Rebuild search index" button: embeds every product whose stored
+// embedding is missing or out of date, and skips the rest (so pressing it
+// twice costs nothing the second time). Same checks as the save actions.
+export async function rebuildSearchIndexAction(): Promise<
+  { ok: true; message: string } | { ok: false; message: string }
+> {
+  if (!(await getCurrentUser())) {
+    return { ok: false, message: MESSAGES.not_authenticated };
+  }
+  if (!(await getIsAdmin())) return { ok: false, message: MESSAGES.not_admin };
+
+  const config = readAiConfig();
+  if (!isAiAvailable(config)) {
+    return { ok: false, message: "The AI assistant is switched off." };
+  }
+
+  try {
+    const r = await rebuildSearchIndex(buildEmbedSyncDeps(config));
+    const failed = r.failed > 0 ? ` ${r.failed} failed, press again.` : "";
+    return {
+      ok: r.failed === 0,
+      message: `${r.updated} updated, ${r.unchanged} already up to date.${failed}`,
+    };
+  } catch (error) {
+    console.error(error);
+    return { ok: false, message: "Could not rebuild the index. Try again." };
+  }
 }
